@@ -181,12 +181,33 @@ git clone https://github.com/Rahul-Taak/GoRide.git
 cd GoRide
 ```
 
-### **2. Install Dependencies**
+### **2. Install Dependencies for Frontend**
 ```sh
+cd frontend
 npm install
 ```
 
-### **3. Configure Environment Variables for Frontend**
+### **3. Start the Admin Panel**
+```sh
+npm run dev
+```
+
+It will open on `http://localhost:5173`
+
+
+### **4. Move one step back**
+```sh
+cd ..
+```
+
+
+### **5. Install Dependencies for Backend**
+```sh
+cd Backend
+npm install
+```
+
+### **6. Configure Environment Variables for Frontend**
 Create a `.env` file in the frontend Folder and add:
 ```env
 VITE_APP_NAME=GoRide
@@ -195,7 +216,7 @@ VITE_PORT=5000
 
 ```
 
-### **4. Configure Environment Variables for Backend**
+### **7. Configure Environment Variables for Backend**
 Create a `.env` file in the Backend Folder and add:
 ```env
 APP_NAME=GoRide
@@ -208,7 +229,7 @@ DB_NAME=go_ride
 
 ```
 
-### **5. Start the Server**
+### **8. Start the Server**
 ```sh
 npm start
 ```
@@ -251,7 +272,7 @@ git push origin master
 ---
 
 ## **License**
-This project is licensed under the **MIT License**.
+This project is ongoing under the **IT-Expert Team**.
 
 ---
 

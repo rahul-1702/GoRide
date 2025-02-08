@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "../assets/Go_Ride.png";
 
 function Header() {
   const APP_NAME = import.meta.env.VITE_APP_NAME;
@@ -8,11 +9,17 @@ function Header() {
       <nav className="navbar navbar-expand-lg bg-body-dark navbar-dark fixed-top p-0">
         <div className="container-fluid">
           <a
-            className="navbar-brand text-info"
+            className="navbar-brand text-info d-flex align-items-center gap-2"
             style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }}
             href="#"
           >
-            {APP_NAME}
+            <img
+              src={Logo}
+              alt="GoRide"
+              width={50}
+              style={{ filter: "drop-shadow(0 0 2px #999)" }}
+            />
+            <span>{APP_NAME}</span>
           </a>
           <button
             className="navbar-toggler"
