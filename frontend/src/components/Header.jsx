@@ -1,12 +1,18 @@
 import React from "react";
 
 function Header() {
+  const APP_NAME = import.meta.env.VITE_APP_NAME;
+
   return (
     <div className="pb-5">
       <nav className="navbar navbar-expand-lg bg-body-dark navbar-dark fixed-top p-0">
         <div className="container-fluid">
-          <a className="navbar-brand text-info" style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }} href="#">
-            GoRide
+          <a
+            className="navbar-brand text-info"
+            style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }}
+            href="#"
+          >
+            {APP_NAME}
           </a>
           <button
             className="navbar-toggler"
@@ -19,7 +25,10 @@ function Header() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse py-3 bg-dark mt-1" id="navbarSupportedContent">
+          <div
+            className="collapse navbar-collapse py-3 bg-dark mt-1"
+            id="navbarSupportedContent"
+          >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">

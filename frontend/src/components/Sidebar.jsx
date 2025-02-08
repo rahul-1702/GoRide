@@ -8,8 +8,8 @@ const Sidebar = () => {
     fetchData();
   }, [activeTab]);
 
-  const HOST = import.meta.env.VITE_HOST || "localhost";
-  const PORT = import.meta.env.VITE_PORT || 5000;
+  const HOST = import.meta.env.VITE_HOST;
+  const PORT = import.meta.env.VITE_PORT;
 
   const fetchData = async () => {
     try {

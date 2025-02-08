@@ -14,15 +14,39 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Description:** Fetches the list of all registered drivers.
 - **Response:**
   ```json
-  [
-    {
-      "id": 1,
-      "first_name": "John",
-      "last_name": "Doe",
-      "mobile": "9000000000",
-      "email": "john@example.com"
-    }
-  ]
+  {
+    "code": 1,
+    "message": "Drivers fetched successully",
+    "data": [
+      {
+        "id": 3,
+        "first_name": "xyz",
+        "last_name": "xyz",
+        "status": "Active",
+        "mobile": "9900000088",
+        "gender": "male",
+        "dob": "1990-05-14T18:30:00.000Z",
+        "profile_pic": "amit.jpg",
+        "email": "xyz@example.com",
+        "password": "Xyz@12345",
+        "current_address": "Current Address for xyz",
+        "permanent_address": "Permanent Address for xyz",
+        "city": "Xyz place",
+        "state": "Xyz place anywhere",
+        "zip_code": "110001",
+        "ride_no": 1,
+        "license": "DL-123456",
+        "created_at": "2025-02-07T17:28:01.000Z",
+        "updated_at": null,
+        "ride_id": 1,
+        "ride_type": "Auto",
+        "fuel_type": "Electric",
+        "auto_number": "PB08AX1234",
+        "total_seats": 4,
+        "number_of_wheels": 3
+      }
+    ]
+  }
   ```
 
 #### **2. Driver Login**
@@ -39,8 +63,8 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Login successful",
-    "token": "your-jwt-token"
+    "message": "Successfully Logged in",
+    "data": ""
   }
   ```
 
@@ -50,27 +74,33 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Request Body:**
   ```json
   {
-    "first_name": "xyz",
-    "last_name": "xyz",
-    "mobile": "9000000000",
+    "first_name": "Xyzzz",
+    "last_name": "xyzzz",
+    "mobile": "9002308800",
     "gender": "male",
     "dob": "2000-12-30",
-    "profile_pic": "xyz.jpg",
-    "email": "xyz@gmail.com",
-    "password": "Xyz@12345",
-    "current_address": "xyz xyz xyz",
-    "permanent_address": "xyz xyz",
-    "city": "65756",
-    "state": "45465",
+    "profile_pic": "xyyzz.jpg",
+    "email": "xyzz@xyyzz.com",
+    "password": "Xyzzz@12345",
+    "current_address": "Xyzz and xyz place at xyz",
+    "permanent_address": "Xyzz and xyz place at xyz",
+    "city": "Xyzz city",
+    "state": "Xyzz state",
     "zip_code": "483775",
-    "license": "UP4420150019783"
+    "license": "UP4420150019783",
+    "ride_type": "Auto",
+    "fuel_type": "Petrol",
+    "auto_number": "PB22VB7835",
+    "total_seats": 5,
+    "number_of_wheels": 3
   }
   ```
 - **Response:**
   ```json
   {
     "code": 1,
-    "message": "Signup successful"
+    "message": "Driver registered successfully",
+    "data": ""
   }
   ```
 
@@ -83,14 +113,22 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Description:** Fetches the list of all registered customers.
 - **Response:**
   ```json
-  [
-    {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@test.com",
-      "mobile": "9000000000"
-    }
-  ]
+  {
+    "code": 1,
+    "message": "Customers fetched successully",
+    "data": [
+      {
+        "id": 1,
+        "name": "XYxzz",
+        "status": "Inactive",
+        "email": "xyzz@test.com",
+        "mobile": "9090908989",
+        "password": "xxyyzz@1234",
+        "created_at": "2025-01-29T16:40:23.000Z",
+        "updated_at": "2025-02-07T17:52:26.000Z"
+      }
+    ]
+  }
   ```
 
 #### **2. Customer Login**
@@ -107,8 +145,8 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Login successful",
-    "token": "your-jwt-token"
+    "message": "Successfully Logged in",
+    "data": ""
   }
   ```
 
@@ -118,17 +156,18 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Request Body:**
   ```json
   {
-    "name": "Xyzzz",
-    "email": "xyz@test.com",
-    "mobile": 3433242344,
-    "password": "Xyzzz@1234"
+    "name": "Xyyzz",
+    "email": "xyzzz@test.com",
+    "mobile": 8877665544,
+    "password": "Xyzzz@12345"
   }
   ```
 - **Response:**
   ```json
   {
     "code": 1,
-    "message": "Signup successful"
+    "message": "Customer registered Successfully",
+    "data": ""
   }
   ```
 
@@ -147,23 +186,34 @@ cd GoRide
 npm install
 ```
 
-### **3. Configure Environment Variables**
-Create a `.env` file in the root directory and add:
+### **3. Configure Environment Variables for Frontend**
+Create a `.env` file in the frontend Folder and add:
 ```env
-PORT=5000
-DB_HOST=your-database-host
-DB_USER=your-database-username
-DB_PASSWORD=your-database-password
-DB_NAME=goride_db
-JWT_SECRET=your-secret-key
+VITE_APP_NAME=GoRide
+VITE_HOST=0.0.0.0
+VITE_PORT=5000
+
 ```
 
-### **4. Start the Server**
+### **4. Configure Environment Variables for Backend**
+Create a `.env` file in the Backend Folder and add:
+```env
+APP_NAME=GoRide
+HOST=0.0.0.0
+PORT=5000
+
+DB_USER=your-database-username
+DB_PASSWORD=your-database-password
+DB_NAME=go_ride
+
+```
+
+### **5. Start the Server**
 ```sh
 npm start
 ```
 
-Server will run on `http://localhost:5000`
+Server will run on `http://0.0.0.0:5000`
 
 ---
 
@@ -182,8 +232,10 @@ Server will run on `http://localhost:5000`
    ```sh
    git pull --rebase origin master
    ```
-4. **Push Code to GitHub**
+4. **Add, Commit, and Push Changes**
    ```sh
+   git add .
+   git commit -m "Updated backend logic and validation"
    git push origin master
    ```
 

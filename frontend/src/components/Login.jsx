@@ -9,6 +9,9 @@ function Login() {
     password: "",
   });
 
+  const HOST = import.meta.env.VITE_HOST;
+  const PORT = import.meta.env.VITE_PORT;
+
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ function Login() {
     e.preventDefault();
     setErrors(Validation(values));
     if (errors.email === "" && errors.password === "") {
-      const LOGIN_API = "http://0.0.0.0:5000/admin/login";
+      const LOGIN_API = `http://${HOST}:${PORT}/admin/login`;
 
       axios
         .post(LOGIN_API, {

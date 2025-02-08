@@ -12,6 +12,9 @@ function Signup() {
     cpassword: "",
   });
 
+  const HOST = import.meta.env.VITE_HOST;
+  const PORT = import.meta.env.VITE_PORT;
+
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ function Signup() {
       errors.password === "" &&
       errors.cpassword === ""
     ) {
-      const SIGNUP_API = "http://0.0.0.0:5000/admin/signup";
+      const SIGNUP_API = `http://${HOST}:${PORT}/admin/signup`;
       axios
         .post(SIGNUP_API, {
           name: values.name[0],
