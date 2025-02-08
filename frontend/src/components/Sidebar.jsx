@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 
+import Loader from "../components/Loader";
+
 const Sidebar = () => {
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("Driver");
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [activeTab]);
 
   const HOST = import.meta.env.VITE_HOST;
@@ -13,6 +20,7 @@ const Sidebar = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const urls = {
         Drivers: `http://${HOST}:${PORT}/api/driver/show`,
         Customers: `http://${HOST}:${PORT}/api/customer/show`,
@@ -39,6 +47,7 @@ const Sidebar = () => {
 
   return (
     <div className="d-flex pt-5">
+      {loading ? <Loader /> : ""}
       <div
         className="d-flex flex-column p-3 pt-0 bg-dark text-white"
         style={{
@@ -92,7 +101,11 @@ const Sidebar = () => {
                   <td>
                     <span
                       className={`badge ${
-                        item.status === "Active" ? "bg-success" : (item.status === "Inactive" ? "bg-danger" : "bg-secondary")
+                        item.status === "Active"
+                          ? "bg-success"
+                          : item.status === "Inactive"
+                          ? "bg-danger"
+                          : "bg-secondary"
                       }`}
                     >
                       {item.status}
