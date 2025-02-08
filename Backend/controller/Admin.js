@@ -9,12 +9,18 @@ export const getAllAdmins = async (req, res) => {
     const result = await query(sql);
 
     if (result.length > 0) {
-      res.json({ code: 1, message: "Admins fetched successully", data: result });
+      res.json({
+        code: 1,
+        message: "Admins fetched successully",
+        data: result,
+      });
     } else {
       res.json({ code: 0, message: "No admins found", data: "" });
     }
   } catch (err) {
-    res.status(500).json({ code: 0, message: "Something went wrong", data: err.message });
+    res
+      .status(500)
+      .json({ code: 0, message: "Something went wrong", data: err.message });
   }
 };
 
@@ -62,27 +68,47 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
-
-    // Check if mail already exists
-    const emailCheckQuery = "SELECT * FROM admins WHERE email = ?";
-    const existingUser = await query(emailCheckQuery, [req.body.email]);
+    // Check if email or mobile number already exists
+    const checkUserQuery = "SELECT * FROM admins WHERE email = ? OR mobile = ?";
+    const existingUser = await query(checkUserQuery, [
+      req.body.email,
+      req.body.mobile,
+    ]);
 
     if (existingUser.length > 0) {
+      const existingEmail = existingUser.some(
+        (user) => user.email === req.body.email
+      );
+      const existingMobile = existingUser.some(
+        (user) => user.mobile === req.body.mobile
+      );
+
       return res.json({
         code: 0,
-        message: "Email already exists. Please use a different email.",
+        message:
+          existingEmail && existingMobile
+            ? "Email and Mobile number already exist. Please use different credentials."
+            : existingEmail
+            ? "Email already exists. Please use a different email."
+            : "Mobile number already exists. Please use a different mobile number.",
         data: "",
       });
     }
 
-    const sql = "INSERT INTO admins (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
-    const values = [req.body.name, req.body.email, req.body.mobile, req.body.password];
+    const sql =
+      "INSERT INTO admins (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
+    const values = [
+      req.body.name,
+      req.body.email,
+      req.body.mobile,
+      req.body.password,
+    ];
     let result = await query(sql, values);
 
     if (result) {
-      res.json({ code: 1, message: "Signup successfully", data: "" });
+      res.json({ code: 1, message: "Admin registered successfully", data: "" });
     } else {
-      res.json({ code: 0, message: "Failed to Signup", data: "" }); 
+      res.json({ code: 0, message: "Failed to register admin", data: "" });
     }
   } catch (err) {
     res

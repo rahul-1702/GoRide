@@ -1,6 +1,5 @@
 import { body } from "express-validator";
 
-// Validation rules for signup
 export const signupValidation = [
   body("first_name")
     .notEmpty()
@@ -47,8 +46,8 @@ export const signupValidation = [
 
   body("profile_pic")
     .optional()
-    .isURL()
-    .withMessage("Profile picture must be a valid URL"),
+    .isString()
+    .withMessage("Profile picture must be a string"),
 
   body("email")
     .notEmpty()
@@ -77,7 +76,7 @@ export const signupValidation = [
     .isString()
     .withMessage("Current address must be a string")
     .isLength({ min: 10, max: 200 })
-    .withMessage("Address must be between 10 and 200 characters"),
+    .withMessage("Current address must be between 10 and 200 characters"),
 
   body("permanent_address")
     .notEmpty()
@@ -85,7 +84,7 @@ export const signupValidation = [
     .isString()
     .withMessage("Permanent address must be a string")
     .isLength({ min: 10, max: 200 })
-    .withMessage("Address must be between 10 and 200 characters"),
+    .withMessage("Permanent address must be between 10 and 200 characters"),
 
   body("city")
     .notEmpty()
@@ -109,17 +108,39 @@ export const signupValidation = [
     .isPostalCode("IN")
     .withMessage("Invalid Indian ZIP Code"),
 
-  body("ride_no")
-    .notEmpty()
-    .withMessage("Ride number is required")
-    .isAlphanumeric()
-    .withMessage("Ride number must contain only letters and numbers")
-    .isLength({ min: 5, max: 15 })
-    .withMessage("Ride number must be between 5 and 15 characters"),
-
   body("license")
     .notEmpty()
     .withMessage("License number is required")
-    .matches(/^[A-Z]{2}[0-9]{2}[0-9]{11}$/)
+    .matches(/^[A-Z]{2}\d{2}\d{11}$/)
     .withMessage("Invalid Indian driving license format"),
+
+  body("ride_type")
+    .notEmpty()
+    .withMessage("Ride type is required")
+    .isIn(["Auto", "Other"])
+    .withMessage("Ride type must be 'Auto' or 'Other'"),
+
+  body("fuel_type")
+    .notEmpty()
+    .withMessage("Fuel type is required")
+    .isIn(["Electric", "Petrol", "Diesel", "CNG"])
+    .withMessage("Invalid fuel type"),
+
+  body("auto_number")
+    .notEmpty()
+    .withMessage("Auto number is required")
+    .matches(/^[A-Z]{2}\d{2}[A-Z]{1,2}\d{4}$/)
+    .withMessage("Invalid auto number format"),
+
+  body("total_seats")
+    .notEmpty()
+    .withMessage("Total seats are required")
+    .isInt({ min: 1, max: 10 })
+    .withMessage("Total seats must be between 1 and 10"),
+
+  body("number_of_wheels")
+    .notEmpty()
+    .withMessage("Number of wheels is required")
+    .isInt({ min: 3, max: 4 })
+    .withMessage("Number of wheels must be 3 or 4"),
 ];

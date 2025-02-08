@@ -69,21 +69,59 @@ export const signupDriver = async (req, res) => {
       });
     }
 
-    // Check if mail already exists
-    const emailCheckQuery = "SELECT * FROM drivers WHERE email = ?";
-    const existingUser = await query(emailCheckQuery, [req.body.email]);
+    // Check if email or mobile number already exists
+    const checkUserQuery =
+      "SELECT * FROM drivers WHERE email = ? OR mobile = ?";
+    const existingUser = await query(checkUserQuery, [
+      req.body.email,
+      req.body.mobile,
+    ]);
 
     if (existingUser.length > 0) {
+      const existingEmail = existingUser.some(
+        (user) => user.email === req.body.email
+      );
+      const existingMobile = existingUser.some(
+        (user) => user.mobile === req.body.mobile
+      );
+
       return res.json({
         code: 0,
-        message: "Email already exists. Please use a different email.",
+        message:
+          existingEmail && existingMobile
+            ? "Email and Mobile number already exist. Please use different credentials."
+            : existingEmail
+            ? "Email already exists. Please use a different email."
+            : "Mobile number already exists. Please use a different mobile number.",
         data: "",
       });
     }
 
-    const sql =
+    // Insert into ride_details first
+    const rideSql =
+      "INSERT INTO ride_details (`ride_type`, `fuel_type`, `auto_number`, `total_seats`, `number_of_wheels`) VALUES (?, ?, ?, ?, ?)";
+    const rideValues = [
+      req.body.ride_type,
+      req.body.fuel_type,
+      req.body.auto_number,
+      req.body.total_seats,
+      req.body.number_of_wheels,
+    ];
+
+    const rideResult = await query(rideSql, rideValues);
+
+    if (!rideResult.insertId) {
+      return res.json({
+        code: 0,
+        message: "Failed to create ride details",
+        data: "",
+      });
+    }
+
+    // Insert into drivers using ride_id from ride_details
+    const driverSql =
       "INSERT INTO drivers (`first_name`,`last_name`,`mobile`,`gender`,`dob`,`profile_pic`,`email`,`password`,`current_address`,`permanent_address`,`city`,`state`,`zip_code`, `ride_no`, `license`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const values = [
+    const driverValues = [
       req.body.first_name,
       req.body.last_name,
       req.body.mobile,
@@ -97,15 +135,24 @@ export const signupDriver = async (req, res) => {
       req.body.city,
       req.body.state,
       req.body.zip_code,
-      req.body.ride_no,
+      rideResult.insertId,
       req.body.license,
     ];
-    let result = await query(sql, values);
 
-    if (result) {
-      res.json({ code: 1, message: "Signup Successfully", data: "" });
+    const driverResult = await query(driverSql, driverValues);
+
+    if (driverResult.insertId) {
+      res.json({
+        code: 1,
+        message: "Driver registered successfully",
+        data: "",
+      });
     } else {
-      res.json({ code: 0, message: "Failed to Signup", data: "" });
+      res.json({
+        code: 0,
+        message: "Failed to register driver",
+        data: "",
+      });
     }
   } catch (err) {
     res
