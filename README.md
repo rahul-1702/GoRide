@@ -187,27 +187,8 @@ cd frontend
 npm install
 ```
 
-### **3. Start the Admin Panel**
-```sh
-npm run dev
-```
 
-It will open on `http://localhost:5173`
-
-
-### **4. Move one step back**
-```sh
-cd ..
-```
-
-
-### **5. Install Dependencies for Backend**
-```sh
-cd Backend
-npm install
-```
-
-### **6. Configure Environment Variables for Frontend**
+### **3. Configure Environment Variables for Frontend**
 Create a `.env` file in the frontend Folder and add:
 ```env
 VITE_APP_NAME=GoRide
@@ -215,6 +196,27 @@ VITE_HOST=0.0.0.0
 VITE_PORT=5000
 
 ```
+
+### **4. Start the Admin Panel**
+```sh
+npm run dev
+```
+
+It will open on `http://localhost:5173`
+
+
+### **5. Move one step back**
+```sh
+cd ..
+```
+
+
+### **6. Install Dependencies for Backend**
+```sh
+cd Backend
+npm install
+```
+
 
 ### **7. Configure Environment Variables for Backend**
 Create a `.env` file in the Backend Folder and add:
