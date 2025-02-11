@@ -224,10 +224,17 @@ Create a `.env` file in the Backend Folder and add:
 APP_NAME=GoRide
 HOST=0.0.0.0
 PORT=5000
+REACT_HOST=0.0.0.0
+REACT_PORT=5173
 
 DB_USER=your-database-username
 DB_PASSWORD=your-database-password
 DB_NAME=go_ride
+
+JWT_SECRET_KEY=your-jwt-secret-key
+MY_GMAIL=your-gmail-account
+MY_PASSWORD=your-gmail-password
+MY_APP_PASSWORD=your-gmail-app-password
 
 ```
 
