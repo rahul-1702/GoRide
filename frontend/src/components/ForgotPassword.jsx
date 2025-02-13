@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Validation from "../Validation/ResetPasswordValidation";
+import Validation from "../Validation/ResetEmailValidation";
 
-const ResetPassword = () => {
-  const { token } = useParams();
-  const navigate = useNavigate();
-
+const ForgotPassword = () => {
   const [values, setValues] = useState({
-    password: "",
+    email: "",
   });
-
   const [errors, setErrors] = useState({});
 
   const HOST = import.meta.env.VITE_HOST;
   const PORT = import.meta.env.VITE_PORT;
 
-  const handleInput = (e) => {
+  const handleEmailInput = (e) => {
     setValues({ [e.target.name]: [e.target.value] });
   };
 
@@ -24,22 +19,22 @@ const ResetPassword = () => {
     e.preventDefault();
 
     setErrors(Validation(values));
+    if (errors.email === "") {
+      const FORGOT_API = `http://${HOST}:${PORT}/admin/forget-password`;
 
-    if (errors.password === "") {
-      let RESET_API = `http://${HOST}:${PORT}/admin/reset-password/${token}`;
       axios
-        .post(RESET_API, {
-          password: values.password[0],
+        .post(FORGOT_API, {
+          email: values.email[0],
         })
         .then((res) => {
           if (res.data.code === 1) {
-            navigate("/");
+            alert(res.data.message);
           } else {
             alert(res.data.message);
           }
         })
         .catch((err) => {
-          console.log("Error while reset password => ", err);
+          console.log("Error while forgot password => ", err);
         });
     }
   };
@@ -50,25 +45,24 @@ const ResetPassword = () => {
       style={{ height: "100vh" }}
     >
       <div className="card p-4 shadow" style={{ width: "400px" }}>
-        <h3 className="text-center">Set A New Password</h3>
+        <h3 className="text-center mb-4">Reset Password</h3>
 
         <form onSubmit={handleSubmit}>
           <input
-            className="form-control mt-3 mb-2"
-            name="password"
-            type="password"
-            placeholder="Enter new password"
-            onChange={handleInput}
+            name="email"
+            type="email"
+            className="form-control"
+            placeholder="Enter your email"
+            onChange={handleEmailInput}
           />
-
-          {errors.password && (
+          {errors.email && (
             <span className="text-danger d-inline-block mt-1">
-              {errors.password}
+              {errors.email}
             </span>
           )}
 
-          <button type="submit" className="btn btn-primary mt-3 w-100">
-            Reset Password
+          <button type="submit" className="btn btn-primary mt-4 w-100">
+            Send Reset Link
           </button>
         </form>
       </div>
@@ -76,4 +70,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPassword;

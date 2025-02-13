@@ -164,7 +164,7 @@ export const adminForgotPassword = async (req, res) => {
       subject: "Password Reset Request",
       html: `
         <div style="text-align: center; font-family: Arial, sans-serif;">
-          <h2>Password Reset Request</h2>
+          <h2>Password Reset Request For  <span style="color: #007bff">GoRide</span> Admin Panel</h2>
           <p>You requested a password reset. Click the button below to reset your password:</p>
           <a href="http://${process.env.REACT_HOST}:${process.env.REACT_PORT}/admin/reset-password/${token}" 
              style="display: inline-block; background-color: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">

@@ -9,12 +9,11 @@ function Login() {
     password: "",
   });
 
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
   const HOST = import.meta.env.VITE_HOST;
   const PORT = import.meta.env.VITE_PORT;
-
-  const [errors, setErrors] = useState({});
-
-  const navigate = useNavigate();
 
   const handleLoginInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
@@ -65,7 +64,7 @@ function Login() {
               </span>
             )}
           </div>
-          <div className="mb-3">
+          <div className="mb-1">
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -81,15 +80,13 @@ function Login() {
               </span>
             )}
           </div>
-          <div className="mb-3">
-            {/* <input
-              type="checkbox"
-              id="checkk"
-              className="form-check-input me-2"
-            /> */}
-            <label htmlFor="checkk">
-              Yes, I agree with the terms and policies
-            </label>
+          <div className="mb-4 d-flex justify-content-end">
+            <a
+              href="/password/forget"
+              className="text-primary text-decoration-none"
+            >
+              Forgot Password
+            </a>
           </div>
           <div className="mb-3 d-flex flex-column align-items-center justify-content-center gap-2">
             <button type="submit" className="btn btn-success w-100">
