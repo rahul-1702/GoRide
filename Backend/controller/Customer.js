@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
+import md5 from "md5";
 
 // getAllCustomer =======================
 
@@ -38,8 +39,10 @@ export const loginCustomer = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     const sql = "SELECT * FROM customers WHERE `email` = ? AND `password` = ?";
-    let result = await query(sql, [req.body.email, req.body.password]);
+    let result = await query(sql, [req.body.email, hashedPassword]);
 
     if (result && result.length > 0) {
       res.json({ code: 1, message: "Successfully Logged in", data: "" });
@@ -95,14 +98,17 @@ export const signupCustomer = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     const sql =
       "INSERT INTO customers (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
     const values = [
       req.body.name,
       req.body.email,
       req.body.mobile,
-      req.body.password,
+      hashedPassword,
     ];
+
     let result = await query(sql, values);
 
     if (result) {

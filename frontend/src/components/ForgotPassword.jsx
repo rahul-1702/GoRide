@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Validation from "../Validation/ResetEmailValidation";
+import Loader from "../components/Loader";
+import Swal from "sweetalert2";
+import "../static/css/Login.css";
 
 const ForgotPassword = () => {
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
   });
-  const [errors, setErrors] = useState({});
+
+  const [errors, setErrors] = useState({
+    email: "",
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
+  const showAlert = (title, text, icon) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonText: "OK",
+      allowOutsideClick: false,
+    });
+  };
 
   const HOST = import.meta.env.VITE_HOST;
   const PORT = import.meta.env.VITE_PORT;
@@ -15,11 +40,12 @@ const ForgotPassword = () => {
     setValues({ [e.target.name]: [e.target.value] });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    setLoading(true);
+    const validationErrors = Validation(values);
+    setErrors(validationErrors);
 
-    setErrors(Validation(values));
-    if (errors.email === "") {
+    if (Object.keys(validationErrors).length === 0) {
       const FORGOT_API = `http://${HOST}:${PORT}/admin/forget-password`;
 
       axios
@@ -28,43 +54,78 @@ const ForgotPassword = () => {
         })
         .then((res) => {
           if (res.data.code === 1) {
-            alert(res.data.message);
+            Swal.fire({
+              title: "Success!",
+              text: res.data.message + "! Redirecting to login page...",
+              icon: "success",
+              confirmButtonText: "OK",
+              allowOutsideClick: false,
+            }).then(() => {
+              navigate("/");
+            });
           } else {
-            alert(res.data.message);
+            showAlert("Error", res.data.message, "error");
           }
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
         })
         .catch((err) => {
           console.log("Error while forgot password => ", err);
+          showAlert(
+            "Server Error",
+            "Something went wrong. Please try again later.",
+            "error"
+          );
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
         });
+    } else {
+      showAlert(
+        "Validation Error",
+        "Please fix the errors before proceeding.",
+        "warning"
+      );
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
   return (
-    <div
-      className="d-flex flex-column align-items-center justify-content-center"
-      style={{ height: "100vh" }}
-    >
-      <div className="card p-4 shadow" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4">Reset Password</h3>
+    <div className="bg-login-ride">
+      {loading ? <Loader /> : ""}
+      <div
+        className="d-flex flex-column align-items-center justify-content-center"
+        style={{ height: "100vh" }}
+      >
+        <div className="card p-4 shadow" style={{ width: "400px" }}>
+          <h4 className="text-center mb-4">Reset Password</h4>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            name="email"
-            type="email"
-            className="form-control"
-            placeholder="Enter your email"
-            onChange={handleEmailInput}
-          />
-          {errors.email && (
-            <span className="text-danger d-inline-block mt-1">
-              {errors.email}
-            </span>
-          )}
+          <form action="">
+            <input
+              name="email"
+              type="email"
+              className="form-control"
+              placeholder="Enter your email"
+              onChange={handleEmailInput}
+            />
+            {errors.email && (
+              <span className="text-danger d-inline-block mt-1">
+                {errors.email}
+              </span>
+            )}
 
-          <button type="submit" className="btn btn-primary mt-4 w-100">
-            Send Reset Link
-          </button>
-        </form>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn btn-primary mt-4 w-100"
+            >
+              Send Reset Link
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
+import md5 from "md5";
 
 // getAllDrivers =======================
 
@@ -40,8 +41,10 @@ export const loginDriver = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     const sql = "SELECT * FROM drivers WHERE `email` = ? AND `password` = ?";
-    let result = await query(sql, [req.body.email, req.body.password]);
+    let result = await query(sql, [req.body.email, hashedPassword]);
 
     if (result && result.length > 0) {
       res.json({ code: 1, message: "Successfully Logged in", data: "" });
@@ -118,6 +121,8 @@ export const signupDriver = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     // Insert into drivers using ride_id from ride_details
     const driverSql =
       "INSERT INTO drivers (`first_name`,`last_name`,`mobile`,`gender`,`dob`,`profile_pic`,`email`,`password`,`current_address`,`permanent_address`,`city`,`state`,`zip_code`, `ride_no`, `license`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -129,7 +134,7 @@ export const signupDriver = async (req, res) => {
       req.body.dob,
       req.body.profile_pic,
       req.body.email,
-      req.body.password,
+      hashedPassword,
       req.body.current_address,
       req.body.permanent_address,
       req.body.city,

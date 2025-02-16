@@ -1,0 +1,23 @@
+.bg-login-ride {
+  position: relative;
+  background: url('../../assets/auto_go_ride_bg_login.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+}
+
+.bg-login-ride::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.custom-height {
+  padding-bottom: 50px;
+}

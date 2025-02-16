@@ -20,11 +20,11 @@ export const signupValidation = [
 
   body("mobile")
     .notEmpty()
-    .withMessage("Mobile number is required")
-    .isString()
-    .withMessage("Mobile number must be a string")
-    .matches(/^[6-9]\d{9}$/)
-    .withMessage("Invalid Indian mobile number"),
+    .withMessage("Mobile is required")
+    .isNumeric()
+    .withMessage("Mobile must be a string")
+    .matches(/^[0-9]{10}$/)
+    .withMessage("Mobile must be a 10-digit number"),
 
   body("gender")
     .notEmpty()

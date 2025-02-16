@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
+import md5 from "md5";
 
 import dotenv from "dotenv";
 
@@ -45,8 +46,10 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     const sql = "SELECT * FROM admins WHERE `email` = ? AND `password` = ?";
-    const values = [req.body.email, req.body.password];
+    const values = [req.body.email, hashedPassword];
     let result = await query(sql, values);
 
     if (result && result.length > 0) {
@@ -102,13 +105,15 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
+    const hashedPassword = md5(req.body.password);
+
     const sql =
       "INSERT INTO admins (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
     const values = [
       req.body.name,
       req.body.email,
       req.body.mobile,
-      req.body.password,
+      hashedPassword,
     ];
     let result = await query(sql, values);
 
@@ -226,12 +231,10 @@ export const adminResetPassword = async (req, res) => {
       return res.json({ code: 0, message: "User not found", data: "" });
     }
 
-    // // Hash the new password
-    // const saltRounds = 10;
-    // const newHashPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = md5(password);
 
     const passSql = "UPDATE admins SET password = ? WHERE email = ?";
-    const updated = await query(passSql, [password, decode.email]);
+    const updated = await query(passSql, [hashedPassword, decode.email]);
 
     if (updated.affectedRows > 0) {
       return res.json({

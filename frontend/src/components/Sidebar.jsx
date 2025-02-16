@@ -4,7 +4,7 @@ import Loader from "../components/Loader";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("Driver");
+  const [activeTab, setActiveTab] = useState("Drivers");
   const [data, setData] = useState([]);
 
   useEffect(() => {

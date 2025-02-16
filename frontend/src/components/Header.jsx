@@ -1,8 +1,23 @@
 import React from "react";
 import Logo from "../assets/Go_Ride.png";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Header() {
+  const navigate = useNavigate();
   const APP_NAME = import.meta.env.VITE_APP_NAME;
+
+  const logoutHandle = () => {
+    Swal.fire({
+      title: "Logged Out!",
+      text: "You have been successfully logged out! Redirecting to login page...",
+      icon: "success",
+      confirmButtonText: "OK",
+      allowOutsideClick: false,
+    }).then(() => {
+      navigate("/");
+    });
+  };
 
   return (
     <div className="pb-5">
@@ -86,10 +101,14 @@ function Header() {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-outline-info" type="submit">
-                Search
-              </button>
             </form>
+            <button
+              className="btn btn-outline-info"
+              onClick={logoutHandle}
+              type="button"
+            >
+              Log out
+            </button>
           </div>
         </div>
       </nav>

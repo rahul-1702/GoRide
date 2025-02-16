@@ -8,16 +8,13 @@ function Validation(values) {
 
   if (values.name === "") {
     error.name = "Name should not be empty";
-  } else {
-    error.name = "";
   }
 
   // Validations for Mobile ===============
-
   if (values.mobile === "") {
     error.mobile = "Mobile should not be empty";
-  } else {
-    error.mobile = "";
+  } else if (values.mobile[0]?.length != 10) {
+    error.mobile = "Mobile number should be 10 digits";
   }
 
   // Validations for Email ===============
@@ -26,8 +23,6 @@ function Validation(values) {
     error.email = "Email should not be empty";
   } else if (!email_pattern.test(values.email)) {
     error.email = "Email Didn't match";
-  } else {
-    error.email = "";
   }
 
   // Validations for Password ===============
@@ -36,20 +31,18 @@ function Validation(values) {
     error.password = "Password should not be empty";
   } else if (!password_pattern.test(values.password)) {
     error.password = "Password Didn't match the conditions";
-  } else {
-    error.password = "";
   }
 
   // Validations for Confirm Password ===============
 
   if (values.cpassword === "") {
     error.cpassword = "Confirm Password should not be empty";
+  } else if (!password_pattern.test(values.cpassword)) {
+    error.cpassword = "Confirm Password didn't match the conditions";
   } else if (values.cpassword[0] != values.password[0]) {
     error.cpassword = "Password and Confirm password Didn't match";
-  } else {
-    error.cpassword = "";
   }
-
+  console.log("Error => ", error);
   return error;
 }
 
