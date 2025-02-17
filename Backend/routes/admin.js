@@ -17,17 +17,15 @@ import { resetValidation } from "../Validation/vAdminReset.js";
 const router = express.Router();
 
 router.post("/login", loginValidation, loginAdmin);
-router.get("/show", verifyToken, getAllAdmins);
-router.post("/signup", verifyToken, signupValidation, signupAdmin);
+router.get("/show", getAllAdmins);
+router.post("/signup", signupValidation, signupAdmin);
 router.post(
   "/forget-password",
-  verifyToken,
   forgotValidation,
   adminForgotPassword
 );
 router.post(
   "/reset-password/:token",
-  verifyToken,
   resetValidation,
   adminResetPassword
 );
