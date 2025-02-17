@@ -46,14 +46,24 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
+    const { email } = req.body;
+
+    const tok = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
     const hashedPassword = md5(req.body.password);
 
     const sql = "SELECT * FROM admins WHERE `email` = ? AND `password` = ?";
-    const values = [req.body.email, hashedPassword];
+    const values = [email, hashedPassword];
     let result = await query(sql, values);
 
     if (result && result.length > 0) {
-      res.json({ code: 1, message: "Successfully logged In", data: "" });
+      res.json({
+        code: 1,
+        message: "Successfully logged In",
+        data: { token: tok },
+      });
     } else {
       res.json({ code: 0, message: "No records found", data: "" });
     }
