@@ -222,14 +222,23 @@ npm install
 Create a `.env` file in the Backend Folder and add:
 ```env
 APP_NAME=GoRide
-HOST=0.0.0.0
-PORT=5000
+APP_HOST=0.0.0.0
+APP_PORT=5000
+
 REACT_HOST=0.0.0.0
 REACT_PORT=5173
 
-DB_USER=your-database-username
-DB_PASSWORD=your-database-password
-DB_NAME=go_ride
+DB_HOST=your-online-database-host
+DB_NAME=your-online-database-name
+DB_USER=your-online-database-username
+DB_PASSWORD=your-online-database-password
+DB_PORT=3306
+
+LOCAL_DB_HOST=localhost
+LOCAL_DB_NAME=go_ride
+LOCAL_DB_USER=your-database-username
+LOCAL_DB_PASSWORD=your-database-password
+LOCAL_DB_PORT=3306
 
 JWT_SECRET_KEY=your-jwt-secret-key
 MY_GMAIL=your-gmail-account
