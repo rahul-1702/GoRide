@@ -17,17 +17,9 @@ import { resetValidation } from "../Validation/vAdminReset.js";
 const router = express.Router();
 
 router.post("/login", loginValidation, loginAdmin);
-router.get("/show", getAllAdmins);
+router.get("/show", verifyToken, getAllAdmins);
 router.post("/signup", signupValidation, signupAdmin);
-router.post(
-  "/forget-password",
-  forgotValidation,
-  adminForgotPassword
-);
-router.post(
-  "/reset-password/:token",
-  resetValidation,
-  adminResetPassword
-);
+router.post("/forget-password", forgotValidation, adminForgotPassword);
+router.post("/reset-password/:token", resetValidation, adminResetPassword);
 
 export default router;

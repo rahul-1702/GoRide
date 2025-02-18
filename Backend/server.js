@@ -8,8 +8,8 @@ import driverRoutes from "./routes/driver.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT;
-const HOST = process.env.HOST;
+const PORT = process.env.APP_PORT;
+const HOST = process.env.APP_HOST;
 
 app.use(cors());
 app.use(express.json());

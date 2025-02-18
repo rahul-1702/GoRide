@@ -10,7 +10,7 @@ CREATE TABLE `admins` (
  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+)
 
 
 -- customers table -- (29 jan, 2025)
@@ -25,7 +25,22 @@ CREATE TABLE `customers` (
  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+)
+
+
+-- ride_details table -- (07 feb, 2025)
+
+CREATE TABLE `ride_details` (
+ `ride_id` int NOT NULL AUTO_INCREMENT,
+ `ride_type` enum('Auto','Other') NOT NULL,
+ `fuel_type` enum('Electric','Petrol','Diesel','CNG') NOT NULL,
+ `auto_number` varchar(30) NOT NULL,
+ `total_seats` int NOT NULL,
+ `number_of_wheels` int NOT NULL,
+ `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`ride_id`)
+)
 
 
 -- drivers table -- (30 jan, 2025)
@@ -53,19 +68,4 @@ CREATE TABLE `drivers` (
  PRIMARY KEY (`id`),
  KEY `ride_no` (`ride_no`),
  CONSTRAINT `drivers_ibfk_1` FOREIGN KEY (`ride_no`) REFERENCES `ride_details` (`ride_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-
-
--- ride_details table -- (07 feb, 2025)
-
-CREATE TABLE `ride_details` (
- `ride_id` int NOT NULL AUTO_INCREMENT,
- `ride_type` enum('Auto','Other') NOT NULL,
- `fuel_type` enum('Electric','Petrol','Diesel','CNG') NOT NULL,
- `auto_number` varchar(30) NOT NULL,
- `total_seats` int NOT NULL,
- `number_of_wheels` int NOT NULL,
- `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (`ride_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+)
