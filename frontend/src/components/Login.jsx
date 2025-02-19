@@ -46,8 +46,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const HOST = import.meta.env.VITE_HOST;
-  const PORT = import.meta.env.VITE_PORT;
+  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLoginInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
@@ -59,7 +59,7 @@ function Login() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const LOGIN_API = `http://${HOST}:${PORT}/admin/login`;
+      const LOGIN_API = `${backendUrl}/admin/login`;
 
       axios
         .post(LOGIN_API, {
@@ -117,7 +117,10 @@ function Login() {
     <div className="bg-login-ride pt-5">
       {loading ? <Loader /> : ""}
       <div className="d-flex justify-content-center align-items-center vh-50 py-5 px-4">
-        <div className="bg-white p-3 rounded w-100" style={{ maxWidth: 400, zIndex: 9 }}>
+        <div
+          className="bg-white p-3 rounded w-100"
+          style={{ maxWidth: 400, zIndex: 9 }}
+        >
           <h4 className="text-center mb-3">Login Here</h4>
           <form action="">
             <div className="mb-3">

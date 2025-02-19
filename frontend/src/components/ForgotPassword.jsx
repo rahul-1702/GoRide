@@ -33,8 +33,8 @@ const ForgotPassword = () => {
     });
   };
 
-  const HOST = import.meta.env.VITE_HOST;
-  const PORT = import.meta.env.VITE_PORT;
+  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleEmailInput = (e) => {
     setValues({ [e.target.name]: [e.target.value] });
@@ -46,7 +46,7 @@ const ForgotPassword = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const FORGOT_API = `http://${HOST}:${PORT}/admin/forget-password`;
+      const FORGOT_API = `${backendUrl}/admin/forget-password`;
 
       axios
         .post(FORGOT_API, {

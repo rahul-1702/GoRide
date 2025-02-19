@@ -48,8 +48,8 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
 
-  const HOST = import.meta.env.VITE_HOST;
-  const PORT = import.meta.env.VITE_PORT;
+  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -60,7 +60,8 @@ const ResetPassword = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      let RESET_API = `http://${HOST}:${PORT}/admin/reset-password/${token}`;
+      let RESET_API = `${backendUrl}/admin/reset-password/${token}`;
+
       axios
         .post(RESET_API, {
           password: values.password,

@@ -15,19 +15,29 @@ const Sidebar = () => {
     }, 500);
   }, [activeTab]);
 
-  const HOST = import.meta.env.VITE_HOST;
-  const PORT = import.meta.env.VITE_PORT;
+  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchData = async () => {
     try {
       setLoading(true);
+
       const urls = {
-        Drivers: `http://${HOST}:${PORT}/api/driver/show`,
-        Customers: `http://${HOST}:${PORT}/api/customer/show`,
-        Team: `http://${HOST}:${PORT}/admin/show`,
+        Drivers: `${backendUrl}/api/driver/show`,
+        Customers: `${backendUrl}/api/customer/show`,
+        Team: `${backendUrl}/admin/show`,
       };
 
-      const response = await fetch(urls[activeTab]);
+      let response;
+      if (activeTab === "Team") {
+        response = await fetch(urls[activeTab], {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+      } else {
+        response = await fetch(urls[activeTab]);
+      }
       const result = await response.json();
 
       const formattedData = result.data.map((user, index) => ({
