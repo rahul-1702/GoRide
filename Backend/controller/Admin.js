@@ -48,7 +48,7 @@ export const loginAdmin = async (req, res) => {
 
     const { email } = req.body;
 
-    const tok = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
 
@@ -62,7 +62,7 @@ export const loginAdmin = async (req, res) => {
       res.json({
         code: 1,
         message: "Successfully logged In",
-        data: { token: tok },
+        data: { token: token },
       });
     } else {
       res.json({ code: 0, message: "No records found", data: "" });
