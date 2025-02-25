@@ -18,6 +18,6 @@ app.use("/api/customer", customerRoutes);
 app.use("/admin", adminRoutes);
 app.use("/api/driver", driverRoutes);
 
-app.listen(PORT, HOST, () => {
+app.listen(() => {
   console.log(`Server is running at ${backendUrl}`);
 });
