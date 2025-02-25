@@ -15,7 +15,6 @@ const Sidebar = () => {
     }, 500);
   }, [activeTab]);
 
-  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchData = async () => {
@@ -28,16 +27,12 @@ const Sidebar = () => {
         Team: `${backendUrl}/admin/show`,
       };
 
-      let response;
-      if (activeTab === "Team") {
-        response = await fetch(urls[activeTab], {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-      } else {
-        response = await fetch(urls[activeTab]);
-      }
+      let response = await fetch(urls[activeTab], {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("goride_token")}`,
+        },
+      });
+
       const result = await response.json();
 
       const formattedData = result.data.map((user, index) => ({
@@ -125,7 +120,7 @@ const Sidebar = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center">
+                <td colSpan="6" className="text-center">
                   Loading...
                 </td>
               </tr>

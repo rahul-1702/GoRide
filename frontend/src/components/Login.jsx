@@ -46,7 +46,6 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLoginInput = (e) => {
@@ -82,6 +81,7 @@ function Login() {
             });
             setTimeout(() => {
               navigate("/dashboard");
+              sessionStorage.setItem("goride_token", res.data.data.token);
             }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");

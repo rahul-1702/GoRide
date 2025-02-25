@@ -8,6 +8,7 @@ function Header() {
   const APP_NAME = import.meta.env.VITE_APP_NAME;
 
   const logoutHandle = () => {
+    sessionStorage.removeItem("goride_token");
     Swal.fire({
       title: "Logged Out!",
       text: "You have been successfully logged out! Redirecting to login page...",
