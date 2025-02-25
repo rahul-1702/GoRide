@@ -43,11 +43,21 @@ export const loginDriver = async (req, res) => {
 
     const hashedPassword = md5(req.body.password);
 
+    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
     const sql = "SELECT * FROM drivers WHERE `email` = ? AND `password` = ?";
     let result = await query(sql, [req.body.email, hashedPassword]);
 
     if (result && result.length > 0) {
-      res.json({ code: 1, message: "Successfully Logged in", data: "" });
+      res.json({
+        code: 1,
+        message: "Successfully Logged in",
+        data: {
+          token: token,
+        },
+      });
     } else {
       res.json({ code: 0, message: "No records found", data: "" });
     }
