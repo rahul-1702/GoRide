@@ -167,12 +167,13 @@ function Login() {
               )}
             </div>
             <div className="mb-4 d-flex justify-content-end">
-              <a
-                href="/password/forget"
+              <span
+                onClick={() => {return navigate('/password/forget')}}
                 className="text-primary text-decoration-none"
+                style={{ cursor: "pointer" }}
               >
                 Forgot Password
-              </a>
+              </span>
             </div>
             <div className="mb-3 d-flex flex-column align-items-center justify-content-center gap-2">
               <button
