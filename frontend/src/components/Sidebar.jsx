@@ -95,7 +95,7 @@ const Sidebar = () => {
             </tr>
           </thead>
           <tbody>
-            {data.length > 0 ? (
+            {data && data.length > 0 ? (
               data.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
