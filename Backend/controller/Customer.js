@@ -2,6 +2,8 @@ import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
 
+import jwt from "jsonwebtoken";
+
 // getAllCustomer =======================
 
 export const getAllCustomers = async (req, res) => {
