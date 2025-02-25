@@ -1,6 +1,7 @@
 # GoRide Backend Admin Panel
 
 ## Introduction
+
 GoRide is an online auto-rickshaw booking app. This repository contains the backend code for the **admin panel**, which manages drivers, customers, and ride details. The backend is built using **Node.js, Express, and MySQL**, providing API endpoints for user authentication, driver and customer management, and ride bookings.
 
 ---
@@ -10,8 +11,15 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 ### **Driver APIs**
 
 #### **1. Get Driver List**
+
 - **Endpoint:** `GET /api/driver/show`
 - **Description:** Fetches the list of all registered drivers.
+- **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
 - **Response:**
   ```json
   {
@@ -50,6 +58,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```
 
 #### **2. Driver Login**
+
 - **Endpoint:** `POST /api/driver/login`
 - **Description:** Allows a driver to log in.
 - **Request Body:**
@@ -64,11 +73,14 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   {
     "code": 1,
     "message": "Successfully Logged in",
-    "data": ""
+    "data": {
+      "token": "YOUR_ACCESS_TOKEN"
+    }
   }
   ```
 
 #### **3. Driver Signup**
+
 - **Endpoint:** `POST /api/driver/signup`
 - **Description:** Registers a new driver.
 - **Request Body:**
@@ -109,8 +121,15 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 ### **Customer APIs**
 
 #### **1. Get Customer List**
+
 - **Endpoint:** `GET /api/customer/show`
 - **Description:** Fetches the list of all registered customers.
+- **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
 - **Response:**
   ```json
   {
@@ -132,6 +151,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```
 
 #### **2. Customer Login**
+
 - **Endpoint:** `POST /api/customer/login`
 - **Description:** Allows a customer to log in.
 - **Request Body:**
@@ -146,11 +166,14 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   {
     "code": 1,
     "message": "Successfully Logged in",
-    "data": ""
+    "data": {
+      "token": "YOUR_ACCESS_TOKEN"
+    }
   }
   ```
 
 #### **3. Customer Signup**
+
 - **Endpoint:** `POST /api/customer/signup`
 - **Description:** Registers a new customer.
 - **Request Body:**
@@ -176,50 +199,57 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 ## **Setup & Installation**
 
 ### **1. Clone the Repository**
+
 ```sh
 git clone https://github.com/Rahul-Taak/GoRide.git
 cd GoRide
 ```
 
 ### **2. Install Dependencies for Frontend**
+
 ```sh
 cd frontend
 npm install
 ```
 
-
 ### **3. Configure Environment Variables for Frontend**
+
 Create a `.env` file in the frontend Folder and add:
+
 ```env
 VITE_APP_NAME=GoRide
 VITE_HOST=0.0.0.0
 VITE_PORT=5000
 
+VITE_BACKEND_URL=https://goride.onrender.com
+
 ```
 
 ### **4. Start the Admin Panel**
+
 ```sh
 npm run dev
 ```
 
 It will open on `http://localhost:5173`
 
-
 ### **5. Move one step back**
+
 ```sh
 cd ..
 ```
 
-
 ### **6. Install Dependencies for Backend**
+
 ```sh
 cd Backend
 npm install
 ```
 
-
 ### **7. Configure Environment Variables for Backend**
+
 Create a `.env` file in the Backend Folder and add:
+
 ```env
 APP_NAME=GoRide
 APP_HOST=0.0.0.0
@@ -227,6 +257,8 @@ APP_PORT=5000
 
 REACT_HOST=0.0.0.0
 REACT_PORT=5173
+
+FREE_BACKEND_URL=https://goride.onrender.com
 
 DB_HOST=your-online-database-host
 DB_NAME=your-online-database-name
@@ -248,6 +280,7 @@ MY_APP_PASSWORD=your-gmail-app-password
 ```
 
 ### **8. Start the Server**
+
 ```sh
 npm start
 ```
@@ -259,6 +292,7 @@ Server will run on `http://0.0.0.0:5000`
 ## **Git Setup & Contribution Guidelines**
 
 ### **Git Commands for Remote Setup**
+
 1. **Add Remote Repository**
    ```sh
    git remote add origin https://github.com/Rahul-Taak/GoRide.git
@@ -279,7 +313,9 @@ Server will run on `http://0.0.0.0:5000`
    ```
 
 ### **Ignore Sensitive Files**
+
 Add `.env` to `.gitignore` to prevent accidental commits:
+
 ```sh
 echo ".env" >> .gitignore
 git rm --cached .env
@@ -289,12 +325,26 @@ git push origin master
 
 ---
 
+## **Setup & Installation**
+
+Follow the instructions to set up the backend and frontend environments.
+
+## **Authorization Implementation**
+
+- After successful login (Driver or Customer), you will receive a **JWT token** in the response.
+- You must include this token in the `Authorization` header as `Bearer YOUR_ACCESS_TOKEN` when making requests to protected APIs (like `GET /api/driver/show` and `GET /api/customer/show`).
+- If the token is invalid or missing, the API will return an `Unauthorized` error.
+
+---
+
 ## **License**
+
 This project is ongoing under the **IT-Expert Team**.
 
 ---
 
 ## **Contact**
+
 For any queries, reach out to **Rahul Taak** via GitHub: [Rahul-Taak](https://github.com/Rahul-Taak)
 
 ---
