@@ -41,6 +41,8 @@ export const loginCustomer = async (req, res) => {
       });
     }
 
+    const { email } = req.body;
+
     const hashedPassword = md5(req.body.password);
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
@@ -48,7 +50,7 @@ export const loginCustomer = async (req, res) => {
     });
 
     const sql = "SELECT * FROM customers WHERE `email` = ? AND `password` = ?";
-    let result = await query(sql, [req.body.email, hashedPassword]);
+    let result = await query(sql, [email, hashedPassword]);
 
     if (result && result.length > 0) {
       res.json({
