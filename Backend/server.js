@@ -8,8 +8,8 @@ import driverRoutes from "./routes/driver.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.APP_PORT;
-const HOST = process.env.APP_HOST;
+
+const backendUrl = process.env.FREE_BACKEND_URL;
 
 app.use(cors());
 app.use(express.json());
@@ -19,5 +19,5 @@ app.use("/admin", adminRoutes);
 app.use("/api/driver", driverRoutes);
 
 app.listen(PORT, HOST, () => {
-  console.log(`Server is running at http://${HOST}:${PORT}`);
+  console.log(`Server is running at ${backendUrl}`);
 });
