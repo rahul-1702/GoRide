@@ -48,7 +48,6 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
 
-  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleInput = (e) => {

@@ -13,22 +13,32 @@ dotenv.config();
 
 export const getAllAdmins = async (req, res) => {
   try {
-    const sql = "SELECT * FROM admins";
+    const sql = "SELECT id, name, status, email, mobile FROM admins";
     const result = await query(sql);
 
     if (result.length > 0) {
-      res.json({
+      return res.status(200).json({
         code: 1,
-        message: "Admins fetched successully",
+        status: 200,
+        message: "Admins fetched successfully",
         data: result,
       });
     } else {
-      res.json({ code: 0, message: "No admins found", data: "" });
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No admins found",
+        data: null,
+      });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Something went wrong",
+      error: err.message,
+      data: null,
+    });
   }
 };
 
@@ -39,15 +49,15 @@ export const loginAdmin = async (req, res) => {
     // Validations --------
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         code: 0,
+        status: 400,
         message: errors.errors[0].msg,
-        data: "",
+        data: null,
       });
     }
 
     const { email } = req.body;
-
     const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
@@ -59,18 +69,28 @@ export const loginAdmin = async (req, res) => {
     let result = await query(sql, values);
 
     if (result && result.length > 0) {
-      res.json({
+      return res.status(200).json({
         code: 1,
-        message: "Successfully logged In",
+        status: 200,
+        message: "Successfully logged in",
         data: { token: token },
       });
     } else {
-      res.json({ code: 0, message: "No records found", data: "" });
+      return res.status(401).json({
+        code: 0,
+        status: 401,
+        message: "Invalid email or password",
+        data: null,
+      });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Something went wrong",
+      error: err.message,
+      data: null,
+    });
   }
 };
 
@@ -81,10 +101,11 @@ export const signupAdmin = async (req, res) => {
     // Validations --------
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         code: 0,
+        status: 400,
         message: errors.errors[0].msg,
-        data: "",
+        data: null,
       });
     }
 
@@ -103,15 +124,16 @@ export const signupAdmin = async (req, res) => {
         (user) => user.mobile === req.body.mobile
       );
 
-      return res.json({
+      return res.status(409).json({
         code: 0,
+        status: 409,
         message:
           existingEmail && existingMobile
             ? "Email and Mobile number already exist. Please use different credentials."
             : existingEmail
             ? "Email already exists. Please use a different email."
             : "Mobile number already exists. Please use a different mobile number.",
-        data: "",
+        data: null,
       });
     }
 
@@ -127,15 +149,29 @@ export const signupAdmin = async (req, res) => {
     ];
     let result = await query(sql, values);
 
-    if (result) {
-      res.json({ code: 1, message: "Admin registered successfully", data: "" });
+    if (result.affectedRows > 0) {
+      return res.status(201).json({
+        code: 1,
+        status: 201,
+        message: "Admin registered successfully",
+        data: null,
+      });
     } else {
-      res.json({ code: 0, message: "Failed to register admin", data: "" });
+      return res.status(500).json({
+        code: 0,
+        status: 500,
+        message: "Failed to register admin",
+        data: null,
+      });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Something went wrong",
+      error: err.message,
+      data: null,
+    });
   }
 };
 
@@ -146,17 +182,23 @@ export const adminForgotPassword = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.json({ code: 0, message: "Please provide email", data: "" });
+      return res.status(400).json({
+        code: 0,
+        status: 400,
+        message: "Please provide email",
+        data: null,
+      });
     }
 
     const checkEmailQuery = "SELECT * FROM admins WHERE email = ?";
     const checkEmail = await query(checkEmailQuery, [email]);
 
     if (!checkEmail || checkEmail.length === 0) {
-      return res.json({
+      return res.status(404).json({
         code: 0,
+        status: 404,
         message: "Admin not found, Please register",
-        data: "",
+        data: null,
       });
     }
 
@@ -193,24 +235,38 @@ export const adminForgotPassword = async (req, res) => {
     try {
       let sentToGmail = await transporter.sendMail(receiver);
       if (sentToGmail) {
-        return res.json({
+        return res.status(200).json({
           code: 1,
+          status: 200,
           message: "Password reset link sent successfully to your email",
-          data: "",
+          data: {
+            token: token,
+          },
+        });
+      } else {
+        return res.status(500).json({
+          code: 0,
+          status: 500,
+          message: "Failed to send password reset link",
+          data: null,
         });
       }
     } catch (error) {
-      return res.json({
+      return res.status(500).json({
         code: 0,
+        status: 500,
         message: "Failed to send password reset link",
-        data: error.message,
+        error: error.message,
+        data: null,
       });
     }
   } catch (err) {
     return res.status(500).json({
       code: 0,
+      status: 500,
       message: "Something went wrong",
-      data: err.message,
+      error: err.message,
+      data: null,
     });
   }
 };
@@ -225,45 +281,65 @@ export const adminResetPassword = async (req, res) => {
     // Validations --------
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         code: 0,
+        status: 400,
         message: errors.errors[0].msg,
-        data: "",
+        data: null,
       });
     }
 
-    const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    } catch (error) {
+      return res.status(401).json({
+        code: 0,
+        status: 401,
+        message: "Invalid or expired token",
+        data: null,
+      });
+    }
 
     const getEmailSql = "SELECT * FROM admins WHERE email = ?";
-    const user = await query(getEmailSql, [decode.email]);
+    const user = await query(getEmailSql, [decoded.email]);
 
     if (!user.length) {
-      return res.json({ code: 0, message: "User not found", data: "" });
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "User not found",
+        data: null,
+      });
     }
 
     const hashedPassword = md5(password);
 
     const passSql = "UPDATE admins SET password = ? WHERE email = ?";
-    const updated = await query(passSql, [hashedPassword, decode.email]);
+    const updated = await query(passSql, [hashedPassword, decoded.email]);
 
     if (updated.affectedRows > 0) {
-      return res.json({
+      return res.status(200).json({
         code: 1,
-        message: "Password Reset Successfully",
-        data: "",
+        status: 200,
+        message: "Password reset successfully",
+        data: null,
       });
     } else {
-      return res.json({
+      return res.status(500).json({
         code: 0,
+        status: 500,
         message: "Failed to reset password",
-        data: "",
+        data: null,
       });
     }
   } catch (err) {
     return res.status(500).json({
       code: 0,
+      status: 500,
       message: "Something went wrong",
-      data: err.message,
+      error: err.message,
+      data: null,
     });
   }
 };
