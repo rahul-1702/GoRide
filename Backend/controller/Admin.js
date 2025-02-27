@@ -90,7 +90,7 @@ export const loginAdmin = async (req, res) => {
       message: "Successfully logged in",
       data: {
         token,
-        admin: result[0], // Returns limited admin details for frontend usage
+        admin: result[0],
       },
     });
   } catch (err) {

@@ -72,6 +72,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "status": 200,
     "message": "Successfully Logged in",
     "data": {
+      "token": "YOUR_ACCESS_TOKEN",
       "driver": {
         "id": 7,
         "first_name": "Xxyyzz",
@@ -87,8 +88,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
         "auto_number": "PB08AX1234",
         "total_seats": 5,
         "number_of_wheels": 3
-      },
-      "token": "YOUR_ACCESS_TOKEN"
+      }
     }
   }
   ```
@@ -251,7 +251,7 @@ VITE_APP_NAME=GoRide
 VITE_HOST=0.0.0.0
 VITE_PORT=5000
 
-VITE_BACKEND_URL=https://0.0.0.0:5000
+VITE_BACKEND_URL=http://0.0.0.0:5000
 VITE_FRONTEND_URL=http://0.0.0.0:5173
 
 ```

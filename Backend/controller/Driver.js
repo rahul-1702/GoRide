@@ -99,7 +99,7 @@ export const loginDriver = async (req, res) => {
       const token = jwt.sign(
         { id: result[0].id, email: result[0].email },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "7d" } // 🔥 Best practice: 7 days token expiry for mobile login
+        { expiresIn: "7d" }
       );
 
       return res.status(200).json({
@@ -107,8 +107,8 @@ export const loginDriver = async (req, res) => {
         status: 200,
         message: "Successfully Logged in",
         data: {
-          driver: result[0], // Send driver details
-          token: token, // JWT token
+          token: token,
+          driver: result[0],
         },
       });
     } else {
