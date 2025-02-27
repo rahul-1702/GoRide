@@ -24,28 +24,24 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Drivers fetched successully",
+    "status": 200,
+    "message": "Drivers fetched successfully",
+    "total": 1,
     "data": [
       {
         "id": 3,
-        "first_name": "xyz",
-        "last_name": "xyz",
+        "first_name": "xxyyzz",
+        "last_name": "xxyyzz",
+        "mobile": "9999888877",
+        "email": "xxyyzz@example.com",
         "status": "Active",
-        "mobile": "9900000088",
         "gender": "male",
-        "dob": "1990-05-14T18:30:00.000Z",
-        "profile_pic": "amit.jpg",
-        "email": "xyz@example.com",
-        "password": "Xyz@12345",
-        "current_address": "Current Address for xyz",
-        "permanent_address": "Permanent Address for xyz",
-        "city": "Xyz place",
-        "state": "Xyz place anywhere",
-        "zip_code": "110001",
-        "ride_no": 1,
+        "city": "xxyyzz city",
+        "state": "xxyyzz state",
+        "zip_code": "555666",
         "license": "DL-123456",
-        "created_at": "2025-02-07T17:28:01.000Z",
-        "updated_at": null,
+        "profile_pic": "xxyyzz.jpg",
+        "dob": "1990-05-14T18:30:00.000Z",
         "ride_id": 1,
         "ride_type": "Auto",
         "fuel_type": "Electric",
@@ -69,11 +65,29 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   }
   ```
 - **Response:**
+
   ```json
   {
     "code": 1,
+    "status": 200,
     "message": "Successfully Logged in",
     "data": {
+      "driver": {
+        "id": 7,
+        "first_name": "Xxyyzz",
+        "last_name": "Xxyyzz",
+        "mobile": "9988776655",
+        "email": "Xxyyzz@Xxyyzz.com",
+        "status": "Active",
+        "dob": "2005-02-11T18:30:00.000Z",
+        "profile_pic": "Xxyyzz.jpg",
+        "ride_no": 7,
+        "ride_type": "Auto",
+        "fuel_type": "Electric",
+        "auto_number": "PB08AX1234",
+        "total_seats": 5,
+        "number_of_wheels": 3
+      },
       "token": "YOUR_ACCESS_TOKEN"
     }
   }
@@ -86,23 +100,26 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Request Body:**
   ```json
   {
-    "first_name": "Xyzzz",
-    "last_name": "xyzzz",
-    "mobile": "9002308800",
-    "gender": "male",
-    "dob": "2000-12-30",
-    "profile_pic": "xyyzz.jpg",
-    "email": "xyzz@xyyzz.com",
-    "password": "Xyzzz@12345",
-    "current_address": "Xyzz and xyz place at xyz",
-    "permanent_address": "Xyzz and xyz place at xyz",
-    "city": "Xyzz city",
-    "state": "Xyzz state",
-    "zip_code": "483775",
+    "first_name": "Xxyyzz",
+    "last_name": "Xxyyzz",
+    "status": "Active",
+    "mobile": "9988776655",
+    "gender": "female",
+    "dob": "2005-02-12",
+    "profile_pic": "Xxyyzz.jpg",
+    "email": "xyyzz@Xxyyzz.com",
+    "password": "Xxyyzz@12345",
+    "current_address": "Xxyyzz address",
+    "permanent_address": "Xxyyzz address",
+    "city": "Xxyyzz city",
+    "state": "Xxyyzz state",
+    "zip_code": "777888",
+    "ride_no": 1,
     "license": "UP4420150019783",
+    "ride_id": 1,
     "ride_type": "Auto",
-    "fuel_type": "Petrol",
-    "auto_number": "PB22VB7835",
+    "fuel_type": "Electric",
+    "auto_number": "PB08AX1234",
     "total_seats": 5,
     "number_of_wheels": 3
   }
@@ -111,8 +128,11 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
+    "status": 201,
     "message": "Driver registered successfully",
-    "data": ""
+    "data": {
+      "driver_id": 1
+    }
   }
   ```
 
@@ -134,17 +154,16 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Customers fetched successully",
+    "status": 200,
+    "message": "Customers fetched successfully",
+    "total": 1,
     "data": [
       {
         "id": 1,
-        "name": "XYxzz",
+        "name": "Xxyyzz",
         "status": "Inactive",
-        "email": "xyzz@test.com",
-        "mobile": "9090908989",
-        "password": "xxyyzz@1234",
-        "created_at": "2025-01-29T16:40:23.000Z",
-        "updated_at": "2025-02-07T17:52:26.000Z"
+        "email": "xyyzz@yyzz.com",
+        "mobile": "9988776644"
       }
     ]
   }
@@ -165,9 +184,17 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Successfully Logged in",
+    "status": 200,
+    "message": "Successfully logged in",
     "data": {
-      "token": "YOUR_ACCESS_TOKEN"
+      "token": "YOUR_ACCESS_TOKEN",
+      "customer": {
+        "id": 5,
+        "name": "Xxyyzz",
+        "email": "xyyzz@xyyzz.com",
+        "mobile": "9977664455",
+        "status": "Active"
+      }
     }
   }
   ```
@@ -189,8 +216,11 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   ```json
   {
     "code": 1,
-    "message": "Customer registered Successfully",
-    "data": ""
+    "status": 201,
+    "message": "Customer registered successfully",
+    "data": {
+      "customer_id": 1
+    }
   }
   ```
 
@@ -221,7 +251,8 @@ VITE_APP_NAME=GoRide
 VITE_HOST=0.0.0.0
 VITE_PORT=5000
 
-VITE_BACKEND_URL=https://goride.onrender.com
+VITE_BACKEND_URL=https://0.0.0.0:5000
+VITE_FRONTEND_URL=http://0.0.0.0:5173
 
 ```
 
@@ -258,7 +289,8 @@ APP_PORT=5000
 REACT_HOST=0.0.0.0
 REACT_PORT=5173
 
-FREE_BACKEND_URL=https://goride.onrender.com
+FREE_BACKEND_URL=http://0.0.0.0:5000
+FREE_FRONTEND_URL=http://0.0.0.0:5173
 
 DB_HOST=your-online-database-host
 DB_NAME=your-online-database-name

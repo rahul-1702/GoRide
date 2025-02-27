@@ -16,27 +16,30 @@ export const getAllAdmins = async (req, res) => {
     const sql = "SELECT id, name, status, email, mobile FROM admins";
     const result = await query(sql);
 
-    if (result.length > 0) {
-      return res.status(200).json({
-        code: 1,
-        status: 200,
-        message: "Admins fetched successfully",
-        data: result,
-      });
-    } else {
+    if (!result.length) {
       return res.status(404).json({
         code: 0,
         status: 404,
         message: "No admins found",
+        total: 0,
         data: null,
       });
     }
+
+    return res.status(200).json({
+      code: 1,
+      status: 200,
+      message: "Admins fetched successfully",
+      total: result.length, // Added total count
+      data: result,
+    });
   } catch (err) {
     return res.status(500).json({
       code: 0,
       status: 500,
-      message: "Something went wrong",
+      message: "Internal Server Error",
       error: err.message,
+      total: 0,
       data: null,
     });
   }
@@ -46,7 +49,7 @@ export const getAllAdmins = async (req, res) => {
 
 export const loginAdmin = async (req, res) => {
   try {
-    // Validations --------
+    // Validate request body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -57,25 +60,15 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
-    const { email } = req.body;
-    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
-    });
+    const { email, password } = req.body;
+    const hashedPassword = md5(password);
 
-    const hashedPassword = md5(req.body.password);
+    // Fetch admin details
+    const sql =
+      "SELECT id, name, status, email FROM admins WHERE email = ? AND password = ?";
+    const result = await query(sql, [email, hashedPassword]);
 
-    const sql = "SELECT * FROM admins WHERE `email` = ? AND `password` = ?";
-    const values = [email, hashedPassword];
-    let result = await query(sql, values);
-
-    if (result && result.length > 0) {
-      return res.status(200).json({
-        code: 1,
-        status: 200,
-        message: "Successfully logged in",
-        data: { token: token },
-      });
-    } else {
+    if (!result.length) {
       return res.status(401).json({
         code: 0,
         status: 401,
@@ -83,11 +76,28 @@ export const loginAdmin = async (req, res) => {
         data: null,
       });
     }
+
+    // Generate token
+    const token = jwt.sign(
+      { id: result[0].id, email: result[0].email },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    return res.status(200).json({
+      code: 1,
+      status: 200,
+      message: "Successfully logged in",
+      data: {
+        token,
+        admin: result[0], // Returns limited admin details for frontend usage
+      },
+    });
   } catch (err) {
     return res.status(500).json({
       code: 0,
       status: 500,
-      message: "Something went wrong",
+      message: "Internal Server Error",
       error: err.message,
       data: null,
     });
@@ -98,7 +108,7 @@ export const loginAdmin = async (req, res) => {
 
 export const signupAdmin = async (req, res) => {
   try {
-    // Validations --------
+    // Validate request body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -109,19 +119,17 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
-    // Check if email or mobile number already exists
-    const checkUserQuery = "SELECT * FROM admins WHERE email = ? OR mobile = ?";
-    const existingUser = await query(checkUserQuery, [
-      req.body.email,
-      req.body.mobile,
-    ]);
+    const { name, email, mobile, password } = req.body;
+
+    // Check if email or mobile already exists
+    const checkUserQuery =
+      "SELECT email, mobile FROM admins WHERE email = ? OR mobile = ?";
+    const existingUser = await query(checkUserQuery, [email, mobile]);
 
     if (existingUser.length > 0) {
-      const existingEmail = existingUser.some(
-        (user) => user.email === req.body.email
-      );
+      const existingEmail = existingUser.some((user) => user.email === email);
       const existingMobile = existingUser.some(
-        (user) => user.mobile === req.body.mobile
+        (user) => user.mobile === mobile
       );
 
       return res.status(409).json({
@@ -137,24 +145,22 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
-    const hashedPassword = md5(req.body.password);
+    const hashedPassword = md5(password);
 
+    // Insert new admin
     const sql =
       "INSERT INTO admins (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
-    const values = [
-      req.body.name,
-      req.body.email,
-      req.body.mobile,
-      hashedPassword,
-    ];
-    let result = await query(sql, values);
+    const values = [name, email, mobile, hashedPassword];
+    const result = await query(sql, values);
 
     if (result.affectedRows > 0) {
       return res.status(201).json({
         code: 1,
         status: 201,
         message: "Admin registered successfully",
-        data: null,
+        data: {
+          admin_id: result.insertId,
+        },
       });
     } else {
       return res.status(500).json({
@@ -168,7 +174,7 @@ export const signupAdmin = async (req, res) => {
     return res.status(500).json({
       code: 0,
       status: 500,
-      message: "Something went wrong",
+      message: "Internal Server Error",
       error: err.message,
       data: null,
     });
@@ -185,27 +191,30 @@ export const adminForgotPassword = async (req, res) => {
       return res.status(400).json({
         code: 0,
         status: 400,
-        message: "Please provide email",
+        message: "Please provide an email",
         data: null,
       });
     }
 
-    const checkEmailQuery = "SELECT * FROM admins WHERE email = ?";
-    const checkEmail = await query(checkEmailQuery, [email]);
+    // Check if admin email exists
+    const checkEmailQuery = "SELECT id, email FROM admins WHERE email = ?";
+    const [admin] = await query(checkEmailQuery, [email]);
 
-    if (!checkEmail || checkEmail.length === 0) {
+    if (!admin) {
       return res.status(404).json({
         code: 0,
         status: 404,
-        message: "Admin not found, Please register",
+        message: "Admin not found. Please register.",
         data: null,
       });
     }
 
+    // Generate password reset token (valid for 10 minutes)
     const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "10m",
     });
 
+    // Email transport setup
     const transporter = nodemailer.createTransport({
       service: "gmail",
       secure: true,
@@ -215,15 +224,16 @@ export const adminForgotPassword = async (req, res) => {
       },
     });
 
-    const receiver = {
+    // Email template
+    const mailOptions = {
       from: process.env.MY_GMAIL,
       to: email,
       subject: "Password Reset Request",
       html: `
         <div style="text-align: center; font-family: Arial, sans-serif;">
-          <h2>Password Reset Request For  <span style="color: #007bff">GoRide</span> Admin Panel</h2>
+          <h2>Password Reset Request for <span style="color: #007bff">GoRide</span> Admin Panel</h2>
           <p>You requested a password reset. Click the button below to reset your password:</p>
-          <a href="http://${process.env.REACT_HOST}:${process.env.REACT_PORT}/admin/reset-password/${token}" 
+          <a href="${process.env.FREE_FRONTEND_URL}/admin/reset-password/${token}" 
              style="display: inline-block; background-color: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
              Reset Your Password
           </a>
@@ -232,39 +242,23 @@ export const adminForgotPassword = async (req, res) => {
       `,
     };
 
-    try {
-      let sentToGmail = await transporter.sendMail(receiver);
-      if (sentToGmail) {
-        return res.status(200).json({
-          code: 1,
-          status: 200,
-          message: "Password reset link sent successfully to your email",
-          data: {
-            token: token,
-          },
-        });
-      } else {
-        return res.status(500).json({
-          code: 0,
-          status: 500,
-          message: "Failed to send password reset link",
-          data: null,
-        });
-      }
-    } catch (error) {
-      return res.status(500).json({
-        code: 0,
-        status: 500,
-        message: "Failed to send password reset link",
-        error: error.message,
-        data: null,
-      });
-    }
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({
+      code: 1,
+      status: 200,
+      message: "Password reset link sent successfully to your email",
+      // data: {
+      //   token, // TODO: Only for debugging, remove in production
+      // },
+      data: null,
+    });
   } catch (err) {
     return res.status(500).json({
       code: 0,
       status: 500,
-      message: "Something went wrong",
+      message: "Internal Server Error",
       error: err.message,
       data: null,
     });
@@ -278,7 +272,7 @@ export const adminResetPassword = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    // Validations --------
+    // Validate password input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -289,6 +283,7 @@ export const adminResetPassword = async (req, res) => {
       });
     }
 
+    // Verify token
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -301,24 +296,29 @@ export const adminResetPassword = async (req, res) => {
       });
     }
 
-    const getEmailSql = "SELECT * FROM admins WHERE email = ?";
-    const user = await query(getEmailSql, [decoded.email]);
+    const { email } = decoded;
 
-    if (!user.length) {
+    // Check if admin exists
+    const getUserQuery = "SELECT id FROM admins WHERE email = ?";
+    const [admin] = await query(getUserQuery, [email]);
+
+    if (!admin) {
       return res.status(404).json({
         code: 0,
         status: 404,
-        message: "User not found",
+        message: "Admin not found",
         data: null,
       });
     }
 
+    // Hash new password
     const hashedPassword = md5(password);
 
-    const passSql = "UPDATE admins SET password = ? WHERE email = ?";
-    const updated = await query(passSql, [hashedPassword, decoded.email]);
+    // Update password
+    const updatePassQuery = "UPDATE admins SET password = ? WHERE email = ?";
+    const result = await query(updatePassQuery, [hashedPassword, email]);
 
-    if (updated.affectedRows > 0) {
+    if (result.affectedRows > 0) {
       return res.status(200).json({
         code: 1,
         status: 200,

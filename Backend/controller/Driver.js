@@ -8,24 +8,59 @@ import jwt from "jsonwebtoken";
 
 export const getAllDrivers = async (req, res) => {
   try {
-    const sql =
-      "SELECT d.*, r.* FROM drivers d JOIN ride_details r ON d.ride_no = r.ride_id";
+    const sql = `
+      SELECT 
+        d.id, 
+        d.first_name, 
+        d.last_name, 
+        d.mobile, 
+        d.email, 
+        d.status, 
+        d.gender, 
+        d.city, 
+        d.state, 
+        d.zip_code, 
+        d.license, 
+        d.profile_pic, 
+        d.dob,
+        r.ride_id, 
+        r.ride_type, 
+        r.fuel_type, 
+        r.auto_number, 
+        r.total_seats, 
+        r.number_of_wheels 
+      FROM drivers d
+      JOIN ride_details r ON d.ride_no = r.ride_id
+    `;
 
     const result = await query(sql);
 
     if (result.length > 0) {
-      res.json({
+      return res.status(200).json({
         code: 1,
-        message: "Drivers fetched successully",
+        status: 200,
+        message: "Drivers fetched successfully",
+        total: result.length,
         data: result,
       });
     } else {
-      res.json({ code: 0, message: "No drivers found.", data: "" });
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No drivers found.",
+        total: 0,
+        data: null,
+      });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      total: 0,
+      data: null,
+    });
   }
 };
 
@@ -33,42 +68,65 @@ export const getAllDrivers = async (req, res) => {
 
 export const loginDriver = async (req, res) => {
   try {
-    // Validations --------
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         code: 0,
+        status: 400,
         message: errors.errors[0].msg,
-        data: "",
+        data: null,
       });
     }
 
-    const { email } = req.body;
+    const { email, password } = req.body;
+    const hashedPassword = md5(password);
 
-    const hashedPassword = md5(req.body.password);
+    // Fetch only required driver fields
+    const sql = `
+      SELECT d.id, d.first_name, d.last_name, d.mobile, d.email, d.status, d.dob, d.profile_pic, d.ride_no, r.ride_type, 
+        r.fuel_type, 
+        r.auto_number, 
+        r.total_seats, 
+        r.number_of_wheels 
+      FROM drivers d
+      JOIN ride_details r ON d.ride_no = r.ride_id WHERE email = ? AND password = ?
+    `;
+    const result = await query(sql, [email, hashedPassword]);
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
-    });
+    if (result.length > 0) {
+      // Generate token with essential details
+      const token = jwt.sign(
+        { id: result[0].id, email: result[0].email },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "7d" } // 🔥 Best practice: 7 days token expiry for mobile login
+      );
 
-    const sql = "SELECT * FROM drivers WHERE `email` = ? AND `password` = ?";
-    let result = await query(sql, [email, hashedPassword]);
-
-    if (result && result.length > 0) {
-      res.json({
+      return res.status(200).json({
         code: 1,
+        status: 200,
         message: "Successfully Logged in",
         data: {
-          token: token,
+          driver: result[0], // Send driver details
+          token: token, // JWT token
         },
       });
     } else {
-      res.json({ code: 0, message: "No records found", data: "" });
+      return res.status(401).json({
+        code: 0,
+        status: 401,
+        message: "Invalid email or password",
+        data: null,
+      });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
   }
 };
 
@@ -76,106 +134,138 @@ export const loginDriver = async (req, res) => {
 
 export const signupDriver = async (req, res) => {
   try {
-    // Validations --------
+    // Validate input fields
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(400).json({
         code: 0,
+        status: 400,
         message: errors.errors[0].msg,
-        data: "",
+        data: null,
       });
     }
+
+    const {
+      first_name,
+      last_name,
+      mobile,
+      gender,
+      dob,
+      profile_pic,
+      email,
+      password,
+      current_address,
+      permanent_address,
+      city,
+      state,
+      zip_code,
+      license,
+      ride_type,
+      fuel_type,
+      auto_number,
+      total_seats,
+      number_of_wheels,
+    } = req.body;
 
     // Check if email or mobile number already exists
     const checkUserQuery =
-      "SELECT * FROM drivers WHERE email = ? OR mobile = ?";
-    const existingUser = await query(checkUserQuery, [
-      req.body.email,
-      req.body.mobile,
-    ]);
+      "SELECT email, mobile FROM drivers WHERE email = ? OR mobile = ?";
+    const existingUser = await query(checkUserQuery, [email, mobile]);
 
     if (existingUser.length > 0) {
-      const existingEmail = existingUser.some(
-        (user) => user.email === req.body.email
-      );
+      const existingEmail = existingUser.some((user) => user.email === email);
       const existingMobile = existingUser.some(
-        (user) => user.mobile === req.body.mobile
+        (user) => user.mobile === mobile
       );
 
-      return res.json({
+      return res.status(409).json({
         code: 0,
+        status: 409,
         message:
           existingEmail && existingMobile
-            ? "Email and Mobile number already exist. Please use different credentials."
+            ? "Email and mobile number already exist. Please use different credentials."
             : existingEmail
             ? "Email already exists. Please use a different email."
             : "Mobile number already exists. Please use a different mobile number.",
-        data: "",
+        data: null,
       });
     }
 
-    // Insert into ride_details first
-    const rideSql =
-      "INSERT INTO ride_details (`ride_type`, `fuel_type`, `auto_number`, `total_seats`, `number_of_wheels`) VALUES (?, ?, ?, ?, ?)";
+    // Insert ride details
+    const rideSql = `
+      INSERT INTO ride_details (ride_type, fuel_type, auto_number, total_seats, number_of_wheels)
+      VALUES (?, ?, ?, ?, ?)
+    `;
     const rideValues = [
-      req.body.ride_type,
-      req.body.fuel_type,
-      req.body.auto_number,
-      req.body.total_seats,
-      req.body.number_of_wheels,
+      ride_type,
+      fuel_type,
+      auto_number,
+      total_seats,
+      number_of_wheels,
     ];
 
     const rideResult = await query(rideSql, rideValues);
-
     if (!rideResult.insertId) {
-      return res.json({
+      return res.status(500).json({
         code: 0,
+        status: 500,
         message: "Failed to create ride details",
-        data: "",
+        data: null,
       });
     }
 
-    const hashedPassword = md5(req.body.password);
+    // Encrypt password
+    const hashedPassword = md5(password);
 
-    // Insert into drivers using ride_id from ride_details
-    const driverSql =
-      "INSERT INTO drivers (`first_name`,`last_name`,`mobile`,`gender`,`dob`,`profile_pic`,`email`,`password`,`current_address`,`permanent_address`,`city`,`state`,`zip_code`, `ride_no`, `license`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Insert driver details
+    const driverSql = `
+      INSERT INTO drivers 
+      (first_name, last_name, mobile, gender, dob, profile_pic, email, password, 
+      current_address, permanent_address, city, state, zip_code, ride_no, license) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
     const driverValues = [
-      req.body.first_name,
-      req.body.last_name,
-      req.body.mobile,
-      req.body.gender,
-      req.body.dob,
-      req.body.profile_pic,
-      req.body.email,
+      first_name,
+      last_name,
+      mobile,
+      gender,
+      dob,
+      profile_pic,
+      email,
       hashedPassword,
-      req.body.current_address,
-      req.body.permanent_address,
-      req.body.city,
-      req.body.state,
-      req.body.zip_code,
+      current_address,
+      permanent_address,
+      city,
+      state,
+      zip_code,
       rideResult.insertId,
-      req.body.license,
+      license,
     ];
 
     const driverResult = await query(driverSql, driverValues);
 
     if (driverResult.insertId) {
-      res.json({
+      return res.status(201).json({
         code: 1,
+        status: 201,
         message: "Driver registered successfully",
-        data: "",
+        data: { driver_id: driverResult.insertId },
       });
     } else {
-      res.json({
+      return res.status(500).json({
         code: 0,
+        status: 500,
         message: "Failed to register driver",
-        data: "",
+        data: null,
       });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ code: 0, message: "Something went wrong", data: err.message });
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
   }
 };
