@@ -37,6 +37,7 @@ const Sidebar = () => {
 
       const formattedData = result.data.map((user, index) => ({
         id: index + 1,
+        profile_img: user?.profile_pic_url,
         name: user.name || user.first_name,
         email: user.email,
         ride_type: user?.ride_type,
@@ -87,6 +88,7 @@ const Sidebar = () => {
           <thead>
             <tr>
               <th>S.No.</th>
+              {activeTab === "Team" ? <th>Image</th> : ""}
               <th>Name</th>
               <th>Email</th>
               {activeTab === "Drivers" ? <th>Ride Type</th> : ""}
@@ -97,8 +99,9 @@ const Sidebar = () => {
           <tbody>
             {data && data.length > 0 ? (
               data.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.id} className="align-middle">
                   <td>{item.id}</td>
+                  {item.profile_img ? <td><img style={{borderRadius: "50%", width: 50, height: 50, objectFit: "cover", objectPosition: "top center"}} src={item.profile_img} alt="" /></td> : (activeTab === "Team" ? <td>--</td> : "")}
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   {item?.ride_type && <td>{item.ride_type}</td>}

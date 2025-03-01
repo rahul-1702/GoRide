@@ -69,3 +69,8 @@ CREATE TABLE `drivers` (
  KEY `ride_no` (`ride_no`),
  CONSTRAINT `drivers_ibfk_1` FOREIGN KEY (`ride_no`) REFERENCES `ride_details` (`ride_id`) ON DELETE CASCADE
 )
+
+
+-- admins table -- (01 March, 2025)
+
+ALTER TABLE admins ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;

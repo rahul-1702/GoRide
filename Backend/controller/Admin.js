@@ -13,7 +13,7 @@ dotenv.config();
 
 export const getAllAdmins = async (req, res) => {
   try {
-    const sql = "SELECT id, name, status, email, mobile FROM admins";
+    const sql = "SELECT id, name, status, email, mobile, profile_pic FROM admins";
     const result = await query(sql);
 
     if (!result.length) {
@@ -26,12 +26,19 @@ export const getAllAdmins = async (req, res) => {
       });
     }
 
+     // Append full URL for profile images
+     const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
+     const adminsWithImage = result.map(admin => ({
+       ...admin,
+       profile_pic_url: admin.profile_pic ? `${backendUrl}/uploads/${admin.profile_pic}` : null,
+     }));
+
     return res.status(200).json({
       code: 1,
       status: 200,
       message: "Admins fetched successfully",
-      total: result.length, // Added total count
-      data: result,
+      total: adminsWithImage.length, // Added total count
+      data: adminsWithImage,
     });
   } catch (err) {
     return res.status(500).json({
@@ -108,8 +115,10 @@ export const loginAdmin = async (req, res) => {
 
 export const signupAdmin = async (req, res) => {
   try {
+    console.log("req.body = ", req.body);
+    console.log("req.file = ", req.file);
     // Validate request body
-    const errors = validationResult(req);
+    const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(400).json({
         code: 0,
@@ -119,7 +128,17 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
+    if(req.file === undefined){
+      return res.status(400).json({
+        code: 0,
+        status: 400,
+        message: "Profile Picture is required",
+        data: null,
+      });
+    }
+
     const { name, email, mobile, password } = req.body;
+    const profilePic = req.file ? req.file.filename : null;
 
     // Check if email or mobile already exists
     const checkUserQuery =
@@ -149,8 +168,8 @@ export const signupAdmin = async (req, res) => {
 
     // Insert new admin
     const sql =
-      "INSERT INTO admins (`name`, `email`, `mobile`, `password`) VALUES (?, ?, ?, ?)";
-    const values = [name, email, mobile, hashedPassword];
+      "INSERT INTO admins (`name`, `email`, `mobile`, `password`, `profile_pic`) VALUES (?, ?, ?, ?, ?)";
+    const values = [name, email, mobile, hashedPassword, profilePic];
     const result = await query(sql, values);
 
     if (result.affectedRows > 0) {
@@ -160,6 +179,7 @@ export const signupAdmin = async (req, res) => {
         message: "Admin registered successfully",
         data: {
           admin_id: result.insertId,
+          profile_pic: profilePic ? `/uploads/${profilePic}` : null,
         },
       });
     } else {

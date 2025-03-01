@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+import path from "path";
 import {
   adminForgotPassword,
   adminResetPassword,
@@ -16,9 +18,21 @@ import { resetValidation } from "../Validation/vAdminReset.js";
 
 const router = express.Router();
 
+// Configure multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Save in 'uploads' folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+  },
+});
+
+const upload = multer({ storage });
+
 router.post("/login", loginValidation, loginAdmin);
 router.get("/show", verifyToken, getAllAdmins);
-router.post("/signup", signupValidation, signupAdmin);
+router.post("/signup", signupValidation, upload.single("profilePic"), signupAdmin);
 router.post("/forget-password", forgotValidation, adminForgotPassword);
 router.post("/reset-password/:token", resetValidation, adminResetPassword);
 

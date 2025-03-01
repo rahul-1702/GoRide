@@ -51,8 +51,13 @@ function Signup() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const handleFileChange = (e) => {
+    setProfilePic(e.target.files[0]);
+  };
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
@@ -61,17 +66,26 @@ function Signup() {
   const handleSubmitSignup = () => {
     setLoading(true);
     const validationErrors = Validation(values);
+    if (profilePic === null) {
+      validationErrors.profilePic = "Profile Picture is required";
+    }
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length === 0 && profilePic) {
       const SIGNUP_API = `${backendUrl}/admin/signup`;
 
+      const formData = new FormData();
+      formData.append("name", values.name[0]);
+      formData.append("email", values.email[0]);
+      formData.append("mobile", values.mobile[0]);
+      formData.append("password", values.password[0]);
+      formData.append("profilePic", profilePic);
+
       axios
-        .post(SIGNUP_API, {
-          name: values.name[0],
-          email: values.email[0],
-          mobile: values.mobile[0],
-          password: values.password[0],
+        .post(SIGNUP_API, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((res) => {
           if (res.data.code === 1) {
@@ -227,23 +241,22 @@ function Signup() {
                   {errors.cpassword}
                 </span>
               )}
-              <ul className="mt-2">
-                <li className="m-0 text-secondary">
-                  Enter Minimum 8 Characters.
-                </li>
-                <li className="m-0 text-secondary">
-                  Contains at least one uppercase letter.
-                </li>
-                <li className="m-0 text-secondary">
-                  Contains at least one lowercase letter.
-                </li>
-                <li className="m-0 text-secondary">
-                  Contains at least one digit.
-                </li>
-                <li className="m-0 text-secondary">
-                  Contains at least one special character.
-                </li>
-              </ul>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="profilePic">Profile Picture</label>
+              <input
+                type="file"
+                id="profilePic"
+                name="profilePic"
+                accept="image/*"
+                className="form-control mt-1"
+                onChange={handleFileChange}
+              />
+              {errors.profilePic && (
+                <span className="text-danger d-inline-block mt-1">
+                  {errors.profilePic}
+                </span>
+              )}
             </div>
             <div className="mb-3 d-flex flex-column align-items-center justify-content-center gap-2">
               <button
