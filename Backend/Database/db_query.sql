@@ -71,6 +71,8 @@ CREATE TABLE `drivers` (
 )
 
 
--- admins table -- (01 March, 2025)
+-- admins table && customer table -- (01 March, 2025)
 
 ALTER TABLE admins ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;
+
+ALTER TABLE customers ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;

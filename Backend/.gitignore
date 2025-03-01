@@ -24,6 +24,14 @@ dist-ssr
 *.sln
 *.sw?
 
-# Ignore all files inside uploads folder
-/uploads/*
-!/uploads/.gitkeep
+# Ignore all files inside profile_img and detail_img folders
+uploads/**/profile_img/*
+uploads/**/detail_img/*
+
+# Ensure the parent folders are tracked
+!uploads/admin/profile_img/.gitkeep
+!uploads/admin/detail_img/.gitkeep
+!uploads/driver/profile_img/.gitkeep
+!uploads/driver/detail_img/.gitkeep
+!uploads/customer/profile_img/.gitkeep
+!uploads/customer/detail_img/.gitkeep
