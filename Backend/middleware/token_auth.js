@@ -16,7 +16,6 @@ export const verifyToken = (req, res, next) => {
       });
     }
 
-    // get the seconds part of string as token 
     const token = authHeader.split(" ")[1];
 
     jwt.verify(token, secretKey, (err, decoded) => {

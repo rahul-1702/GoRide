@@ -30,7 +30,7 @@ export const getAllAdmins = async (req, res) => {
      const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
      const adminsWithImage = result.map(admin => ({
        ...admin,
-       profile_pic_url: admin.profile_pic ? `${backendUrl}/uploads/${admin.profile_pic}` : null,
+       profile_pic_url: admin.profile_pic ? `${backendUrl}/uploads/admin/profile_img/${admin.profile_pic}` : null,
      }));
 
     return res.status(200).json({
@@ -115,8 +115,6 @@ export const loginAdmin = async (req, res) => {
 
 export const signupAdmin = async (req, res) => {
   try {
-    console.log("req.body = ", req.body);
-    console.log("req.file = ", req.file);
     // Validate request body
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
@@ -179,7 +177,7 @@ export const signupAdmin = async (req, res) => {
         message: "Admin registered successfully",
         data: {
           admin_id: result.insertId,
-          profile_pic: profilePic ? `/uploads/${profilePic}` : null,
+          profile_pic: profilePic ? `/uploads/admin/profile_img/${profilePic}` : null,
         },
       });
     } else {
