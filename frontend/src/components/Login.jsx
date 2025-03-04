@@ -46,10 +46,11 @@ function Login() {
 
   const navigate = useNavigate();
 
+  console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+  console.log("Frontend URL:", import.meta.env.VITE_FRONTEND_URL);
+  
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
-console.log("Frontend URL:", import.meta.env.VITE_FRONTEND_URL);
 
   const handleLoginInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
