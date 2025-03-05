@@ -33,7 +33,6 @@ const ForgotPassword = () => {
     });
   };
 
-  // const backendUrl = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleEmailInput = (e) => {
