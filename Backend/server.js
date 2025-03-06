@@ -9,6 +9,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.APP_PORT || 5000; 
+const HOST = process.env.APP_HOST || "0.0.0.0";
 const backendUrl = process.env.FREE_BACKEND_URL;
 
 app.use(cors());
@@ -20,6 +21,6 @@ app.use("/api/customer", customerRoutes);
 app.use("/admin", adminRoutes);
 app.use("/api/driver", driverRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`Server is running at ${backendUrl}`);
 });

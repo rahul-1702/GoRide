@@ -45,11 +45,6 @@ export const signupValidation = [
       return true;
     }),
 
-  body("profile_pic")
-    .optional()
-    .isString()
-    .withMessage("Profile picture must be a string"),
-
   body("email")
     .notEmpty()
     .withMessage("Email is required")

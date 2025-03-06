@@ -145,13 +145,21 @@ export const signupDriver = async (req, res) => {
       });
     }
 
+    if (req.file === undefined) {
+      return res.status(400).json({
+        code: 0,
+        status: 400,
+        message: "Profile Picture is required",
+        data: null,
+      });
+    }
+
     const {
       first_name,
       last_name,
       mobile,
       gender,
       dob,
-      profile_pic,
       email,
       password,
       current_address,
@@ -166,6 +174,8 @@ export const signupDriver = async (req, res) => {
       total_seats,
       number_of_wheels,
     } = req.body;
+
+    const profilePic = req.file ? req.file.filename : null;
 
     // Check if email or mobile number already exists
     const checkUserQuery =
@@ -230,7 +240,7 @@ export const signupDriver = async (req, res) => {
       mobile,
       gender,
       dob,
-      profile_pic,
+      profilePic,
       email,
       hashedPassword,
       current_address,
@@ -249,7 +259,10 @@ export const signupDriver = async (req, res) => {
         code: 1,
         status: 201,
         message: "Driver registered successfully",
-        data: { driver_id: driverResult.insertId },
+        data: {
+          driver_id: driverResult.insertId,
+          profile_pic: profilePic ? `/uploads/${profilePic}` : null,
+        },
       });
     } else {
       return res.status(500).json({
