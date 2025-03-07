@@ -14,7 +14,7 @@ const backendUrl = process.env.FREE_BACKEND_URL;
 
 app.use(cors());
 app.use(express.json());
-// Serve uploaded images statically
+
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/customer", customerRoutes);
