@@ -177,7 +177,7 @@ export const signupAdmin = async (req, res) => {
         message: "Admin registered successfully",
         data: {
           admin_id: result.insertId,
-          profile_pic: profilePic ? `/uploads/${profilePic}` : null,
+          profile_pic: profilePic ? `/uploads/admin/${profilePic}` : null,
         },
       });
     } else {

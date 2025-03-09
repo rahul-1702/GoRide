@@ -2,6 +2,9 @@ import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import jwt from "jsonwebtoken";
 
 // getAllDrivers =======================
@@ -35,21 +38,30 @@ export const getAllDrivers = async (req, res) => {
 
     const result = await query(sql);
 
-    if (result.length > 0) {
-      return res.status(200).json({
-        code: 1,
-        status: 200,
-        message: "Drivers fetched successfully",
-        total: result.length,
-        data: result,
-      });
-    } else {
+    if (!result.length) {
       return res.status(404).json({
         code: 0,
         status: 404,
         message: "No drivers found.",
         total: 0,
         data: null,
+      });
+    }
+
+     // Append full URL for profile images
+     const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
+     const driversWithImage = result.map(driver => ({
+       ...driver,
+       profile_pic_url: driver.profile_pic ? `${backendUrl}/uploads/${driver.profile_pic}` : null,
+     }));
+
+    if (result.length > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Drivers fetched successfully",
+        total: driversWithImage.length, // Added total count
+        data: driversWithImage,
       });
     }
   } catch (err) {
@@ -261,7 +273,7 @@ export const signupDriver = async (req, res) => {
         message: "Driver registered successfully",
         data: {
           driver_id: driverResult.insertId,
-          profile_pic: profilePic ? `/uploads/${profilePic}` : null,
+          profile_pic: profilePic ? `/uploads/driver/${profilePic}` : null,
         },
       });
     } else {
