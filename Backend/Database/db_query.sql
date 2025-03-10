@@ -76,3 +76,8 @@ CREATE TABLE `drivers` (
 ALTER TABLE admins ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;
 
 ALTER TABLE customers ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;
+
+
+-- customers table -- (10 March, 2025)
+
+ALTER TABLE `customers` ADD `uuid` BINARY(16) NULL DEFAULT NULL AFTER `password`;
