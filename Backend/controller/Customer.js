@@ -174,3 +174,60 @@ export const signupCustomer = async (req, res) => {
     });
   }
 };
+
+export const googleLogin = async (req, res) => {
+  try {
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        code: 0,
+        status: 400,
+        message: errors.errors[0].msg,
+        data: null,
+      });
+    }
+
+    const { email } = req.body;
+
+    // Fetch customer details with only required fields
+    const sql = "SELECT * FROM customers WHERE email = ?";
+    const result = await query(sql, [email]);
+
+    if (result.length > 0) {
+      // Generate JWT Token with best expiry time
+      const token = jwt.sign(
+        { id: result[0].id, email },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "7d", // 7 days token expiry for mobile app authentication
+        }
+      );
+
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Successfully logged in",
+        data: {
+          token: token,
+          customer: result[0],
+        },
+      });
+    } else {
+      return res.status(401).json({
+        code: 0,
+        status: 401,
+        message: "Invalid email or password",
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
