@@ -68,7 +68,7 @@ export const loginCustomer = async (req, res) => {
         { id: result[0].id, email },
         process.env.JWT_SECRET_KEY,
         {
-          expiresIn: "7d", // 7 days token expiry for mobile app authentication
+          expiresIn: "7d",
         }
       );
 
@@ -188,38 +188,68 @@ export const googleLogin = async (req, res) => {
       });
     }
 
-    const { email } = req.body;
+    const { name, email, mobile, uuid } = req.body;
 
     // Fetch customer details with only required fields
-    const sql = "SELECT * FROM customers WHERE email = ?";
+    const sql =
+      "SELECT id, name, email, mobile, status FROM customers WHERE email = ?";
     const result = await query(sql, [email]);
 
     if (result.length > 0) {
-      // Generate JWT Token with best expiry time
-      const token = jwt.sign(
-        { id: result[0].id, email },
-        process.env.JWT_SECRET_KEY,
-        {
-          expiresIn: "7d", // 7 days token expiry for mobile app authentication
-        }
-      );
+      const sql2 = "UPDATE customers SET uuid = ? WHERE email = ?";
+      const values2 = [uuid, email];
+      const result2 = await query(sql2, values2);
 
-      return res.status(200).json({
-        code: 1,
-        status: 200,
-        message: "Successfully logged in",
-        data: {
-          token: token,
-          customer: result[0],
-        },
-      });
+      if (result2.affectedRows === 0) {
+        return res.status(500).json({
+          code: 0,
+          status: 500,
+          message: "Failed to login",
+          data: null,
+        });
+      } else {
+        return res.status(200).json({
+          code: 1,
+          status: 200,
+          message: "Successfully logged in",
+          data: {
+            token: token,
+            customer: result[0],
+          },
+        });
+      }
     } else {
-      return res.status(401).json({
-        code: 0,
-        status: 401,
-        message: "Invalid email or password",
-        data: null,
-      });
+      // Generate a random password
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = md5(randomPassword);
+
+      const profilePic = req.file ? req.file.filename : null;
+
+      // Insert new admin
+      const sql =
+        "INSERT INTO customers (`name`, `email`, `mobile`, `password`, `uuid`, `profile_pic`) VALUES (?, ?, ?, ?, UNHEX(REPLACE(?, '-', '')), ?)";
+      const values = [name, email, mobile, hashedPassword, uuid, profilePic];
+
+      const result = await query(sql, values);
+
+      if (result.affectedRows > 0) {
+        return res.status(201).json({
+          code: 1,
+          status: 201,
+          message: "Customer registered successfully",
+          data: {
+            customer_id: result.insertId,
+            profile_pic: profilePic ? `/uploads/customer/${profilePic}` : null,
+          },
+        });
+      } else {
+        return res.status(500).json({
+          code: 0,
+          status: 500,
+          message: "Failed to register customer",
+          data: null,
+        });
+      }
     }
   } catch (err) {
     return res.status(500).json({
