@@ -175,6 +175,8 @@ export const signupCustomer = async (req, res) => {
   }
 };
 
+// googleLogin ========================
+
 export const googleLogin = async (req, res) => {
   try {
     // Validate input
