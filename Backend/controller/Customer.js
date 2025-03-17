@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 
 // getAllCustomer =======================
 
@@ -261,5 +262,68 @@ export const googleLogin = async (req, res) => {
       error: err.message,
       data: null,
     });
+  }
+};
+
+// google auth login V2 =================
+
+export const authGoogleLogin = async (req, res) => {
+  try {
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const { token } = req.body;
+
+    // Verify the Google ID token
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    // Get user information from the token
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, given_name, family_name, picture } = payload;
+
+    // Check if user exists in database
+    const [rows] = await db.execute("SELECT * FROM customers WHERE google_id = ?", [
+      googleId,
+    ]);
+
+    let userId;
+
+    if (rows.length === 0) {
+      // User doesn't exist, create a new one
+      const [result] = await db.execute(
+        "INSERT INTO customers (google_id, email, first_name, last_name, profile_picture) VALUES (?, ?, ?, ?, ?)",
+        [googleId, email, given_name, family_name, picture]
+      );
+      userId = result.insertId;
+    } else {
+      // User exists, update last login
+      userId = rows[0].id;
+      await db.execute(
+        "UPDATE customers SET last_login = CURRENT_TIMESTAMP WHERE id = ?",
+        [userId]
+      );
+    }
+
+    // Generate JWT token
+    const jwtToken = jwt.sign(
+      { id: userId, email, googleId },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      token: jwtToken,
+      user: {
+        id: userId,
+        email,
+        firstName: given_name,
+        lastName: family_name,
+        picture,
+      },
+    });
+  } catch (error) {
+    console.error("Authentication error:", error);
+    res.status(401).json({ message: "Authentication failed" });
   }
 };

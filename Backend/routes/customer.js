@@ -5,7 +5,7 @@ import {
   signupCustomer,
   loginCustomer,
   getAllCustomers,
-  googleLogin
+  authGoogleLogin
 } from "../controller/Customer.js";
 
 import { verifyToken } from "../middleware/token_auth.js";
@@ -31,6 +31,6 @@ router.get("/show", verifyToken, getAllCustomers);
 router.post("/signup", signupValidation, signupCustomer);
 router.post("/login", loginValidation, loginCustomer);
 
-router.post("/login-google", googleValidation, upload.single("profilePic"), googleLogin);
+router.post("/auth/google", authGoogleLogin);
 
 export default router;
