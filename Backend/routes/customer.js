@@ -1,11 +1,10 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
 import {
   signupCustomer,
   loginCustomer,
   getAllCustomers,
-  authGoogleLogin
+  loginWithGoogle,
 } from "../controller/Customer.js";
 
 import { verifyToken } from "../middleware/token_auth.js";
@@ -16,21 +15,13 @@ import { googleValidation } from "../Validation/vCustomerGoogleLogin.js";
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/customer/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); 
-  },
-});
-
-const upload = multer({ storage });
+// Configure multer for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.get("/show", verifyToken, getAllCustomers);
 router.post("/signup", signupValidation, signupCustomer);
 router.post("/login", loginValidation, loginCustomer);
-
-router.post("/auth/google", authGoogleLogin);
+router.post("/google-login", upload.single("profile_image"), loginWithGoogle);
 
 export default router;

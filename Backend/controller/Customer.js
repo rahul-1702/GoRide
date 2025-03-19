@@ -4,6 +4,9 @@ import md5 from "md5";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 
+import fs from "fs";
+import path from "path";
+
 // getAllCustomer =======================
 
 export const getAllCustomers = async (req, res) => {
@@ -176,85 +179,99 @@ export const signupCustomer = async (req, res) => {
   }
 };
 
-// googleLogin ========================
+// loginWithGoogle ======================
 
-export const googleLogin = async (req, res) => {
+export const loginWithGoogle = async (req, res) => {
   try {
-    // Validate input
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    const { name, email, mobile, token } = req.body;
+    
+    // Input validation
+    if (!name || !email || !token) {
       return res.status(400).json({
         code: 0,
         status: 400,
-        message: errors.errors[0].msg,
+        message: "Name, email, and token are required",
         data: null,
       });
     }
-
-    const { name, email, mobile, uuid } = req.body;
-
-    // Fetch customer details with only required fields
-    const sql =
-      "SELECT id, name, email, mobile, status FROM customers WHERE email = ?";
-    const result = await query(sql, [email]);
-
-    if (result.length > 0) {
-      const sql2 = "UPDATE customers SET uuid = ? WHERE email = ?";
-      const values2 = [uuid, email];
-      const result2 = await query(sql2, values2);
-
-      if (result2.affectedRows === 0) {
-        return res.status(500).json({
-          code: 0,
-          status: 500,
-          message: "Failed to login",
-          data: null,
-        });
-      } else {
-        return res.status(200).json({
-          code: 1,
-          status: 200,
-          message: "Successfully logged in",
-          data: {
-            token: token,
-            customer: result[0],
-          },
-        });
+    // Check if profile image was uploaded
+    let profilePicPath = null;
+    if (req.file) {
+      // Create directory if it doesn't exist
+      const uploadDir = path.join("uploads", "customer");
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
       }
-    } else {
-      // Generate a random password
-      const randomPassword = Math.random().toString(36).slice(-8);
-      const hashedPassword = md5(randomPassword);
 
-      const profilePic = req.file ? req.file.filename : null;
-
-      // Insert new admin
-      const sql =
-        "INSERT INTO customers (`name`, `email`, `mobile`, `password`, `uuid`, `profile_pic`) VALUES (?, ?, ?, ?, UNHEX(REPLACE(?, '-', '')), ?)";
-      const values = [name, email, mobile, hashedPassword, uuid, profilePic];
-
-      const result = await query(sql, values);
-
-      if (result.affectedRows > 0) {
-        return res.status(201).json({
-          code: 1,
-          status: 201,
-          message: "Customer registered successfully",
-          data: {
-            customer_id: result.insertId,
-            profile_pic: profilePic ? `/uploads/customer/${profilePic}` : null,
-          },
-        });
-      } else {
-        return res.status(500).json({
-          code: 0,
-          status: 500,
-          message: "Failed to register customer",
-          data: null,
-        });
-      }
+      // Generate unique filename
+      const filename = `${Date.now()}-${req.file.originalname}`;
+      profilePicPath = path.join(uploadDir, filename);
+      
+      // Save file
+      fs.writeFileSync(profilePicPath, req.file.buffer);
+      
+      // Convert Windows path separators to URL format if needed
+      profilePicPath = profilePicPath.replace(/\\/g, '/');
     }
+
+    // Check if user already exists
+    const checkUserQuery = "SELECT id, name, email, mobile, status FROM customers WHERE email = ?";
+    const existingUser = await query(checkUserQuery, [email]);
+
+    let userId;
+    
+    if (existingUser.length > 0) {
+      // User exists, update their information
+      userId = existingUser[0].id;
+      
+      // Update user information
+      let updateQuery = "UPDATE customers SET name = ?, mobile = ?, last_login = NOW(), uuid = ?";
+      const updateParams = [name, mobile || existingUser[0].mobile, token];
+      
+      // Include profile pic in update if provided
+      if (profilePicPath) {
+        updateQuery += ", profile_pic = ?";
+        updateParams.push(profilePicPath);
+      }
+      
+      updateQuery += " WHERE id = ?";
+      updateParams.push(userId);
+      
+      await query(updateQuery, updateParams);
+    } else {
+      // User doesn't exist, create a new account
+      // Generate a random password since we don't need it for Google login
+      const randomPassword = "dAu78xx15@kesde6";
+      const hashedPassword = md5(randomPassword);
+      
+      const insertQuery = "INSERT INTO customers (name, email, mobile, profile_pic, password, uuid, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 1, NOW(), NOW())";
+      const result = await query(insertQuery, [name, email, mobile || null, profilePicPath, hashedPassword, token]);
+      userId = result.insertId;
+    }
+
+    // Fetch the user data
+    const userData = await query("SELECT id, name, email, mobile, status FROM customers WHERE id = ?", [userId]);
+
+    // Generate JWT Token
+    const jwtToken = jwt.sign(
+      { id: userId, email },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    return res.status(200).json({
+      code: 1,
+      status: 200,
+      message: "Google login successful",
+      data: {
+        token: jwtToken,
+        customer: userData[0],
+      },
+    });
   } catch (err) {
+    console.error("Google login error:", err);
     return res.status(500).json({
       code: 0,
       status: 500,
@@ -265,65 +282,3 @@ export const googleLogin = async (req, res) => {
   }
 };
 
-// google auth login V2 =================
-
-export const authGoogleLogin = async (req, res) => {
-  try {
-    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-    const { token } = req.body;
-
-    // Verify the Google ID token
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
-    // Get user information from the token
-    const payload = ticket.getPayload();
-    const { sub: googleId, email, given_name, family_name, picture } = payload;
-
-    // Check if user exists in database
-    const [rows] = await db.execute("SELECT * FROM customers WHERE google_id = ?", [
-      googleId,
-    ]);
-
-    let userId;
-
-    if (rows.length === 0) {
-      // User doesn't exist, create a new one
-      const [result] = await db.execute(
-        "INSERT INTO customers (google_id, email, first_name, last_name, profile_picture) VALUES (?, ?, ?, ?, ?)",
-        [googleId, email, given_name, family_name, picture]
-      );
-      userId = result.insertId;
-    } else {
-      // User exists, update last login
-      userId = rows[0].id;
-      await db.execute(
-        "UPDATE customers SET last_login = CURRENT_TIMESTAMP WHERE id = ?",
-        [userId]
-      );
-    }
-
-    // Generate JWT token
-    const jwtToken = jwt.sign(
-      { id: userId, email, googleId },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "7d" }
-    );
-
-    res.json({
-      token: jwtToken,
-      user: {
-        id: userId,
-        email,
-        firstName: given_name,
-        lastName: family_name,
-        picture,
-      },
-    });
-  } catch (error) {
-    console.error("Authentication error:", error);
-    res.status(401).json({ message: "Authentication failed" });
-  }
-};
