@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 
 import fs from "fs";
 import path from "path";
@@ -71,7 +72,7 @@ export const loginCustomer = async (req, res) => {
         { id: result[0].id, email },
         process.env.JWT_SECRET_KEY,
         {
-          expiresIn: "7d", // 7 days token expiry for mobile app authentication
+          expiresIn: "7d",
         }
       );
 
@@ -193,7 +194,6 @@ export const loginWithGoogle = async (req, res) => {
         data: null,
       });
     }
-
     // Check if profile image was uploaded
     let profilePicPath = null;
     if (req.file) {
@@ -281,3 +281,4 @@ export const loginWithGoogle = async (req, res) => {
     });
   }
 };
+

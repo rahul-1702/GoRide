@@ -1,7 +1,15 @@
 import { body } from "express-validator";
 
-// Validation rules for admin signup
-export const signupValidation = [
+// Validation rules for customer google login
+export const googleValidation = [
+  body("uuid")
+    .notEmpty()
+    .withMessage("UUID is required")
+    .isLength({ min: 36, max: 36 })
+    .withMessage("UUID must be exactly 36 characters long")
+    .isUUID(4)
+    .withMessage("Invalid UUID format"),
+
   body("name")
     .notEmpty()
     .withMessage("Name is required")
@@ -24,17 +32,8 @@ export const signupValidation = [
     .matches(/^[0-9]{10}$/)
     .withMessage("Mobile must be a 10-digit number"),
 
-  body("password")
-    .notEmpty()
-    .withMessage("Password is required")
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters long")
-    .matches(/[A-Z]/)
-    .withMessage("Password must contain at least one uppercase letter")
-    .matches(/[a-z]/)
-    .withMessage("Password must contain at least one lowercase letter")
-    .matches(/\d/)
-    .withMessage("Password must contain at least one number")
-    .matches(/[@$!%*?&]/)
-    .withMessage("Password must contain at least one special character"),
+  body("profile_pic")
+    .optional(),
+    // .isURL()
+    // .withMessage("Invalid URL format for profile picture"),
 ];
