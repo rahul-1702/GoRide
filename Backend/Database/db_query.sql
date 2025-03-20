@@ -81,3 +81,10 @@ ALTER TABLE customers ADD COLUMN profile_pic VARCHAR(255) AFTER `password`;
 -- customers table -- (10 March, 2025)
 
 ALTER TABLE `customers` ADD `uuid` BINARY(16) NULL DEFAULT NULL AFTER `password`;
+
+
+-- customers table -- (19 March, 2025)
+
+ALTER TABLE customers ADD last_login TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER uuid;
+
+ALTER TABLE customers MODIFY COLUMN uuid VARCHAR(1024);

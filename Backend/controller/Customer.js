@@ -270,7 +270,6 @@ export const loginWithGoogle = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("Google login error:", err);
     return res.status(500).json({
       code: 0,
       status: 500,
