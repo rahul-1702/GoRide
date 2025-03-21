@@ -225,7 +225,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   }
   ```
 
-  #### **4. Customer Login with Google**
+#### **4. Customer Login with Google**
 
 - **Endpoint:** `POST /api/customer/google-login`
 - **Description:** Signup a new Customer and Login with google ID.
