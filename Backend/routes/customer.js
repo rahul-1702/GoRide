@@ -11,7 +11,7 @@ import { verifyToken } from "../middleware/token_auth.js";
 
 import { signupValidation } from "../Validation/vCustomerSignup.js";
 import { loginValidation } from "../Validation/vCustomerLogin.js";
-import { googleValidation } from "../Validation/vCustomerGoogleLogin.js";
+// import { googleValidation } from "../Validation/vCustomerGoogleLogin.js";
 
 const router = express.Router();
 
