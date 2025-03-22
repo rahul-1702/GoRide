@@ -11,7 +11,7 @@ import { verifyToken } from "../middleware/token_auth.js";
 
 import { signupValidation } from "../Validation/vCustomerSignup.js";
 import { loginValidation } from "../Validation/vCustomerLogin.js";
-// import { googleValidation } from "../Validation/vCustomerGoogleLogin.js";
+import { googleValidation } from "../Validation/vCustomerGoogleLogin.js";
 
 const router = express.Router();
 
@@ -22,6 +22,6 @@ const upload = multer({ storage: storage });
 router.get("/show", verifyToken, getAllCustomers);
 router.post("/signup", signupValidation, signupCustomer);
 router.post("/login", loginValidation, loginCustomer);
-router.post("/google-login", upload.single("profile_image"), loginWithGoogle);
+router.post("/google-login", googleValidation, upload.single("profile_image"), loginWithGoogle);
 
 export default router;

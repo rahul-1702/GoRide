@@ -182,17 +182,20 @@ export const signupCustomer = async (req, res) => {
 
 export const loginWithGoogle = async (req, res) => {
   try {
-    const { name, email, mobile, token } = req.body;
     
-    // Input validation
-    if (!name || !email || !token) {
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
       return res.status(400).json({
         code: 0,
         status: 400,
-        message: "Name, email, and token are required",
+        message: errors.errors[0].msg,
         data: null,
       });
     }
+    
+    const { name, email, mobile, token } = req.body;
+
     // Check if profile image was uploaded
     let profilePicPath = null;
     if (req.file) {
@@ -205,51 +208,64 @@ export const loginWithGoogle = async (req, res) => {
       // Generate unique filename
       const filename = `${Date.now()}-${req.file.originalname}`;
       profilePicPath = path.join(uploadDir, filename);
-      
+
       // Save file
       fs.writeFileSync(profilePicPath, req.file.buffer);
-      
+
       // Convert Windows path separators to URL format if needed
-      profilePicPath = profilePicPath.replace(/\\/g, '/');
+      profilePicPath = profilePicPath.replace(/\\/g, "/");
     }
 
     // Check if user already exists
-    const checkUserQuery = "SELECT id, name, email, mobile, status FROM customers WHERE email = ?";
+    const checkUserQuery =
+      "SELECT id, name, email, mobile, status FROM customers WHERE email = ?";
     const existingUser = await query(checkUserQuery, [email]);
 
     let userId;
-    
+
     if (existingUser.length > 0) {
       // User exists, update their information
       userId = existingUser[0].id;
-      
+
       // Update user information
-      let updateQuery = "UPDATE customers SET name = ?, mobile = ?, last_login = NOW(), uuid = ?";
+      let updateQuery =
+        "UPDATE customers SET name = ?, mobile = ?, last_login = NOW(), uuid = ?";
       const updateParams = [name, mobile || existingUser[0].mobile, token];
-      
+
       // Include profile pic in update if provided
       if (profilePicPath) {
         updateQuery += ", profile_pic = ?";
         updateParams.push(profilePicPath);
       }
-      
+
       updateQuery += " WHERE id = ?";
       updateParams.push(userId);
-      
+
       await query(updateQuery, updateParams);
     } else {
       // User doesn't exist, create a new account
       // Generate a random password since we don't need it for Google login
       const randomPassword = "dAu78xx15@kesde6";
       const hashedPassword = md5(randomPassword);
-      
-      const insertQuery = "INSERT INTO customers (name, email, mobile, profile_pic, password, uuid, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 1, NOW(), NOW())";
-      const result = await query(insertQuery, [name, email, mobile || null, profilePicPath, hashedPassword, token]);
+
+      const insertQuery =
+        "INSERT INTO customers (name, email, mobile, profile_pic, password, uuid, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 1, NOW(), NOW())";
+      const result = await query(insertQuery, [
+        name,
+        email,
+        mobile || null,
+        profilePicPath,
+        hashedPassword,
+        token,
+      ]);
       userId = result.insertId;
     }
 
     // Fetch the user data
-    const userData = await query("SELECT id, name, email, mobile, status FROM customers WHERE id = ?", [userId]);
+    const userData = await query(
+      "SELECT id, name, email, mobile, status FROM customers WHERE id = ?",
+      [userId]
+    );
 
     // Generate JWT Token
     const jwtToken = jwt.sign(
@@ -279,4 +295,3 @@ export const loginWithGoogle = async (req, res) => {
     });
   }
 };
-

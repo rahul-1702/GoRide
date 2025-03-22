@@ -2,13 +2,13 @@ import { body } from "express-validator";
 
 // Validation rules for customer google login
 export const googleValidation = [
-  body("uuid")
+  body("token")
     .notEmpty()
-    .withMessage("UUID is required")
+    .withMessage("token is required")
     .isLength({ min: 36, max: 36 })
-    .withMessage("UUID must be exactly 36 characters long")
+    .withMessage("token must be exactly 36 characters long")
     .isUUID(4)
-    .withMessage("Invalid UUID format"),
+    .withMessage("Invalid token format"),
 
   body("name")
     .notEmpty()
@@ -32,8 +32,8 @@ export const googleValidation = [
     .matches(/^[0-9]{10}$/)
     .withMessage("Mobile must be a 10-digit number"),
 
-  body("profile_pic")
-    .optional(),
+  // body("profile_pic")
+  //   .optional(),
     // .isURL()
     // .withMessage("Invalid URL format for profile picture"),
 ];
