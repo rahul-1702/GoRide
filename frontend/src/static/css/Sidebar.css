@@ -1,6 +1,6 @@
 .leftSideTable, .rightSideTable {
     overflow: scroll;
-    scrollbar-width: none;
+    /* scrollbar-width: none; */
 }
 
 .leftSideTable::-webkit-scrollbar, .rightSideTable::-webkit-scrollbar {
