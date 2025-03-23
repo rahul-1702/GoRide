@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <footer
-      className="mt-3 bg-dark text-white d-flex justify-content-between align-items-center px-4"
+      className="pt-3 bg-dark text-white d-flex justify-content-between align-items-center px-4"
       style={{ height: "60px" }}
     >
       <span className="text-secondary">

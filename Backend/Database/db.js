@@ -15,7 +15,6 @@ export const query = (sql, params) => {
   return new Promise((resolve, reject) => {
     db.execute(sql, params, (err, results) => {
       if (err) {
-        console.error("Database query error:", err);
         return reject(err);
       }
       resolve(results);

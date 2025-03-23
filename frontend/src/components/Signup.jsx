@@ -106,12 +106,7 @@ function Signup() {
           }, 500);
         })
         .catch((err) => {
-          console.log("Error while signup => ", err);
-          showAlert(
-            "Server Error",
-            "Something went wrong. Please try again later.",
-            "error"
-          );
+          showAlert("Unable to Signup", err.response.data.message, "error");
           setTimeout(() => {
             setLoading(false);
           }, 500);

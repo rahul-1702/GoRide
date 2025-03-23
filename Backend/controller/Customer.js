@@ -182,7 +182,6 @@ export const signupCustomer = async (req, res) => {
 
 export const loginWithGoogle = async (req, res) => {
   try {
-    
     // Validate input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -193,7 +192,7 @@ export const loginWithGoogle = async (req, res) => {
         data: null,
       });
     }
-    
+
     const { name, email, mobile, token } = req.body;
 
     // Check if profile image was uploaded

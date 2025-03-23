@@ -71,11 +71,14 @@ const ResetPassword = () => {
               title: "Success!",
               text: res.data.message + "! Redirecting to login page...",
               icon: "success",
+              timer: 3000,
               confirmButtonText: "OK",
               allowOutsideClick: false,
-            }).then(() => {
-              navigate("/");
             });
+
+            setTimeout(() => {
+              navigate("/");
+            }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");
           }
@@ -84,10 +87,9 @@ const ResetPassword = () => {
           }, 500);
         })
         .catch((err) => {
-          console.log("Error while reset password => ", err);
           showAlert(
-            "Server Error",
-            "Something went wrong. Please try again later.",
+            "Unable to Reset password",
+            err.response.data.message,
             "error"
           );
           setTimeout(() => {

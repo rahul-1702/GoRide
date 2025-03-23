@@ -57,11 +57,14 @@ const ForgotPassword = () => {
               title: "Success!",
               text: res.data.message + "! Redirecting to login page...",
               icon: "success",
+              timer: 3000,
               confirmButtonText: "OK",
               allowOutsideClick: false,
-            }).then(() => {
-              navigate("/");
             });
+
+            setTimeout(() => {
+              navigate("/");
+            }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");
           }
@@ -70,10 +73,9 @@ const ForgotPassword = () => {
           }, 500);
         })
         .catch((err) => {
-          console.log("Error while forgot password => ", err);
           showAlert(
-            "Server Error",
-            "Something went wrong. Please try again later.",
+            "Unable to Forgot password",
+            err.response.data.message,
             "error"
           );
           setTimeout(() => {
@@ -92,6 +94,10 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate("/");
+  };
+
   return (
     <div className="bg-login-ride">
       {loading ? <Loader /> : ""}
@@ -99,31 +105,49 @@ const ForgotPassword = () => {
         className="d-flex flex-column align-items-center justify-content-center"
         style={{ height: "100vh" }}
       >
-        <div className="card p-4 shadow" style={{ width: "400px" }}>
-          <h4 className="text-center mb-4">Reset Password</h4>
-
-          <form action="">
-            <input
-              name="email"
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              onChange={handleEmailInput}
-            />
-            {errors.email && (
-              <span className="text-danger d-inline-block mt-1">
-                {errors.email}
-              </span>
-            )}
-
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="btn btn-primary mt-4 w-100"
+        <div className="d-flex flex-column gap-3 align-items-start">
+          <button
+            className="btn btn-sm btn-outline-light pt-1"
+            onClick={handleBack}
+          >
+            <span
+              style={{
+                fontSize: 25,
+                lineHeight: "10px",
+                marginLeft: -3,
+                zIndex: 999,
+              }}
             >
-              Send Reset Link
-            </button>
-          </form>
+              &larr;
+            </span>{" "}
+            Back to Dashboard
+          </button>
+          <div className="card p-4 shadow" style={{ width: "400px" }}>
+            <h4 className="text-center mb-4">Reset Password</h4>
+
+            <form action="">
+              <input
+                name="email"
+                type="email"
+                className="form-control"
+                placeholder="Enter your email"
+                onChange={handleEmailInput}
+              />
+              {errors.email && (
+                <span className="text-danger d-inline-block mt-1">
+                  {errors.email}
+                </span>
+              )}
+
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="btn btn-primary mt-4 w-100"
+              >
+                Send Reset Link
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

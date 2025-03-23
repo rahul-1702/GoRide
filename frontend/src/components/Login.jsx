@@ -45,12 +45,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-
-  console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
-  console.log("Frontend URL:", import.meta.env.VITE_FRONTEND_URL);
   
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
 
   const handleLoginInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
@@ -95,10 +91,9 @@ function Login() {
           }, 500);
         })
         .catch((err) => {
-          console.log("Error while login => ", err);
           showAlert(
-            "Server Error",
-            "Something went wrong. Please try again later.",
+            "Unable to login",
+            err.response.data.message,
             "error"
           );
           setTimeout(() => {

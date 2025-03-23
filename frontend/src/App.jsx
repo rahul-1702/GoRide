@@ -6,6 +6,9 @@ import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import ResetPassword from "./components/ResetPassword";
 import ForgotPassword from "./components/ForgotPassword";
+import CustomerProfile from "./components/CustomerProfile";
+import DriverProfile from "./components/DriverProfile";
+import TeamProfile from "./components/TeamProfile";
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/password/forget" element={<ForgotPassword />}></Route>
         <Route path="/admin/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/customers/:id" element={<CustomerProfile />} />
+        <Route path="/drivers/:id" element={<DriverProfile />} />
+        <Route path="/team/:id" element={<TeamProfile />} />
       </Routes>
     </BrowserRouter>
   );

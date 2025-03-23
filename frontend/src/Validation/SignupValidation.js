@@ -42,7 +42,7 @@ function Validation(values) {
   } else if (values.cpassword[0] != values.password[0]) {
     error.cpassword = "Password and Confirm password Didn't match";
   }
-  console.log("Error => ", error);
+  
   return error;
 }
 

@@ -13,7 +13,8 @@ dotenv.config();
 
 export const getAllAdmins = async (req, res) => {
   try {
-    const sql = "SELECT id, name, status, email, mobile, profile_pic FROM admins";
+    const sql =
+      "SELECT id, name, status, email, mobile, profile_pic FROM admins";
     const result = await query(sql);
 
     if (!result.length) {
@@ -26,12 +27,14 @@ export const getAllAdmins = async (req, res) => {
       });
     }
 
-     // Append full URL for profile images
-     const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
-     const adminsWithImage = result.map(admin => ({
-       ...admin,
-       profile_pic_url: admin.profile_pic ? `${backendUrl}/uploads/admin/${admin.profile_pic}` : null,
-     }));
+    // Append full URL for profile images
+    const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
+    const adminsWithImage = result.map((admin) => ({
+      ...admin,
+      profile_pic_url: admin.profile_pic
+        ? `${backendUrl}/uploads/admin/${admin.profile_pic}`
+        : null,
+    }));
 
     return res.status(200).json({
       code: 1,
@@ -84,6 +87,25 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
+    if (result[0].status === "Inactive") {
+      return res.status(403).json({
+        code: 0,
+        status: 403,
+        message:
+          "Your account is Inactive. Please contact support.",
+        data: null,
+      });
+    }
+
+    if (result[0].status === "Deleted") {
+      return res.status(403).json({
+        code: 0,
+        status: 403,
+        message: "Your account has been Deleted.",
+        data: null,
+      });
+    }
+
     // Generate token
     const token = jwt.sign(
       { id: result[0].id, email: result[0].email },
@@ -126,7 +148,7 @@ export const signupAdmin = async (req, res) => {
       });
     }
 
-    if(req.file === undefined){
+    if (req.file === undefined) {
       return res.status(400).json({
         code: 0,
         status: 400,
@@ -356,6 +378,237 @@ export const adminResetPassword = async (req, res) => {
       code: 0,
       status: 500,
       message: "Something went wrong",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// getCustomerProfile =======================
+
+export const getCustomerProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql =
+      "SELECT id, name, status, email, mobile, created_at, updated_at FROM customers WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [id]);
+
+    if (result.length > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Customer Details fetched successfully",
+        total: result.length,
+        data: result,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No customer found",
+        total: 0,
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// updateCustomerProfile ====================================
+
+export const updateCustomerProfile = async (req, res) => {
+  try {
+    const { id, name, email, mobile, status } = req.body;
+
+    const sql =
+      "UPDATE customers SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [name, email, mobile, status, id]);
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Customer Updated successfully",
+        data: null,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No customer found",
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// getDriverProfile =======================
+
+export const getDriverProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql =
+      "SELECT id, first_name, last_name, status, email, mobile, gender, created_at, updated_at FROM drivers WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [id]);
+
+    if (result.length > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Driver Details fetched successfully",
+        total: result.length,
+        data: result,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No driver found",
+        total: 0,
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// updateDriverProfile ====================================
+
+export const updateDriverProfile = async (req, res) => {
+  try {
+    const { id, first_name, last_name, email, mobile, status, gender } =
+      req.body;
+
+    const sql =
+      "UPDATE drivers SET first_name = ?, last_name = ?, email = ?, mobile = ?, status = ?, gender = ? WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [
+      first_name,
+      last_name,
+      email,
+      mobile,
+      status,
+      gender,
+      id,
+    ]);
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Driver Updated successfully",
+        data: null,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No drivers found",
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// getTeamProfile =======================
+
+export const getTeamProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql =
+      "SELECT id, name, status, email, mobile, created_at, updated_at FROM admins WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [id]);
+
+    if (result.length > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Team member Details fetched successfully",
+        total: result.length,
+        data: result,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No team member found",
+        total: 0,
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
+      error: err.message,
+      data: null,
+    });
+  }
+};
+
+// updateTeamProfile ====================================
+
+export const updateTeamProfile = async (req, res) => {
+  try {
+    const { id, name, email, mobile, status } = req.body;
+
+    const sql =
+      "UPDATE admins SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?"; // Fetch only required fields
+    const result = await query(sql, [name, email, mobile, status, id]);
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        code: 1,
+        status: 200,
+        message: "Team member Updated successfully",
+        data: null,
+      });
+    } else {
+      return res.status(404).json({
+        code: 0,
+        status: 404,
+        message: "No team member found",
+        data: null,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      code: 0,
+      status: 500,
+      message: "Internal Server Error",
       error: err.message,
       data: null,
     });

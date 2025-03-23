@@ -1,0 +1,8 @@
+.leftSideTable, .rightSideTable {
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.leftSideTable::-webkit-scrollbar, .rightSideTable::-webkit-scrollbar {
+    display: none;
+}
