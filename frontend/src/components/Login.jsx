@@ -120,7 +120,7 @@ function Login() {
           className="bg-white p-3 rounded w-100"
           style={{ maxWidth: 400, zIndex: 9 }}
         >
-          <h4 className="text-center mb-3">Login Here pls</h4>
+          <h4 className="text-center mb-3">Login Here</h4>
           <form action="">
             <div className="mb-3">
               <label htmlFor="email">Email</label>
