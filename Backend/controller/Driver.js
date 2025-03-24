@@ -49,7 +49,7 @@ export const getAllDrivers = async (req, res) => {
     }
 
      // Append full URL for profile images
-     const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
+     const backendUrl = process.env.FREE_BACKEND_URL || "http://0.0.0.0:5000";
      const driversWithImage = result.map(driver => ({
        ...driver,
        profile_pic_url: driver.profile_pic ? `${backendUrl}/uploads/driver/${driver.profile_pic}` : null,
