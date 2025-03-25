@@ -10,10 +10,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     fetchData();
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
   }, [activeTab]);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -49,6 +45,10 @@ const Sidebar = () => {
       setData(formattedData);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -82,7 +82,10 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="pb-4 px-5 w-100 rightSideTable" style={{ height: "80vh", overflow: "scroll" }}>
+      <div
+        className="pb-4 px-5 w-100 rightSideTable"
+        style={{ height: "80vh", overflow: "scroll" }}
+      >
         <h3 className="text-info text-capitalize mb-4">
           {activeTab === "team" ? "Team Members" : activeTab}
         </h3>
