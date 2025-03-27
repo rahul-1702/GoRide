@@ -6,6 +6,8 @@ import Loader from "../components/Loader";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Login() {
   const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLoginInput = (e) => {
@@ -60,12 +62,15 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       const LOGIN_API = `${backendUrl}/admin/login`;
-
       axios
-        .post(LOGIN_API, {
-          email: values.email[0],
-          password: values.password[0],
-        })
+        .post(
+          LOGIN_API,
+          {
+            email: values.email[0],
+            password: values.password[0],
+          },
+          { timeout: 5000 }
+        ) // Set a timeout of 5 seconds
         .then((res) => {
           if (res.data.code === 1) {
             Swal.fire({
@@ -92,21 +97,27 @@ function Login() {
           }, 500);
         })
         .catch((err) => {
-          showAlert(
-            "Unable to login",
-            err.response.data.message,
-            "error"
-          );
+          if (err.code === "ECONNABORTED") {
+            showAlert(
+              "Server Timeout",
+              "The server is taking too long to respond. Please try again later.",
+              "error"
+            );
+          } else if (!err.response) {
+            showAlert(
+              "Server Unreachable",
+              "Unable to connect to the server. Please ensure the backend is running.",
+              "error"
+            );
+          } else {
+            showAlert("Unable to login", err.response.data.message, "error");
+          }
           setTimeout(() => {
             setLoading(false);
           }, 500);
         });
-    } else {
-      showAlert(
-        "Validation Error",
-        "Please fix the errors before proceeding.",
-        "warning"
-      );
+    }else{
+      showAlert("Validation Error", "Please fix the errors before proceeding.", "warning");
       setTimeout(() => {
         setLoading(false);
       }, 500);
@@ -116,6 +127,7 @@ function Login() {
   return (
     <div className="bg-login-ride pt-5">
       {loading ? <Loader /> : ""}
+      <Header />
       <div className="d-flex justify-content-center align-items-center vh-50 py-5 px-4">
         <div
           className="bg-white p-3 rounded w-100"
@@ -168,7 +180,9 @@ function Login() {
             </div>
             <div className="mb-4 d-flex justify-content-end">
               <span
-                onClick={() => {return navigate('/password/forget')}}
+                onClick={() => {
+                  return navigate("/password/forget");
+                }}
                 className="text-primary text-decoration-none"
                 style={{ cursor: "pointer" }}
               >
@@ -196,6 +210,7 @@ function Login() {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

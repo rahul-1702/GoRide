@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "../assets/Go_Ride.png";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { themeContext } from "../context/ThemeProvider";
 
 function Header() {
+  const { theme, toggleTheme } = useContext(themeContext);
+
   const navigate = useNavigate();
   const APP_NAME = import.meta.env.VITE_APP_NAME;
 
@@ -34,9 +37,9 @@ function Header() {
   };
 
   return (
-    <div className="pb-5">
-      <nav className="navbar navbar-expand-lg bg-body-dark navbar-dark fixed-top p-0">
-        <div className="container-fluid">
+    <div className="pb-5" style={{ zIndex: 1000 }}>
+      <nav className="navbar navbar-expand-lg bg-body-dark navbar-dark fixed-top p-0 px-5">
+        <div className="container-fluid p-0">
           <a
             className="navbar-brand text-info d-flex align-items-center gap-2"
             style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }}
@@ -62,7 +65,7 @@ function Header() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div
-            className="collapse navbar-collapse py-3 bg-dark mt-1"
+            className="collapse navbar-collapse py-3 mt-1"
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -103,14 +106,17 @@ function Header() {
                 </ul>
               </li>
             </ul>
-            {/* <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </form> */}
+            <div className="me-4">
+              <button
+              style={{ filter: "drop-shadow(0 0 1px #fff)"}}
+                onClick={toggleTheme}
+                className={`text-capitalize btn ${
+                  theme === "dark" ? "btn-dark" : "btn-light"
+                }`}
+              >
+                Switch To {theme === "dark" ? "Light" : "Dark"}
+              </button>
+            </div>
             <button
               className="btn btn-outline-info"
               onClick={logoutHandle}
