@@ -11,23 +11,29 @@ import DriverProfile from "./components/DriverProfile";
 import TeamProfile from "./components/TeamProfile";
 
 import ThemeProvider from "./context/ThemeProvider";
+import AuthProvider from "./context/AuthProvider";
 
 function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/password/forget" element={<ForgotPassword />}></Route>
-          <Route path="/admin/reset-password/:token" element={<ResetPassword />}/>
-          <Route path="/customers/:id" element={<CustomerProfile />} />
-          <Route path="/drivers/:id" element={<DriverProfile />} />
-          <Route path="/team/:id" element={<TeamProfile />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route path="/password/forget" element={<ForgotPassword />}></Route>
+            <Route
+              path="/admin/reset-password/:token"
+              element={<ResetPassword />}
+            />
+            <Route path="/customers/:id" element={<CustomerProfile />} />
+            <Route path="/drivers/:id" element={<DriverProfile />} />
+            <Route path="/team/:id" element={<TeamProfile />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 // Login.jsx ================================
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from "../Validation/LoginValidation";
 import Loader from "../components/Loader";
@@ -9,7 +9,10 @@ import "../static/css/Login.css";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import { authContext } from "../context/AuthProvider";
+
 function Login() {
+  const { auth, setAuth } = useContext(authContext);
   const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({
     email: "",
@@ -72,13 +75,12 @@ function Login() {
           { timeout: 5000 }
         ) // Set a timeout of 5 seconds
         .then((res) => {
-          if (res.data.code === 1) {
+          if (res.data.code === 1) {            
             Swal.fire({
-              title: "Welcome to GoRide!",
+              title: `Welcome to GoRide, ${res.data.data.admin.name}!`,
               text: res.data.message + "! Redirecting to Dashboard...",
               icon: "success",
               timer: 3000,
-              minheight: 800,
               showConfirmButton: false,
               allowOutsideClick: false,
               customClass: {
@@ -88,6 +90,7 @@ function Login() {
             setTimeout(() => {
               navigate("/dashboard");
               sessionStorage.setItem("goride_token", res.data.data.token);
+              setAuth({ islogin: 1, admin: res.data.data.admin.name });
             }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");
@@ -116,8 +119,12 @@ function Login() {
             setLoading(false);
           }, 500);
         });
-    }else{
-      showAlert("Validation Error", "Please fix the errors before proceeding.", "warning");
+    } else {
+      showAlert(
+        "Validation Error",
+        "Please fix the errors before proceeding.",
+        "warning"
+      );
       setTimeout(() => {
         setLoading(false);
       }, 500);

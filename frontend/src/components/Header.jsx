@@ -3,9 +3,11 @@ import Logo from "../assets/Go_Ride.png";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { themeContext } from "../context/ThemeProvider";
+import { authContext } from "../context/AuthProvider";
 
 function Header() {
   const { theme, toggleTheme } = useContext(themeContext);
+  const { auth, setAuth } = useContext(authContext);
 
   const navigate = useNavigate();
   const APP_NAME = import.meta.env.VITE_APP_NAME;
@@ -20,7 +22,7 @@ function Header() {
     }).then((btn) => {
       if (btn.isConfirmed) {
         Swal.fire({
-          title: "Logged Out!",
+          title: `Bye ${auth.admin}!`,
           text: "You have been successfully logged out! Redirecting to login page...",
           icon: "success",
           timer: 3000,
@@ -30,7 +32,9 @@ function Header() {
 
         setTimeout(() => {
           navigate("/");
+
           sessionStorage.removeItem("goride_token");
+          setAuth({ islogin: 0, admin: "" });
         }, 2500);
       }
     });
@@ -106,9 +110,9 @@ function Header() {
                 </ul>
               </li>
             </ul>
-            <div className="me-4">
+            <div>
               <button
-              style={{ filter: "drop-shadow(0 0 1px #fff)"}}
+                style={{ filter: "drop-shadow(0 0 1px #fff)" }}
                 onClick={toggleTheme}
                 className={`text-capitalize btn ${
                   theme === "dark" ? "btn-dark" : "btn-light"
@@ -117,13 +121,15 @@ function Header() {
                 Switch To {theme === "dark" ? "Light" : "Dark"}
               </button>
             </div>
-            <button
-              className="btn btn-outline-info"
-              onClick={logoutHandle}
-              type="button"
-            >
-              Log out
-            </button>
+            {auth.islogin === 1 && (
+              <button
+                className="btn btn-outline-info ms-3"
+                onClick={logoutHandle}
+                type="button"
+              >
+                Log out
+              </button>
+            )}
           </div>
         </div>
       </nav>
