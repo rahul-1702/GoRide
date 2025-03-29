@@ -12,7 +12,7 @@ import Footer from "./Footer";
 import { authContext } from "../context/AuthProvider";
 
 function Login() {
-  const { auth, setAuth } = useContext(authContext);
+  const { setAuth } = useContext(authContext);
   const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({
     email: "",
