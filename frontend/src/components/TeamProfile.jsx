@@ -1,17 +1,21 @@
 // TeamProfile.jsx
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loader from "./Loader";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import Swal from "sweetalert2";
 
+import { themeContext } from "../context/ThemeProvider";
+
 function TeamProfile() {
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [error, setError] = useState(null);
+  const [text, setText] = useState("text-white");
+  const [bg, setBg] = useState("bg-dark");
+  const { theme } = useContext(themeContext);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -19,6 +23,16 @@ function TeamProfile() {
   useEffect(() => {
     fetchTeamData();
   }, [id]);
+
+    useEffect(() => {
+      if (theme === "dark") {
+        setBg("bg-dark");
+        setText("text-white");
+      } else {
+        setBg("bg-light");
+        setText("text-dark");
+      }
+    }, [theme]);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -101,7 +115,7 @@ function TeamProfile() {
   };
 
   return (
-    <div className="bg-dark text-white min-vh-100 d-flex flex-column pt-5">
+    <div className={`${bg} ${text} min-vh-100 d-flex flex-column pt-5`}>
       {loading ? <Loader /> : ""}
 
       <Header />
@@ -113,14 +127,11 @@ function TeamProfile() {
               {error ? (
                 <div className="alert alert-danger">{error}</div>
               ) : !team ? (
-                // <div className="alert alert-warning">
-                //   No team data available
-                // </div>
                 <div></div>
               ) : (
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
-                    className="btn btn-sm btn-outline-light pt-1"
+                    className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
                     onClick={handleBack}
                   >
                     <span
@@ -134,7 +145,7 @@ function TeamProfile() {
                     </span>{" "}
                     Back to Dashboard
                   </button>
-                  <div className="card bg-dark border border-info w-100">
+                  <div className={`card ${bg} border border-info w-100`}>
                     <div className="card-header bg-info text-dark d-flex justify-content-between align-items-center">
                       <h4 className="m-0">Team Member Profile</h4>
                       <div>
@@ -156,12 +167,12 @@ function TeamProfile() {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group mb-3">
-                              <label className="form-label text-info">
+                              <label className={`form-label fw-bold ${text}`}>
                                 Name:
                               </label>
                               <input
                                 type="text"
-                                className="form-control bg-dark text-white"
+                                className={`form-control ${bg} ${text}`}
                                 name="name"
                                 value={team.name || ""}
                                 onChange={handleChange}
@@ -170,12 +181,12 @@ function TeamProfile() {
                             </div>
 
                             <div className="form-group mb-3">
-                              <label className="form-label text-info">
+                              <label className={`form-label fw-bold ${text}`}>
                                 Mobile:
                               </label>
                               <input
                                 type="text"
-                                className="form-control bg-dark text-white"
+                                className={`form-control ${bg} ${text}`}
                                 name="mobile"
                                 value={team.mobile || ""}
                                 onChange={handleChange}
@@ -186,12 +197,12 @@ function TeamProfile() {
 
                           <div className="col-md-6">
                             <div className="form-group mb-3">
-                              <label className="form-label text-info">
+                              <label className={`form-label fw-bold ${text}`}>
                                 Email:
                               </label>
                               <input
                                 type="email"
-                                className="form-control bg-dark text-white"
+                                className={`form-control ${bg} ${text}`}
                                 name="email"
                                 value={team.email || ""}
                                 onChange={handleChange}
@@ -200,11 +211,11 @@ function TeamProfile() {
                             </div>
 
                             <div className="form-group mb-3">
-                              <label className="form-label text-info">
+                              <label className={`form-label fw-bold ${text}`}>
                                 Status:
                               </label>
                               <select
-                                className="form-select bg-dark text-white"
+                                className={`form-select ${bg} ${text}`}
                                 name="status"
                                 value={team.status || ""}
                                 onChange={handleChange}
@@ -221,16 +232,16 @@ function TeamProfile() {
                     </div>
 
                     <div
-                      className="card-footer bg-dark border-top border-info"
+                      className={`card-footer ${bg} border-top border-info`}
                       style={{ height: 80 }}
                     >
                       <div className="row align-items-center justify-content-between h-100">
                         <div className="col-md-6">
-                          <span className="text-light">
-                          Team Member ID: {team.id}
+                          <span className={text}>
+                            Team Member ID: {team.id}
                           </span>
                           <div className="col-md-4 text-center d-flex gap-2 mt-1">
-                            <span className="text-light">Status</span>{" "}
+                            <span className={text}>Status</span>{" "}
                             {team.status === "Active" ? (
                               <span
                                 className="badge bg-success"
@@ -257,13 +268,13 @@ function TeamProfile() {
                         </div>
                         <div className="col-md-6">
                           <div className="text-md-end">
-                            <div className="small text-light">
+                            <div className={`small ${text}`}>
                               Registered at:{" "}
                               {team.created_at
                                 ? new Date(team.created_at).toLocaleString()
                                 : "N/A"}
                             </div>
-                            <div className="small text-light">
+                            <div className={`small ${text}`}>
                               Last modified at:{" "}
                               {team.updated_at
                                 ? new Date(team.updated_at).toLocaleString()

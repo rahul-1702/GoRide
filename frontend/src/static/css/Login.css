@@ -20,6 +20,14 @@
   z-index: -1;
 }
 
+input.place-light::placeholder{
+  color: #fff;
+}
+
+input.place-dark::placeholder {
+  color: #000;
+}
+
 .custom-height {
   padding-bottom: 50px;
 }

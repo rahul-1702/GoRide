@@ -42,7 +42,11 @@ function Header() {
 
   return (
     <div className="pb-5" style={{ zIndex: 1000 }}>
-      <nav className="navbar navbar-expand-lg bg-body-dark navbar-dark fixed-top p-0 px-5">
+      <nav
+        className={`navbar navbar-expand-lg ${
+          theme === "dark" ? "navbar-dark" : "navbar-light"
+        } fixed-top p-0 px-5`}
+      >
         <div className="container-fluid p-0">
           <a
             className="navbar-brand text-info d-flex align-items-center gap-2"
@@ -112,7 +116,7 @@ function Header() {
             </ul>
             <div>
               <button
-                style={{ filter: "drop-shadow(0 0 1px #fff)" }}
+                style={{ filter: `drop-shadow(0 0 1px ${ theme === "dark" ? "#fff" : "#000"})` }}
                 onClick={toggleTheme}
                 className={`text-capitalize btn ${
                   theme === "dark" ? "btn-dark" : "btn-light"

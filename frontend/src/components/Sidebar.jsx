@@ -1,16 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import "../static/css/Sidebar.css";
+import { themeContext } from "../context/ThemeProvider";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("drivers");
   const [data, setData] = useState([]);
 
+  const [text, setText] = useState("text-white");
+  const [bg, setBg] = useState("bg-dark");
+  const { theme } = useContext(themeContext);
+  
   useEffect(() => {
     fetchData();
   }, [activeTab]);
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setBg("bg-dark");
+      setText("text-white");
+    } else {
+      setBg("bg-light");
+      setText("text-dark");
+    }
+  }, [theme]);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -56,7 +71,7 @@ const Sidebar = () => {
     <div className="d-flex pt-5">
       {loading ? <Loader /> : ""}
       <div
-        className="d-flex flex-column p-3 pt-0 bg-dark text-white leftSideTable"
+        className={`d-flex flex-column p-3 pt-0 ${text} ${bg} leftSideTable`}
         style={{
           width: "300px",
           height: "80vh",
@@ -70,8 +85,8 @@ const Sidebar = () => {
               <button
                 className={`nav-link text-capitalize text-start w-100 ${
                   activeTab === tab
-                    ? "active bg-info text-dark rounded"
-                    : " text-white"
+                    ? `active bg-info text-dark rounded`
+                    : ` ${text}`
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -89,7 +104,11 @@ const Sidebar = () => {
         <h3 className="text-info text-capitalize mb-4">
           {activeTab === "team" ? "Team Members" : activeTab}
         </h3>
-        <table className="table table-dark table-striped text-white">
+        <table
+          className={`table ${
+            theme === "dark" ? "table-dark" : "table-light"
+          } table-striped ${text}`}
+        >
           <thead>
             <tr>
               <th>S.No.</th>
@@ -152,14 +171,14 @@ const Sidebar = () => {
                       className="btn btn-sm btn-outline-info px-1 py-0"
                       to={`/${activeTab}/${item.id}`}
                     >
-                      <i className="bi bi-pencil-square"></i>
+                      <i className={`bi bi-pencil-square ${text}`}></i>
                     </Link>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="text-center">
+                <td colSpan="6" className={`${text} text-center`}>
                   Loading...
                 </td>
               </tr>
