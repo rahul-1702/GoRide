@@ -101,8 +101,11 @@ function Login() {
                 popup: "custom-height",
               },
             });
+            
             setTimeout(() => {
               navigate("/dashboard");
+              sessionStorage.setItem("islogin", 1);
+              sessionStorage.setItem("admin", res.data.data.admin.name);
               sessionStorage.setItem("goride_token", res.data.data.token);
               setAuth({ islogin: 1, admin: res.data.data.admin.name });
             }, 2500);

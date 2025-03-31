@@ -32,7 +32,8 @@ function Header() {
 
         setTimeout(() => {
           navigate("/");
-
+          sessionStorage.removeItem("islogin");
+          sessionStorage.removeItem("admin");
           sessionStorage.removeItem("goride_token");
           setAuth({ islogin: 0, admin: "" });
         }, 2500);
@@ -41,20 +42,28 @@ function Header() {
   };
 
   const location = useLocation();
-  const isHomeOrSignupPage = location.pathname === "/" || location.pathname === "/signup";
+  const validTextPage =
+    location.pathname === "/" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/password/forget" ||
+    location.pathname.includes("/admin/reset-password");
 
   return (
     <div className="pb-5" style={{ zIndex: 1000 }}>
       <nav
-        className={`navbar navbar-expand-lg ${ isHomeOrSignupPage ?
-          "navbar-dark" : (theme === "dark" ? "navbar-dark" : "navbar-light")
+        className={`navbar navbar-expand-lg ${
+          validTextPage
+            ? "navbar-dark"
+            : theme === "dark"
+            ? "navbar-dark"
+            : "navbar-light"
         } fixed-top p-0 px-4 px-md-5`}
       >
         <div className="container-fluid p-0">
           <a
             className="navbar-brand text-info d-flex align-items-center gap-2"
             style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }}
-            href="/dashboard"
+            href={`${auth.islogin === 1 ? "/dashboard" : "/"}`}
           >
             <img
               src={Logo}
@@ -119,7 +128,11 @@ function Header() {
             </ul>
             <div>
               <button
-                style={{ filter: `drop-shadow(0 0 1px ${ theme === "dark" ? "#fff" : "#000"})` }}
+                style={{
+                  filter: `drop-shadow(0 0 1px ${
+                    theme === "dark" ? "#fff" : "#000"
+                  })`,
+                }}
                 onClick={toggleTheme}
                 className={`text-capitalize btn ${
                   theme === "dark" ? "btn-dark" : "btn-light"
