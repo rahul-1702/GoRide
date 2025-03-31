@@ -63,7 +63,7 @@ function Header() {
           <a
             className="navbar-brand text-info d-flex align-items-center gap-2"
             style={{ fontSize: 30, fontWeight: 900, marginRight: 30 }}
-            href={`${auth.islogin === 1 ? "/dashboard" : "/"}`}
+            href="/"
           >
             <img
               src={Logo}
