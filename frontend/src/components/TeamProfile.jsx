@@ -24,15 +24,15 @@ function TeamProfile() {
     fetchTeamData();
   }, [id]);
 
-    useEffect(() => {
-      if (theme === "dark") {
-        setBg("bg-dark");
-        setText("text-white");
-      } else {
-        setBg("bg-light");
-        setText("text-dark");
-      }
-    }, [theme]);
+  useEffect(() => {
+    if (theme === "dark") {
+      setBg("bg-dark");
+      setText("text-white");
+    } else {
+      setBg("bg-light");
+      setText("text-dark");
+    }
+  }, [theme]);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

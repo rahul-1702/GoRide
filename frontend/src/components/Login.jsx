@@ -231,7 +231,7 @@ function Login() {
                   </button>
                   <div
                     className="d-flex align-items-center justify-content-center gap-2"
-                    style={{ width: "300px" }}
+                    style={{ width: "220px" }}
                   >
                     <span
                       className={`border border-bottom ${

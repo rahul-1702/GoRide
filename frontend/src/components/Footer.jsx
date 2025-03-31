@@ -19,7 +19,7 @@ const Footer = () => {
 
   return (
     <footer
-      className={`py-3 ${text} ${bg} d-flex justify-content-between align-items-center px-5 w-100 position-absolute bottom-0`}
+      className={`py-3 ${text} ${bg} d-flex justify-content-between align-items-center px-4 px-md-5 w-100 position-absolute bottom-0`}
       style={{ height: "60px", zIndex: 1000 }}
     >
       <span className="text-secondary">
@@ -27,16 +27,16 @@ const Footer = () => {
       </span>
 
       <div>
-        <a href="#" className={`${text} me-3`}>
+        <a href="#" className={`${text} ms-3`}>
           <i className="bi bi-facebook"></i>
         </a>
-        <a href="#" className={`${text} me-3`}>
+        <a href="#" className={`${text} ms-3`}>
           <i className="bi bi-twitter"></i>
         </a>
-        <a href="#" className={`${text} me-3`}>
+        <a href="#" className={`${text} ms-3`}>
           <i className="bi bi-instagram"></i>
         </a>
-        <a href="#" className={`${text} me-3`}>
+        <a href="#" className={`${text} ms-3`}>
           <i className="bi bi-linkedin"></i>
         </a>
       </div>

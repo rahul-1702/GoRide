@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Validation from "../Validation/SignupValidation";
 import Loader from "../components/Loader";
@@ -6,7 +6,25 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
 
+import { themeContext } from "../context/ThemeProvider";
+import Header from "./Header";
+import Footer from "./Footer";
+
 function Signup() {
+  const { theme } = useContext(themeContext);
+  const [bg, setBg] = useState("bg-dark");
+  const [text, setText] = useState("text-white");
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setBg("bg-dark");
+      setText("text-white");
+    } else {
+      setBg("bg-light");
+      setText("text-dark");
+    }
+  }, [theme]);
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({
@@ -124,155 +142,190 @@ function Signup() {
   };
 
   return (
-    <div className="bg-login-ride">
-      {loading ? <Loader /> : ""}
-      <div className="d-flex justify-content-center align-items-center vh-100 px-4">
-        <div
-          className="bg-white p-3 rounded w-100"
-          style={{ maxWidth: 500, zIndex: 9 }}
-        >
-          <h4 className="text-center mb-3">SignUp Here</h4>
-          <form action="">
-            <div className="mb-3">
-              <label htmlFor="name">Name</label>
-              <input
-                onChange={handleInput}
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter Name"
-                className="form-control mt-1"
-              />
-              {errors.name && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.name}
-                </span>
-              )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email">Email</label>
-              <input
-                onChange={handleInput}
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Enter Email"
-                className="form-control mt-1"
-              />
-              {errors.email && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.email}
-                </span>
-              )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="mobile">Mobile</label>
-              <input
-                onChange={handleInput}
-                type="number"
-                id="mobile"
-                name="mobile"
-                placeholder="Enter Mobile"
-                className="form-control mt-1"
-              />
-              {errors.mobile && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.mobile}
-                </span>
-              )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password">Password</label>
-              <div style={showpasswordInputGroup}>
-                <input
-                  onChange={handleInput}
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  placeholder="Enter Password"
-                  className="form-control mt-1"
-                />
-                <span
-                  style={{ zIndex: 999, cursor: "pointer" }}
-                  className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <i
-                    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
-                  ></i>
-                </span>
-              </div>
-              {errors.password && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.password}
-                </span>
-              )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="cpassword">Confirm Password</label>
-              <div style={showpasswordInputGroup}>
-                <input
-                  onChange={handleInput}
-                  type={showCPassword ? "text" : "password"}
-                  id="cpassword"
-                  name="cpassword"
-                  placeholder="Confirm Password"
-                  className="form-control mt-1"
-                />
-                <span
-                  style={{ zIndex: 999, cursor: "pointer" }}
-                  className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
-                  onClick={() => setShowCPassword(!showCPassword)}
-                >
-                  <i
-                    className={`bi ${
-                      showCPassword ? "bi-eye-slash" : "bi-eye"
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className={`bg-login-ride pt-5 ${bg}`}>
+          <Header />
+          <div
+            className={`d-flex justify-content-center align-items-center vh-50 px-4`}
+          >
+            <div
+              className={`${bg} p-3 rounded w-100`}
+              style={{ maxWidth: 1000, zIndex: 9 }}
+            >
+              <h4 className={`text-center mb-3 ${text}`}>SignUp Here</h4>
+              <form action="" className="row m-0 gy-0 gy-sm-2 gx-3 gx-sm-4 gx-md-5">
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="name" className={text}>
+                    Name
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter Name"
+                    className={`form-control mt-1 ${text} ${bg} ${
+                      theme === "dark" ? "place-light" : "place-dark"
                     }`}
-                  ></i>
-                </span>
-              </div>
-              {errors.cpassword && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.cpassword}
-                </span>
-              )}
+                  />
+                  {errors.name && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.name}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="email" className={text}>
+                    Email
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    className={`form-control mt-1 ${text} ${bg} ${
+                      theme === "dark" ? "place-light" : "place-dark"
+                    }`}
+                  />
+                  {errors.email && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.email}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="mobile" className={text}>
+                    Mobile
+                  </label>
+                  <input
+                    onChange={handleInput}
+                    type="number"
+                    id="mobile"
+                    name="mobile"
+                    placeholder="Enter Mobile"
+                    className={`form-control mt-1 ${text} ${bg} ${
+                      theme === "dark" ? "place-light" : "place-dark"
+                    }`}
+                  />
+                  {errors.mobile && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.mobile}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="password" className={text}>
+                    Password
+                  </label>
+                  <div style={showpasswordInputGroup}>
+                    <input
+                      onChange={handleInput}
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="Enter Password"
+                      className={`form-control mt-1 ${text} ${bg} ${
+                        theme === "dark" ? "place-light" : "place-dark"
+                      }`}
+                    />
+                    <span
+                      style={{ zIndex: 999, cursor: "pointer" }}
+                      className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <i
+                        className={`bi ${text} ${
+                          showPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                      ></i>
+                    </span>
+                  </div>
+                  {errors.password && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="cpassword" className={text}>
+                    Confirm Password
+                  </label>
+                  <div style={showpasswordInputGroup}>
+                    <input
+                      onChange={handleInput}
+                      type={showCPassword ? "text" : "password"}
+                      id="cpassword"
+                      name="cpassword"
+                      placeholder="Confirm Password"
+                      className={`form-control mt-1 ${text} ${bg} ${
+                        theme === "dark" ? "place-light" : "place-dark"
+                      }`}
+                    />
+                    <span
+                      style={{ zIndex: 999, cursor: "pointer" }}
+                      className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
+                      onClick={() => setShowCPassword(!showCPassword)}
+                    >
+                      <i
+                        className={`bi ${text} ${
+                          showCPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                      ></i>
+                    </span>
+                  </div>
+                  {errors.cpassword && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.cpassword}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-3 col-12 col-sm-6">
+                  <label htmlFor="profilePic" className={text}>
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    id="profilePic"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className={`form-control mt-1 ${text} ${bg} ${
+                      theme === "dark" ? "place-light" : "place-dark"
+                    }`}
+                  />
+                  {errors.profilePic && (
+                    <span className="text-danger d-inline-block mt-1">
+                      {errors.profilePic}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-0 mb-sm-2 d-flex flex-sm-row flex-column gap-3 gap-sm-5 pt-2 pt-sm-3">
+                  <button
+                    type="button"
+                    onClick={handleSubmitSignup}
+                    className="btn btn-success w-100"
+                  >
+                    Register
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/")}
+                    className="btn btn-primary w-100"
+                  >
+                    Back To Login
+                  </button>
+                </div>
+              </form>
             </div>
-            <div className="mb-3">
-              <label htmlFor="profilePic">Profile Picture</label>
-              <input
-                type="file"
-                id="profilePic"
-                name="profilePic"
-                accept="image/*"
-                className="form-control mt-1"
-                onChange={handleFileChange}
-              />
-              {errors.profilePic && (
-                <span className="text-danger d-inline-block mt-1">
-                  {errors.profilePic}
-                </span>
-              )}
-            </div>
-            <div className="mb-3 d-flex flex-column align-items-center justify-content-center gap-2">
-              <button
-                type="button"
-                onClick={handleSubmitSignup}
-                className="btn btn-success w-100"
-              >
-                Register
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate("/")}
-                className="btn btn-primary w-100"
-              >
-                Back To Login
-              </button>
-            </div>
-          </form>
+          </div>
+          <Footer />
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

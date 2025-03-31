@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Logo from "../assets/Go_Ride.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { themeContext } from "../context/ThemeProvider";
 import { authContext } from "../context/AuthProvider";
@@ -40,12 +40,15 @@ function Header() {
     });
   };
 
+  const location = useLocation();
+  const isHomeOrSignupPage = location.pathname === "/" || location.pathname === "/signup";
+
   return (
     <div className="pb-5" style={{ zIndex: 1000 }}>
       <nav
-        className={`navbar navbar-expand-lg ${
-          theme === "dark" ? "navbar-dark" : "navbar-light"
-        } fixed-top p-0 px-5`}
+        className={`navbar navbar-expand-lg ${ isHomeOrSignupPage ?
+          "navbar-dark" : (theme === "dark" ? "navbar-dark" : "navbar-light")
+        } fixed-top p-0 px-4 px-md-5`}
       >
         <div className="container-fluid p-0">
           <a
