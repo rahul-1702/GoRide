@@ -13,9 +13,11 @@ import { themeContext } from "../context/ThemeProvider";
 
 const ResetPassword = () => {
   const { theme } = useContext(themeContext);
+  
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
   const [loading, setLoading] = useState(true);
+
   const { token } = useParams();
   const navigate = useNavigate();
 
