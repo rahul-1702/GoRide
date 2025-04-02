@@ -110,10 +110,6 @@ function CustomerProfile() {
     setCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleBack = () => {
-    navigate("/dashboard");
-  };
-
   return (
     <div className={`${bg} ${text} min-vh-100 d-flex flex-column pt-5`}>
       {loading ? <Loader /> : ""}
@@ -135,7 +131,7 @@ function CustomerProfile() {
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
                     className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
-                    onClick={handleBack}
+                    onClick={() => navigate("/dashboard")}
                   >
                     <span
                       style={{
