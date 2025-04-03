@@ -10,6 +10,7 @@ function Header() {
   const { auth, setAuth } = useContext(authContext);
 
   const navigate = useNavigate();
+  
   const APP_NAME = import.meta.env.VITE_APP_NAME;
 
   const logoutHandle = () => {
@@ -42,6 +43,7 @@ function Header() {
   };
 
   const location = useLocation();
+  
   const validTextPage =
     location.pathname === "/" ||
     location.pathname === "/signup" ||
