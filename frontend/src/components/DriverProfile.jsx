@@ -15,6 +15,7 @@ function DriverProfile() {
   const [error, setError] = useState(null);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
+  
   const { theme } = useContext(themeContext);
   const navigate = useNavigate();
 

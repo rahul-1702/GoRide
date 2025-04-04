@@ -13,9 +13,10 @@ function CustomerProfile() {
   const [customer, setCustomer] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [error, setError] = useState(null);
-  const { theme } = useContext(themeContext);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
+  
+  const { theme } = useContext(themeContext);
   const navigate = useNavigate();
 
   const { id } = useParams();
