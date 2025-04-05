@@ -13,20 +13,23 @@ import { authContext } from "../context/AuthProvider";
 import { themeContext } from "../context/ThemeProvider";
 
 function Login() {
-  const { setAuth } = useContext(authContext);
   const [loading, setLoading] = useState(true);
-  const { theme } = useContext(themeContext);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
+  const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-
+  
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
+  
+  const { theme } = useContext(themeContext);
+  const { setAuth } = useContext(authContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,10 +64,6 @@ function Login() {
     alignItems: "stretch",
     width: "100%",
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

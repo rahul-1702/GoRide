@@ -11,21 +11,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 function Signup() {
-  const { theme } = useContext(themeContext);
   const [bg, setBg] = useState("bg-dark");
   const [text, setText] = useState("text-white");
-
-  useEffect(() => {
-    if (theme === "dark") {
-      setBg("bg-dark");
-      setText("text-white");
-    } else {
-      setBg("bg-light");
-      setText("text-dark");
-    }
-  }, [theme]);
-
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({
     name: "",
@@ -42,6 +32,19 @@ function Signup() {
     password: "",
     cpassword: "",
   });
+  
+  const { theme } = useContext(themeContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setBg("bg-dark");
+      setText("text-white");
+    } else {
+      setBg("bg-light");
+      setText("text-dark");
+    }
+  }, [theme]);
 
   const showpasswordInputGroup = {
     position: "relative",
@@ -66,10 +69,6 @@ function Signup() {
       allowOutsideClick: false,
     });
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCPassword, setShowCPassword] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

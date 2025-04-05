@@ -12,25 +12,26 @@ import Footer from "./Footer";
 import { themeContext } from "../context/ThemeProvider";
 
 const ResetPassword = () => {
-  const { theme } = useContext(themeContext);
-  
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
   const [loading, setLoading] = useState(true);
-
-  const { token } = useParams();
-  const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
+   
   const [values, setValues] = useState({
     password: "",
     cpassword: "",
   });
-
+  
   const [errors, setErrors] = useState({
     password: "",
     cpassword: "",
   });
-
+  
+  const { theme } = useContext(themeContext);
+  const { token } = useParams();
+  const navigate = useNavigate();
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -64,9 +65,6 @@ const ResetPassword = () => {
       allowOutsideClick: false,
     });
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCPassword, setShowCPassword] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

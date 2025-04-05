@@ -8,9 +8,9 @@ const Sidebar = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("drivers");
   const [data, setData] = useState([]);
-
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
+
   const { theme } = useContext(themeContext);
   
   useEffect(() => {

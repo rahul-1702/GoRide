@@ -16,14 +16,14 @@ const ForgotPassword = () => {
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
   });
-
   const [errors, setErrors] = useState({
     email: "",
   });
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
