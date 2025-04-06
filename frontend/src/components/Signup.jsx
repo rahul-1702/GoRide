@@ -46,6 +46,12 @@ function Signup() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
   const showpasswordInputGroup = {
     position: "relative",
     display: "flex",
@@ -53,12 +59,6 @@ function Signup() {
     alignItems: "stretch",
     width: "100%",
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
 
   const showAlert = (title, text, icon) => {
     Swal.fire({
