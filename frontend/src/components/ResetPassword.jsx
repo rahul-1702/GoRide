@@ -37,7 +37,7 @@ const ResetPassword = () => {
       setLoading(false);
     }, 500);
   }, []);
-
+  
   useEffect(() => {
     if (theme === "dark") {
       setBg("bg-dark");
@@ -47,6 +47,8 @@ const ResetPassword = () => {
       setText("text-dark");
     }
   }, [theme]);
+  
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const showpasswordInputGroup = {
     position: "relative",
@@ -65,8 +67,6 @@ const ResetPassword = () => {
       allowOutsideClick: false,
     });
   };
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
