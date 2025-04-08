@@ -1,12 +1,12 @@
 // TeamProfile.jsx
 import React, { useState, useEffect, useContext } from "react";
-import Loader from "./Loader";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
+import { themeContext } from "../context/ThemeProvider";
 import Swal from "sweetalert2";
 
-import { themeContext } from "../context/ThemeProvider";
+import Loader from "./Loader";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function TeamProfile() {
   const [loading, setLoading] = useState(true);

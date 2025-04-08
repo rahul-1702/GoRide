@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { themeContext } from "../context/ThemeProvider";
 import Validation from "../Validation/SignupValidation";
-import Loader from "../components/Loader";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
 
-import { themeContext } from "../context/ThemeProvider";
+import Loader from "../components/Loader";
 import Header from "./Header";
 import Footer from "./Footer";
 

@@ -1,16 +1,16 @@
 // Login.jsx ================================
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { authContext } from "../context/AuthProvider";
+import { themeContext } from "../context/ThemeProvider";
 import Validation from "../Validation/LoginValidation";
-import Loader from "../components/Loader";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
+
+import Loader from "../components/Loader";
 import Header from "./Header";
 import Footer from "./Footer";
-
-import { authContext } from "../context/AuthProvider";
-import { themeContext } from "../context/ThemeProvider";
 
 function Login() {
   const [loading, setLoading] = useState(true);

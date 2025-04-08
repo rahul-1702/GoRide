@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import Loader from "../components/Loader";
-import "../static/css/Sidebar.css";
 import { themeContext } from "../context/ThemeProvider";
+import { Link } from "react-router-dom";
+import "../static/css/Sidebar.css";
+
+import Loader from "../components/Loader";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);

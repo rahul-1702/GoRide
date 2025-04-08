@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { themeContext } from "../context/ThemeProvider";
 import axios from "axios";
 import Validation from "../Validation/ResetEmailValidation";
-import Loader from "../components/Loader";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
 
+import Loader from "../components/Loader";
 import Header from "./Header";
 import Footer from "./Footer";
-
-import { themeContext } from "../context/ThemeProvider";
 
 const ForgotPassword = () => {
   const { theme } = useContext(themeContext);
