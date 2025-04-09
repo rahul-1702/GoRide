@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ThemeProvider from "./context/ThemeProvider";
+import AuthProvider from "./context/AuthProvider";
 
 // components ===============
 import Login from "./components/Login";
@@ -9,9 +11,6 @@ import ForgotPassword from "./components/ForgotPassword";
 import CustomerProfile from "./components/CustomerProfile";
 import DriverProfile from "./components/DriverProfile";
 import TeamProfile from "./components/TeamProfile";
-
-import ThemeProvider from "./context/ThemeProvider";
-import AuthProvider from "./context/AuthProvider";
 
 function App() {
   return (

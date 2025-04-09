@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { themeContext } from "../context/ThemeProvider";
 import Swal from "sweetalert2";
 
+// components ===============
 import Loader from "./Loader";
 import Header from "./Header";
 import Footer from "./Footer";
