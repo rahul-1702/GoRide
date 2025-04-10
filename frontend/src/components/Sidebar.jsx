@@ -3,6 +3,7 @@ import { themeContext } from "../context/ThemeProvider";
 import { Link } from "react-router-dom";
 import "../static/css/Sidebar.css";
 
+// components ===============
 import Loader from "../components/Loader";
 
 const Sidebar = () => {

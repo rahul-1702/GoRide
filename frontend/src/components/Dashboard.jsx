@@ -1,6 +1,7 @@
 import React from "react";
 import { themeContext } from "../context/ThemeProvider";
 
+// components ===============
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
