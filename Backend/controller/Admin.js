@@ -1,9 +1,7 @@
 import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
-
 import dotenv from "dotenv";
-
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 

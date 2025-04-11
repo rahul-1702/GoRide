@@ -1,11 +1,10 @@
 import { validationResult } from "express-validator";
 import { query } from "../Database/db.js";
 import md5 from "md5";
-
 import dotenv from "dotenv";
-dotenv.config();
-
 import jwt from "jsonwebtoken";
+
+dotenv.config();
 
 // getAllDrivers =======================
 
