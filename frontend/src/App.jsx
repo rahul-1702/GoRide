@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "./context/ThemeProvider";
 import AuthProvider from "./context/AuthProvider";
@@ -13,12 +14,17 @@ import DriverProfile from "./components/DriverProfile";
 import TeamProfile from "./components/TeamProfile";
 
 function App() {
+
+  useEffect(()=>{
+    sessionStorage.getItem()
+  }, []);
+
   return (
     <AuthProvider>
       <ThemeProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Login />}></Route>
+            <Route path="/" element={ true ? <Login /> : <Dashboard />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/password/forget" element={<ForgotPassword />}></Route>

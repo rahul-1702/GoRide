@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for forgot password
+// Validation rules for Admin forgot password
 export const forgotValidation = [
   body("email")
     .notEmpty()

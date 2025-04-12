@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for admin signup
+// Validation rules for Admin signup
 export const signupValidation = [
   body("name")
     .notEmpty()

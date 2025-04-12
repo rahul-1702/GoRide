@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for customer login
+// Validation rules for Customer login
 export const loginValidation = [
   body("email")
     .notEmpty()

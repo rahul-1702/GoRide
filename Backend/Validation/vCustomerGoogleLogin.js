@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for customer google login
+// Validation rules for Customer google login
 export const googleValidation = [
   body("token")
     .notEmpty()

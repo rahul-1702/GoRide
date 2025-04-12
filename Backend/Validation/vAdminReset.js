@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for reset password
+// Validation rules for Admin reset password
 export const resetValidation = [
   body("password")
     .notEmpty()

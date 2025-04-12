@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for driver signup
+// Validation rules for Driver signup
 export const signupValidation = [
   body("first_name")
     .notEmpty()

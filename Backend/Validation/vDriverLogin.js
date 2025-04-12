@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-// Validation rules for driver login
+// Validation rules for Driver login
 export const loginValidation = [
   body("email")
     .notEmpty()
