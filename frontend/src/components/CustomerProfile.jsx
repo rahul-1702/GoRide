@@ -102,6 +102,12 @@ function CustomerProfile() {
           })
           .catch((error) => {
             console.error("Error saving customer data:", error);
+            Swal.fire({
+              title: error?.message,
+              icon: "error",
+              showConfirmButton: true,
+              allowOutsideClick: false,
+            });
           });
       }
     });
@@ -133,7 +139,7 @@ function CustomerProfile() {
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
                     className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
-                    onClick={() => navigate("/dashboard")}
+                    onClick={() => navigate("/")}
                   >
                     <span
                       style={{

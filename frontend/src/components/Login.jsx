@@ -103,17 +103,14 @@ function Login() {
               },
             });
 
+            // setAuth({ islogin: 1, admin: res.data.data.admin.name });
             setTimeout(() => {
               Cookies.set("islogin", "1", { path: "/" });
               Cookies.set("admin", res.data.data.admin.name, { path: "/" });
               Cookies.set("goride_token", res.data.data.token, { path: "/" });
 
-              setAuth((prevAuth) => ({
-                ...prevAuth,
-                islogin: 1,
-                admin: res.data.data.admin.name,
-              }));
-              navigate("/dashboard");
+              navigate("/");
+              window.location.reload();
             }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");

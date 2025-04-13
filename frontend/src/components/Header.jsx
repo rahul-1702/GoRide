@@ -14,6 +14,7 @@ function Header() {
   const location = useLocation();
 
   const APP_NAME = import.meta.env.VITE_APP_NAME;
+  const adminName = Cookies.get("admin") || "User";
 
   const logoutHandle = () => {
     Swal.fire({
@@ -25,7 +26,7 @@ function Header() {
     }).then((btn) => {
       if (btn.isConfirmed) {
         Swal.fire({
-          title: `Bye ${auth.admin}!`,
+          title: `Bye ${adminName}!`,
           text: "You have been successfully logged out! Redirecting to login page...",
           icon: "success",
           timer: 3000,
@@ -38,15 +39,17 @@ function Header() {
           Cookies.remove("admin");
           Cookies.remove("goride_token");
 
-          setAuth({ islogin: 0, admin: "" });
           navigate("/");
+          window.location.reload();
         }, 2500);
       }
     });
   };
 
   const validTextPage =
-    location.pathname === "/" ||
+    (Cookies.get("islogin")
+      ? location.pathname === "/" && Number(Cookies.get("islogin")) === 0
+      : location.pathname === "/") ||
     location.pathname === "/signup" ||
     location.pathname === "/password/forget" ||
     location.pathname.includes("/admin/reset-password");
@@ -74,7 +77,7 @@ function Header() {
               width={50}
               style={{ filter: "drop-shadow(0 0 2px #999)" }}
             />
-            <span>{APP_NAME}</span>
+            <span style={{ textShadow: "0 0 1px #000" }}>{APP_NAME}</span>
           </a>
           <button
             className="navbar-toggler"
@@ -94,7 +97,7 @@ function Header() {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item dropdown">
                 <a
-                  className="nav-link dropdown-toggle"
+                  className={`nav-link dropdown-toggle`}
                   href="#"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -112,7 +115,7 @@ function Header() {
               </li>
               <li className="nav-item dropdown">
                 <a
-                  className="nav-link dropdown-toggle"
+                  className={`nav-link dropdown-toggle`}
                   href="#"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -129,7 +132,7 @@ function Header() {
                 </ul>
               </li>
             </ul>
-            <div>
+            <div className="d-flex gap-3 align-items-center">
               <button
                 style={{
                   filter: `drop-shadow(0 0 1px ${
@@ -143,16 +146,28 @@ function Header() {
               >
                 Switch To {theme === "dark" ? "Light" : "Dark"}
               </button>
+
+              {Number(Cookies.get("islogin")) === 1 && (
+                <div className="d-flex align-items-center gap-3">
+                  {/* <span
+                    className={`me-3 ${
+                      theme === "dark" ? "text-white" : "text-dark"
+                    }`}
+                  >
+                    Welcome, {adminName}!
+                  </span> */}
+                  <button
+                    className={`btn ${
+                      theme === "dark" ? "btn-outline-info" : "btn-info"
+                    }`}
+                    onClick={logoutHandle}
+                    type="button"
+                  >
+                    Log out
+                  </button>
+                </div>
+              )}
             </div>
-            {auth.islogin === 1 && (
-              <button
-                className="btn btn-outline-info ms-3"
-                onClick={logoutHandle}
-                type="button"
-              >
-                Log out
-              </button>
-            )}
           </div>
         </div>
       </nav>

@@ -16,7 +16,7 @@ function TeamProfile() {
   const [error, setError] = useState(null);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
-  
+
   const { theme } = useContext(themeContext);
   const navigate = useNavigate();
 
@@ -102,6 +102,12 @@ function TeamProfile() {
           })
           .catch((error) => {
             console.error("Error saving team member data:", error);
+            Swal.fire({
+              title: error?.message,
+              icon: "error",
+              showConfirmButton: true,
+              allowOutsideClick: false,
+            });
           });
       }
     });
@@ -129,8 +135,12 @@ function TeamProfile() {
               ) : (
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
-                    className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
-                    onClick={() => navigate("/dashboard")}
+                    className={`btn btn-sm ${
+                      theme === "dark"
+                        ? "btn-outline-light"
+                        : "btn-outline-dark"
+                    } pt-1`}
+                    onClick={() => navigate("/")}
                   >
                     <span
                       style={{

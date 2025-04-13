@@ -39,7 +39,6 @@ function App() {
               element={loginState ? <Dashboard /> : <Login />}
             ></Route>
             <Route path="/signup" element={<Signup />}></Route>
-            {/* <Route path="/dashboard" element={<Dashboard />}></Route> */}
             <Route path="/password/forget" element={<ForgotPassword />}></Route>
             <Route
               path="/admin/reset-password/:token"

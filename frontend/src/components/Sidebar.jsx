@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { themeContext } from "../context/ThemeProvider";
 import { Link } from "react-router-dom";
 import "../static/css/Sidebar.css";
+import Swal from "sweetalert2";
 
 // components ===============
 import Loader from "../components/Loader";
@@ -63,6 +64,12 @@ const Sidebar = () => {
       setData(formattedData);
     } catch (error) {
       console.error("Error fetching data:", error);
+      Swal.fire({
+        title: error?.message,
+        icon: "error",
+        showConfirmButton: true,
+        allowOutsideClick: false,
+      });
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -104,7 +111,10 @@ const Sidebar = () => {
         className="pb-4 px-5 w-100 rightSideTable"
         style={{ height: "80vh", overflow: "scroll" }}
       >
-        <h3 className="text-info text-capitalize mb-4">
+        <h3
+          className="text-info text-capitalize mb-4"
+          style={{ textShadow: "0 0 1px #000" }}
+        >
           {activeTab === "team" ? "Team Members" : activeTab}
         </h3>
         <table

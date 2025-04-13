@@ -16,7 +16,7 @@ function DriverProfile() {
   const [error, setError] = useState(null);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
-  
+
   const { theme } = useContext(themeContext);
   const navigate = useNavigate();
 
@@ -102,6 +102,12 @@ function DriverProfile() {
           })
           .catch((error) => {
             console.error("Error saving driver data:", error);
+            Swal.fire({
+              title: error?.message,
+              icon: "error",
+              showConfirmButton: true,
+              allowOutsideClick: false,
+            });
           });
       }
     });
@@ -129,8 +135,12 @@ function DriverProfile() {
               ) : (
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
-                     className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
-                    onClick={() => navigate("/dashboard")}
+                    className={`btn btn-sm ${
+                      theme === "dark"
+                        ? "btn-outline-light"
+                        : "btn-outline-dark"
+                    } pt-1`}
+                    onClick={() => navigate("/")}
                   >
                     <span
                       style={{
@@ -266,9 +276,7 @@ function DriverProfile() {
                     >
                       <div className="row align-items-center justify-content-between h-100">
                         <div className="col-md-6">
-                          <span className={text}>
-                            Driver ID: {driver.id}
-                          </span>
+                          <span className={text}>Driver ID: {driver.id}</span>
                           <div className="col-md-4 text-center d-flex gap-2 mt-1">
                             <span className={text}>Status</span>{" "}
                             {driver.status === "Active" ? (

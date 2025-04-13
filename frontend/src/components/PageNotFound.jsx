@@ -17,7 +17,7 @@ function PageNotFound() {
 
                 <p>The page you are looking for not avaible!</p>
 
-                <a href="/" className="link_404 text-light">
+                <a href="/" className="px-3 py-2 d-inline-block mt-4 text-decoration-none bg-dark text-white rounded">
                   Back To Home
                 </a>
               </div>
