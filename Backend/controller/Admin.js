@@ -268,7 +268,7 @@ export const adminForgotPassword = async (req, res) => {
       to: email,
       subject: "Password Reset Request",
       html: `
-        <div style="text-align: center; font-family: Arial, sans-serif;">
+        <div style="text-align: center; font-family: "Ubuntu", sans-serif;">
           <h2>Password Reset Request for <span style="color: #007bff">GoRide</span> Admin Panel</h2>
           <p>You requested a password reset. Click the button below to reset your password:</p>
           <a href="${process.env.FREE_FRONTEND_URL}/admin/reset-password/${token}" 

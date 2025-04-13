@@ -7,6 +7,7 @@ import Validation from "../Validation/LoginValidation";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../static/css/Login.css";
+import Cookies from "js-cookie";
 
 // components ===============
 import Loader from "../components/Loader";
@@ -22,12 +23,12 @@ function Login() {
     email: "",
     password: "",
   });
-  
+
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
-  
+
   const { theme } = useContext(themeContext);
   const { setAuth } = useContext(authContext);
   const navigate = useNavigate();
@@ -101,13 +102,18 @@ function Login() {
                 popup: "custom-height",
               },
             });
-            
+
             setTimeout(() => {
+              Cookies.set("islogin", "1", { path: "/" });
+              Cookies.set("admin", res.data.data.admin.name, { path: "/" });
+              Cookies.set("goride_token", res.data.data.token, { path: "/" });
+
+              setAuth((prevAuth) => ({
+                ...prevAuth,
+                islogin: 1,
+                admin: res.data.data.admin.name,
+              }));
               navigate("/dashboard");
-              sessionStorage.setItem("islogin", 1);
-              sessionStorage.setItem("admin", res.data.data.admin.name);
-              sessionStorage.setItem("goride_token", res.data.data.token);
-              setAuth({ islogin: 1, admin: res.data.data.admin.name });
             }, 2500);
           } else {
             showAlert("Error", res.data.message, "error");

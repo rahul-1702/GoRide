@@ -3,7 +3,7 @@ import React, { createContext, useState, useMemo } from "react";
 export const authContext = createContext();
 
 function AuthProvider({ children }) {
-  const [auth, setAuth] = useState({islogin: 0, admin: ""});
+  const [auth, setAuth] = useState({ islogin: 0, admin: "" });
 
   const authValue = useMemo(
     () => ({
@@ -14,9 +14,7 @@ function AuthProvider({ children }) {
   );
 
   return (
-    <authContext.Provider value={authValue}>
-      {children}
-    </authContext.Provider>
+    <authContext.Provider value={authValue}>{children}</authContext.Provider>
   );
 }
 

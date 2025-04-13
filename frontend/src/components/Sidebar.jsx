@@ -5,6 +5,7 @@ import "../static/css/Sidebar.css";
 
 // components ===============
 import Loader from "../components/Loader";
+import Cookies from "js-cookie";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ const Sidebar = () => {
   const [bg, setBg] = useState("bg-dark");
 
   const { theme } = useContext(themeContext);
-  
+
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -43,7 +44,7 @@ const Sidebar = () => {
 
       let response = await fetch(urls[activeTab], {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("goride_token")}`,
+          Authorization: `Bearer ${Cookies.get("goride_token")}`,
         },
       });
 

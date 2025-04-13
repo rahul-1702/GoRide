@@ -4,6 +4,7 @@ import { themeContext } from "../context/ThemeProvider";
 import { authContext } from "../context/AuthProvider";
 import Logo from "../assets/Go_Ride.png";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 function Header() {
   const { theme, toggleTheme } = useContext(themeContext);
@@ -11,7 +12,7 @@ function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const APP_NAME = import.meta.env.VITE_APP_NAME;
 
   const logoutHandle = () => {
@@ -33,11 +34,12 @@ function Header() {
         });
 
         setTimeout(() => {
-          navigate("/");
-          sessionStorage.removeItem("islogin");
-          sessionStorage.removeItem("admin");
-          sessionStorage.removeItem("goride_token");
+          Cookies.remove("islogin");
+          Cookies.remove("admin");
+          Cookies.remove("goride_token");
+
           setAuth({ islogin: 0, admin: "" });
+          navigate("/");
         }, 2500);
       }
     });
