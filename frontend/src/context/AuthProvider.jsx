@@ -1,6 +1,6 @@
 import React, { createContext, useState, useMemo } from "react";
 
-export const authContext = createContext();
+export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [auth, setAuth] = useState({ islogin: 0, admin: "" });
@@ -14,7 +14,7 @@ function AuthProvider({ children }) {
   );
 
   return (
-    <authContext.Provider value={authValue}>{children}</authContext.Provider>
+    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
   );
 }
 

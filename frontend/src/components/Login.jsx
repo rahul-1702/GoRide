@@ -1,8 +1,8 @@
 // Login.jsx ================================
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authContext } from "../context/AuthProvider";
-import { themeContext } from "../context/ThemeProvider";
+import { AuthContext } from "../context/AuthProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import Validation from "../Validation/LoginValidation";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -29,8 +29,8 @@ function Login() {
     password: "",
   });
 
-  const { theme } = useContext(themeContext);
-  const { setAuth } = useContext(authContext);
+  const { theme } = useContext(ThemeContext);
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {

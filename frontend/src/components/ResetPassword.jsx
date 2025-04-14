@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { themeContext } from "../context/ThemeProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import axios from "axios";
 import Validation from "../Validation/ResetPasswordValidation";
 import Swal from "sweetalert2";
@@ -28,7 +28,7 @@ const ResetPassword = () => {
     cpassword: "",
   });
   
-  const { theme } = useContext(themeContext);
+  const { theme } = useContext(ThemeContext);
   const { token } = useParams();
   const navigate = useNavigate();
   

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { themeContext } from "../context/ThemeProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import { Link } from "react-router-dom";
 import "../static/css/Sidebar.css";
 import Swal from "sweetalert2";
@@ -15,7 +15,7 @@ const Sidebar = () => {
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
 
-  const { theme } = useContext(themeContext);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchData();

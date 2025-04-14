@@ -1,7 +1,7 @@
 // TeamProfile.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { themeContext } from "../context/ThemeProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import Swal from "sweetalert2";
 
 // components ===============
@@ -17,7 +17,7 @@ function TeamProfile() {
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
 
-  const { theme } = useContext(themeContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const { id } = useParams();

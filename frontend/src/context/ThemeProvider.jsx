@@ -1,6 +1,6 @@
 import React, { createContext, useState, useMemo } from "react";
 
-export const themeContext = createContext();
+export const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("dark");
@@ -18,9 +18,9 @@ function ThemeProvider({ children }) {
   );
 
   return (
-    <themeContext.Provider value={themeValue}>
+    <ThemeContext.Provider value={themeValue}>
       {children}
-    </themeContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 

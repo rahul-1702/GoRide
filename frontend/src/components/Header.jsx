@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { themeContext } from "../context/ThemeProvider";
-import { authContext } from "../context/AuthProvider";
+import { ThemeContext } from "../context/ThemeProvider";
+import { AuthContext } from "../context/AuthProvider";
 import Logo from "../assets/Go_Ride.png";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
 function Header() {
-  const { theme, toggleTheme } = useContext(themeContext);
-  const { auth, setAuth } = useContext(authContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { auth, setAuth } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();

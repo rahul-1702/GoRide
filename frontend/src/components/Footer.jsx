@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { themeContext } from "../context/ThemeProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 
 const Footer = () => {
   const [bg, setBg] = useState("bg-dark");
   const [text, setText] = useState("text-white");
-  const { theme } = useContext(themeContext);
+  const { theme } = useContext(ThemeContext);
+  
   const APP_NAME = import.meta.env.VITE_APP_NAME;
 
   useEffect(() => {

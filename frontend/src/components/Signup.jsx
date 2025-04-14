@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { themeContext } from "../context/ThemeProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 import Validation from "../Validation/SignupValidation";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -34,7 +34,7 @@ function Signup() {
     cpassword: "",
   });
   
-  const { theme } = useContext(themeContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   useEffect(() => {
