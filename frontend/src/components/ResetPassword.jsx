@@ -1,3 +1,4 @@
+// ResetPassword.jsx ================================
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeProvider";
@@ -17,7 +18,9 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
-   
+  const { theme } = useContext(ThemeContext);
+  const { token } = useParams();
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     password: "",
     cpassword: "",
@@ -28,10 +31,8 @@ const ResetPassword = () => {
     cpassword: "",
   });
   
-  const { theme } = useContext(ThemeContext);
-  const { token } = useParams();
-  const navigate = useNavigate();
-  
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -48,8 +49,6 @@ const ResetPassword = () => {
     }
   }, [theme]);
   
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
   const showpasswordInputGroup = {
     position: "relative",
     display: "flex",

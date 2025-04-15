@@ -1,3 +1,4 @@
+// ForgotPassword.jsx ================================
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeProvider";
@@ -16,6 +17,7 @@ const ForgotPassword = () => {
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
   });
@@ -23,7 +25,7 @@ const ForgotPassword = () => {
     email: "",
   });
   
-  const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setTimeout(() => {
@@ -50,8 +52,6 @@ const ForgotPassword = () => {
       allowOutsideClick: false,
     });
   };
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleEmailInput = (e) => {
     setValues({ [e.target.name]: [e.target.value] });

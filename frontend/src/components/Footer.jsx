@@ -1,3 +1,4 @@
+// Footer.jsx ================================
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../context/ThemeProvider";
 
@@ -7,7 +8,7 @@ const Footer = () => {
   const { theme } = useContext(ThemeContext);
   
   const APP_NAME = import.meta.env.VITE_APP_NAME;
-
+  
   useEffect(() => {
     if (theme === "dark") {
       setBg("bg-dark");

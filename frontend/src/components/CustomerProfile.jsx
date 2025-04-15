@@ -1,4 +1,4 @@
-// CustomerProfile.jsx
+// CustomerProfile.jsx ================================
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeProvider";
@@ -16,11 +16,11 @@ function CustomerProfile() {
   const [error, setError] = useState(null);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
-  
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-
   const { id } = useParams();
+  
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     fetchCustomerData();
@@ -35,8 +35,6 @@ function CustomerProfile() {
       setText("text-dark");
     }
   }, [theme]);
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchCustomerData = async () => {
     try {

@@ -1,7 +1,6 @@
 // Login.jsx ================================
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
 import { ThemeContext } from "../context/ThemeProvider";
 import Validation from "../Validation/LoginValidation";
 import axios from "axios";
@@ -19,19 +18,19 @@ function Login() {
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
   const [showPassword, setShowPassword] = useState(false);
+  const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-
+  
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
-
-  const { theme } = useContext(ThemeContext);
-  const { setAuth } = useContext(AuthContext);
-  const navigate = useNavigate();
+  
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setTimeout(() => {
@@ -66,8 +65,6 @@ function Login() {
     alignItems: "stretch",
     width: "100%",
   };
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLoginInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));

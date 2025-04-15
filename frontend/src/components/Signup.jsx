@@ -1,3 +1,4 @@
+// Signup.jsx ================================
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeProvider";
@@ -18,6 +19,8 @@ function Signup() {
   const [showCPassword, setShowCPassword] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -25,7 +28,7 @@ function Signup() {
     password: "",
     cpassword: "",
   });
-
+  
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -34,8 +37,7 @@ function Signup() {
     cpassword: "",
   });
   
-  const { theme } = useContext(ThemeContext);
-  const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     if (theme === "dark") {
@@ -70,8 +72,6 @@ function Signup() {
       allowOutsideClick: false,
     });
   };
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleFileChange = (e) => {
     setProfilePic(e.target.files[0]);

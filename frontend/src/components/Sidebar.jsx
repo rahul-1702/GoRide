@@ -1,3 +1,4 @@
+// Sidebar.jsx ================================
 import React, { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "../context/ThemeProvider";
 import { Link } from "react-router-dom";
@@ -9,13 +10,14 @@ import Loader from "../components/Loader";
 import Cookies from "js-cookie";
 
 const Sidebar = () => {
+  const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("drivers");
   const [data, setData] = useState([]);
   const [text, setText] = useState("text-white");
   const [bg, setBg] = useState("bg-dark");
 
-  const { theme } = useContext(ThemeContext);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     fetchData();
@@ -30,8 +32,6 @@ const Sidebar = () => {
       setText("text-dark");
     }
   }, [theme]);
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchData = async () => {
     try {
