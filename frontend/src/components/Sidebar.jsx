@@ -49,23 +49,33 @@ const Sidebar = () => {
         },
       });
 
-      const result = await response.json();
+      if (response) {
+        const result = await response.json();
 
-      if(result){
-        const formattedData = result.data.map((user) => ({
-          id: user.id,
-          profile_img: user?.profile_pic_url,
-          name: user.name || user.first_name,
-          email: user.email,
-          ride_type: user?.ride_type,
-          auto_number: user?.auto_number,
-          status: user?.status,
-        }));
+        if (result) {
+          const formattedData = result.data.map((user) => ({
+            id: user.id,
+            profile_img: user?.profile_pic_url,
+            name: user.name || user.first_name,
+            email: user.email,
+            ride_type: user?.ride_type,
+            auto_number: user?.auto_number,
+            status: user?.status,
+          }));
+
+          setData(formattedData);
+        } else {
+          Swal.fire({
+            title: "Your token may be expire, Please log out and try again",
+            icon: "error",
+            showConfirmButton: true,
+            allowOutsideClick: false,
+          });
+        }
         
-        setData(formattedData);
-      }else{
+      } else {
         Swal.fire({
-          title: "Your token may be expire, Please log out and try again",
+          title: "Invalid token, Please log out and try again",
           icon: "error",
           showConfirmButton: true,
           allowOutsideClick: false,
