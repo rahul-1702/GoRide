@@ -20,9 +20,8 @@ function App() {
   const [loginState, setLoginState] = useState(false);
 
   useEffect(() => {
-    const isLogin = Cookies.get("islogin") === "1";
-
-    if (isLogin) {
+    
+    if (Cookies.get("islogin") === "1") {
       setLoginState(true);
     } else {
       setLoginState(false);
