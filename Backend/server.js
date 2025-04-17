@@ -15,8 +15,10 @@ const backendUrl = process.env.FREE_BACKEND_URL;
 app.use(cors());
 app.use(express.json());
 
+// path for upload images/files ====================
 app.use("/uploads", express.static("uploads"));
 
+// route groups ====================
 app.use("/api/customer", customerRoutes);
 app.use("/admin", adminRoutes);
 app.use("/api/driver", driverRoutes);
