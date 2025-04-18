@@ -145,7 +145,7 @@ export const loginDriver = async (req, res) => {
 
 export const signupDriver = async (req, res) => {
   try {
-    // Validate input fields
+    // Validate input fields ==========
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -188,7 +188,7 @@ export const signupDriver = async (req, res) => {
 
     const profilePic = req.file ? req.file.filename : null;
 
-    // Check if email or mobile number already exists
+    // Check if email or mobile number already exists ==========
     const checkUserQuery =
       "SELECT email, mobile FROM drivers WHERE email = ? OR mobile = ?";
     const existingUser = await query(checkUserQuery, [email, mobile]);
