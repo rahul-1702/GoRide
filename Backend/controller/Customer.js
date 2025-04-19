@@ -45,7 +45,7 @@ export const getAllCustomers = async (req, res) => {
 
 export const loginCustomer = async (req, res) => {
   try {
-    // Validate input
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -106,7 +106,7 @@ export const loginCustomer = async (req, res) => {
 
 export const signupCustomer = async (req, res) => {
   try {
-    // Validate input
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -181,7 +181,7 @@ export const signupCustomer = async (req, res) => {
 
 export const loginWithGoogle = async (req, res) => {
   try {
-    // Validate input
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({

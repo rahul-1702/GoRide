@@ -38,7 +38,7 @@ export const getAllAdmins = async (req, res) => {
       code: 1,
       status: 200,
       message: "Admins fetched successfully",
-      total: adminsWithImage.length, // Added total count
+      total: adminsWithImage.length,
       data: adminsWithImage,
     });
   } catch (err) {
@@ -57,7 +57,7 @@ export const getAllAdmins = async (req, res) => {
 
 export const loginAdmin = async (req, res) => {
   try {
-    // Validate request body
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -135,7 +135,7 @@ export const loginAdmin = async (req, res) => {
 
 export const signupAdmin = async (req, res) => {
   try {
-    // Validate request body
+    // Validations
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -310,7 +310,7 @@ export const adminResetPassword = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    // Validate password input
+    // Validations
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
