@@ -59,7 +59,7 @@ export const getAllDrivers = async (req, res) => {
         code: 1,
         status: 200,
         message: "Drivers fetched successfully",
-        total: driversWithImage.length, // Added total count
+        total: driversWithImage.length,
         data: driversWithImage,
       });
     }

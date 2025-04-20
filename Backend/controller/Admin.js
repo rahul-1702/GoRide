@@ -389,7 +389,7 @@ export const getCustomerProfile = async (req, res) => {
     const { id } = req.params;
 
     const sql =
-      "SELECT id, name, status, email, mobile, created_at, updated_at FROM customers WHERE id = ?"; // Fetch only required fields
+      "SELECT id, name, status, email, mobile, created_at, updated_at FROM customers WHERE id = ?";
     const result = await query(sql, [id]);
 
     if (result.length > 0) {
@@ -427,7 +427,7 @@ export const updateCustomerProfile = async (req, res) => {
     const { id, name, email, mobile, status } = req.body;
 
     const sql =
-      "UPDATE customers SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?"; // Fetch only required fields
+      "UPDATE customers SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?";
     const result = await query(sql, [name, email, mobile, status, id]);
 
     if (result.affectedRows > 0) {
@@ -463,7 +463,7 @@ export const getDriverProfile = async (req, res) => {
     const { id } = req.params;
 
     const sql =
-      "SELECT id, first_name, last_name, status, email, mobile, gender, created_at, updated_at FROM drivers WHERE id = ?"; // Fetch only required fields
+      "SELECT id, first_name, last_name, status, email, mobile, gender, created_at, updated_at FROM drivers WHERE id = ?";
     const result = await query(sql, [id]);
 
     if (result.length > 0) {
@@ -502,7 +502,7 @@ export const updateDriverProfile = async (req, res) => {
       req.body;
 
     const sql =
-      "UPDATE drivers SET first_name = ?, last_name = ?, email = ?, mobile = ?, status = ?, gender = ? WHERE id = ?"; // Fetch only required fields
+      "UPDATE drivers SET first_name = ?, last_name = ?, email = ?, mobile = ?, status = ?, gender = ? WHERE id = ?";
     const result = await query(sql, [
       first_name,
       last_name,
@@ -546,7 +546,7 @@ export const getTeamProfile = async (req, res) => {
     const { id } = req.params;
 
     const sql =
-      "SELECT id, name, status, email, mobile, created_at, updated_at FROM admins WHERE id = ?"; // Fetch only required fields
+      "SELECT id, name, status, email, mobile, created_at, updated_at FROM admins WHERE id = ?";
     const result = await query(sql, [id]);
 
     if (result.length > 0) {
@@ -584,7 +584,7 @@ export const updateTeamProfile = async (req, res) => {
     const { id, name, email, mobile, status } = req.body;
 
     const sql =
-      "UPDATE admins SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?"; // Fetch only required fields
+      "UPDATE admins SET name = ?, email = ?, mobile = ?, status = ? WHERE id = ?";
     const result = await query(sql, [name, email, mobile, status, id]);
 
     if (result.affectedRows > 0) {

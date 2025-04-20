@@ -9,7 +9,7 @@ import path from "path";
 
 export const getAllCustomers = async (req, res) => {
   try {
-    const sql = "SELECT id, name, status, email, mobile FROM customers"; // Fetch only required fields
+    const sql = "SELECT id, name, status, email, mobile FROM customers";
     const result = await query(sql);
 
     if (result.length > 0) {
