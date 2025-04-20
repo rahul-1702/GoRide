@@ -2,11 +2,11 @@ import { body } from "express-validator";
 
 // Validation rules for Customer google login
 export const googleValidation = [
-  body("token")
+  body("uuid")
     .notEmpty()
-    .withMessage("token is required")
+    .withMessage("uuid is required")
     .isLength({ min: 36, max: 36 })
-    .withMessage("token must be exactly 36 characters long")
+    .withMessage("uuid must be exactly 36 characters long")
     .isUUID(4)
     .withMessage("Invalid token format"),
 

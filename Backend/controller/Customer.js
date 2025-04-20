@@ -192,7 +192,7 @@ export const loginWithGoogle = async (req, res) => {
       });
     }
 
-    const { name, email, mobile, token } = req.body;
+    const { name, email, mobile, uuid } = req.body;
 
     // Check if profile image was uploaded
     let profilePicPath = null;
@@ -228,7 +228,7 @@ export const loginWithGoogle = async (req, res) => {
       // Update user information
       let updateQuery =
         "UPDATE customers SET name = ?, mobile = ?, last_login = NOW(), uuid = ?";
-      const updateParams = [name, mobile || existingUser[0].mobile, token];
+      const updateParams = [name, mobile || existingUser[0].mobile, uuid];
 
       // Include profile pic in update if provided
       if (profilePicPath) {
@@ -254,7 +254,7 @@ export const loginWithGoogle = async (req, res) => {
         mobile || null,
         profilePicPath,
         hashedPassword,
-        token,
+        uuid,
       ]);
       userId = result.insertId;
     }
