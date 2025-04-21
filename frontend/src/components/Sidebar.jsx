@@ -37,6 +37,7 @@ const Sidebar = () => {
     try {
       setLoading(true);
 
+      // dynamic urls ============== 
       const urls = {
         drivers: `${backendUrl}/api/driver/show`,
         customers: `${backendUrl}/api/customer/show`,
