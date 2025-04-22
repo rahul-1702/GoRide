@@ -99,7 +99,6 @@ function TeamProfile() {
             }
           })
           .catch((error) => {
-            console.error("Error saving team member data:", error);
             Swal.fire({
               title: error?.message,
               icon: "error",

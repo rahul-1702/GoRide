@@ -99,7 +99,6 @@ function CustomerProfile() {
             }
           })
           .catch((error) => {
-            console.error("Error saving customer data:", error);
             Swal.fire({
               title: error?.message,
               icon: "error",

@@ -99,7 +99,6 @@ function DriverProfile() {
             }
           })
           .catch((error) => {
-            console.error("Error saving driver data:", error);
             Swal.fire({
               title: error?.message,
               icon: "error",

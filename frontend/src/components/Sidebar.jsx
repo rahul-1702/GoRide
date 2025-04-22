@@ -83,7 +83,6 @@ const Sidebar = () => {
         });
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
       Swal.fire({
         title: error?.message,
         icon: "error",
