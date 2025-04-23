@@ -37,6 +37,7 @@ export const getAllDrivers = async (req, res) => {
 
     const result = await query(sql);
 
+    // Driver not found ========
     if (!result.length) {
       return res.status(404).json({
         code: 0,
