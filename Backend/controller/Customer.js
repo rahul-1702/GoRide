@@ -56,6 +56,7 @@ export const loginCustomer = async (req, res) => {
       });
     }
 
+    // extract email and password from request
     const { email, password } = req.body;
     const hashedPassword = md5(password);
 
