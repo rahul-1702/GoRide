@@ -25,7 +25,6 @@ export const getAllAdmins = async (req, res) => {
       });
     }
 
-    // Append full URL for profile images
     const backendUrl = process.env.FREE_BACKEND_URL || "http://localhost:5000";
     const adminsWithImage = result.map((admin) => ({
       ...admin,
