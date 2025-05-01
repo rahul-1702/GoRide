@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import "./static/css/App.css"
 
 // components ===============
-
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
