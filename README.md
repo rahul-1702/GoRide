@@ -98,6 +98,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Endpoint:** `POST /api/driver/signup`
 - **Description:** Registers a new driver.
 - **Request Body:**
+
   ```json
   {
     "first_name": "Xxyyzz",
@@ -124,7 +125,9 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "number_of_wheels": 2
   }
   ```
+
 - **Response:**
+
   ```json
   {
     "code": 1,
@@ -145,12 +148,15 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Endpoint:** `GET /api/customer/show`
 - **Description:** Fetches the list of all registered customers.
 - **Headers:**
+
   ```json
   {
     "Authorization": "Bearer YOUR_ACCESS_TOKEN"
   }
   ```
+
 - **Response:**
+
   ```json
   {
     "code": 1,
@@ -174,13 +180,16 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Endpoint:** `POST /api/customer/login`
 - **Description:** Allows a customer to log in.
 - **Request Body:**
+
   ```json
   {
     "email": "xyz@test.com",
     "password": "Xyz@12345"
   }
   ```
+
 - **Response:**
+
   ```json
   {
     "code": 1,
@@ -204,6 +213,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Endpoint:** `POST /api/customer/signup`
 - **Description:** Registers a new customer.
 - **Request Body:**
+
   ```json
   {
     "name": "Xyyzz",
@@ -212,6 +222,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "password": "Xyzzz@12345"
   }
   ```
+
 - **Response:**
 
   ```json
@@ -230,6 +241,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 - **Endpoint:** `POST /api/customer/google-login`
 - **Description:** Signup a new Customer and Login with google ID.
 - **Request Body:**
+
   ```json
   {
     "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -238,7 +250,9 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "mobile": 9977883366
   }
   ```
+
 - **Response:**
+
   ```json
   {
     "code": 1,
@@ -257,35 +271,189 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   }
   ```
 
-  #### **5. Customer Profile**
+#### **5. Customer Profile - Fetch**
 
 - **Endpoint:** `GET /api/customer/profile/{customer_id}`
-- **Description:** Signup a new Customer and Login with google ID.
-- **Request Body:**
+- **Description:** Fetch customer profile.
+- **Headers:**
+
   ```json
   {
-    "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "name": "xxyyzz xyz",
-    "email": "xyz@examplme.com",
-    "mobile": 9977883366
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
   }
   ```
+
 - **Response:**
+
   ```json
   {
     "code": 1,
-    "status": 200,
-    "message": "Google login successful",
-    "data": {
-      "token": "your-jwt-token",
-      "customer": {
-        "id": 23,
-        "name": "xxyyzz xyz",
-        "email": "xyz@examplme.com",
-        "mobile": "9977883366",
-        "status": "Active"
+    "stauts": 200,
+    "message": "Customer profile fetched successfully",
+    "total": 1,
+    "data": [
+      {
+        "id": 11,
+        "name": "Xxyyz xyz",
+        "status": "Active",
+        "email": "xyyzz@gmail.com",
+        "mobile": "9999988888",
+        "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "uuid": null,
+        "last_login": "2025-05-18T14:18:06.000Z",
+        "profile_pic": null,
+        "created_at": "2025-03-05T16:45:35.000Z",
+        "updated_at": "2025-05-18T14:18:06.000Z"
       }
-    }
+    ]
+  }
+  ```
+
+#### **6. Customer Profile - Update**
+
+- **Endpoint:** `POST /api/customer/update-profile/{customer_id}`
+- **Description:** Update customer profile.
+- **Headers:**
+
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
+
+- **Request Body:**
+
+  ```json
+  {
+    "name": "XXYyxzzz",
+    "email": "xxyyzzzx@gmail.com",
+    "mobile": "9922773388",
+    "password": "Xxxyzy@12345"
+  }
+  ```
+
+- **Response:**
+
+  ```json
+  {
+    "code": 1,
+    "status": 201,
+    "message": "Customer profile updated successfully",
+    "data": null
+  }
+  ```
+
+#### **7. Fetch Ride Types**
+
+- **Endpoint:** `GET /api/customer/ride-types`
+- **Description:** Fetch available ride types.
+- **Headers:**
+
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
+
+- **Response:**
+
+  ```json
+  {
+    "code": 1,
+    "stauts": 200,
+    "message": "Ride types fetched successfully",
+    "total": 3,
+    "data": [
+      {
+        "ride_type": "Auto"
+      },
+      {
+        "ride_type": "Car"
+      },
+      {
+        "ride_type": "Bike"
+      }
+    ]
+  }
+  ```
+
+#### **8. Fetch All Rides**
+
+- **Endpoint:** `GET /api/customer/ride-list/{ride_type}`
+- **Description:** Fetch all available rides of given type.
+- **Headers:**
+
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
+
+- **Response:**
+
+  ```json
+  {
+    "code": 1,
+    "stauts": 200,
+    "message": "Rides fetched successfully",
+    "total": 2,
+    "data": [
+      {
+        "ride_id": 14,
+        "ride_type": "Car",
+        "fuel_type": "Diesel",
+        "ride_number": "PB08BX99XX",
+        "total_seats": 5,
+        "number_of_wheels": 4,
+        "created_at": "2025-05-18T13:27:27.000Z",
+        "updated_at": null
+      },
+      {
+        "ride_id": 15,
+        "ride_type": "Car",
+        "fuel_type": "CNG",
+        "ride_number": "PB08BX81XX",
+        "total_seats": 8,
+        "number_of_wheels": 4,
+        "created_at": "2025-05-18T13:28:24.000Z",
+        "updated_at": null
+      }
+    ]
+  }
+  ```
+
+#### **9. Fetch Ride Details**
+
+- **Endpoint:** `GET /api/customer/ride-details/{ride_id}`
+- **Description:** Fetch specific ride details.
+- **Headers:**
+
+  ```json
+  {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  }
+  ```
+
+- **Response:**
+
+  ```json
+  {
+    "code": 1,
+    "stauts": 200,
+    "message": "Ride details fetched successfully",
+    "total": 1,
+    "data": [
+      {
+        "ride_id": 13,
+        "ride_type": "Auto",
+        "fuel_type": "Diesel",
+        "ride_number": "PB08BX19XX",
+        "total_seats": 4,
+        "number_of_wheels": 3,
+        "created_at": "2025-03-10T17:18:35.000Z",
+        "updated_at": "2025-05-18T13:28:00.000Z"
+      }
+    ]
   }
   ```
 
