@@ -244,7 +244,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 
   ```json
   {
-    "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "name": "xxyyzz xyz",
     "email": "xyz@examplme.com",
     "mobile": 9977883366
