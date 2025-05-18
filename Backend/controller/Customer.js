@@ -413,7 +413,7 @@ export const updateCustomerProfile = async (req, res) => {
         code: 1,
         status: 201,
         message: "Customer profile updated successfully",
-        data: { customer_id: result.insertId },
+        data: null,
       });
     } else {
       return res.status(500).json({
