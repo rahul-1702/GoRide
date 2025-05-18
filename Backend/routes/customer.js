@@ -29,11 +29,11 @@ router.get("/show", verifyToken, getAllCustomers);
 router.post("/signup", signupValidation, signupCustomer);
 router.post("/login", loginValidation, loginCustomer);
 router.post("/google-login", googleValidation, upload.single("profile_image"), loginWithGoogle);
-router.get("/profile/:id", getCustomerProfile);
-router.post("/update-profile/:id", updateProfileValidation, updateCustomerProfile);
+router.get("/profile/:id", verifyToken, getCustomerProfile);
+router.post("/update-profile/:id", verifyToken, updateProfileValidation, updateCustomerProfile);
 
-router.get("/ride-types", getAllRideTypes);
-router.get("/ride-list/:ride", getAllRides);
-router.get("/ride-details/:id", getRideDetails);
+router.get("/ride-types", verifyToken, getAllRideTypes);
+router.get("/ride-list/:ride", verifyToken, getAllRides);
+router.get("/ride-details/:id", verifyToken, getRideDetails);
 
 export default router;

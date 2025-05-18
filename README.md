@@ -257,6 +257,38 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
   }
   ```
 
+  #### **5. Customer Profile**
+
+- **Endpoint:** `GET /api/customer/profile/{customer_id}`
+- **Description:** Signup a new Customer and Login with google ID.
+- **Request Body:**
+  ```json
+  {
+    "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "xxyyzz xyz",
+    "email": "xyz@examplme.com",
+    "mobile": 9977883366
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "code": 1,
+    "status": 200,
+    "message": "Google login successful",
+    "data": {
+      "token": "your-jwt-token",
+      "customer": {
+        "id": 23,
+        "name": "xxyyzz xyz",
+        "email": "xyz@examplme.com",
+        "mobile": "9977883366",
+        "status": "Active"
+      }
+    }
+  }
+  ```
+
 ---
 
 ## **Setup & Installation**
