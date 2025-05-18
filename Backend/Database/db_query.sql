@@ -88,3 +88,8 @@ ALTER TABLE `customers` ADD `uuid` BINARY(16) NULL DEFAULT NULL AFTER `password`
 ALTER TABLE customers ADD last_login TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER uuid;
 
 ALTER TABLE customers MODIFY COLUMN uuid VARCHAR(1024);
+
+
+-- ride_details table -- (18 May, 2025)
+
+ALTER TABLE `ride_details` CHANGE `ride_type` `ride_type` ENUM('Auto','Bike','Car') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL, CHANGE `auto_number` `ride_number` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;

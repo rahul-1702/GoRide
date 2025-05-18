@@ -17,10 +17,10 @@ import {
 
 import { verifyToken } from "../middleware/token_auth.js";
 
-import { signupValidation } from "../Validation/vAdminSignup.js";
-import { loginValidation } from "../Validation/vAdminLogin.js";
-import { forgotValidation } from "../Validation/vAdminForgot.js";
-import { resetValidation } from "../Validation/vAdminReset.js";
+import { signupValidation } from "../Validation/admin/vSignup.js";
+import { loginValidation } from "../Validation/admin/vLogin.js";
+import { forgotValidation } from "../Validation/admin/vForgotPassword.js";
+import { resetValidation } from "../Validation/admin/vResetPassword.js";
 
 const router = express.Router();
 

@@ -113,8 +113,8 @@ export const signupValidation = [
   body("ride_type")
     .notEmpty()
     .withMessage("Ride type is required")
-    .isIn(["Auto", "Other"])
-    .withMessage("Ride type must be 'Auto' or 'Other'"),
+    .isIn(["Car", "Bike", "Auto"])
+    .withMessage("Ride type must be 'Car' | 'Bike' | 'Auto'"),
 
   body("fuel_type")
     .notEmpty()
@@ -122,11 +122,11 @@ export const signupValidation = [
     .isIn(["Electric", "Petrol", "Diesel", "CNG"])
     .withMessage("Invalid fuel type"),
 
-  body("auto_number")
+  body("ride_number")
     .notEmpty()
-    .withMessage("Auto number is required")
+    .withMessage("Ride number is required")
     .matches(/^[A-Z]{2}\d{2}[A-Z]{1,2}\d{4}$/)
-    .withMessage("Invalid auto number format"),
+    .withMessage("Invalid ride number format"),
 
   body("total_seats")
     .notEmpty()

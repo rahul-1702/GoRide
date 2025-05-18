@@ -28,7 +28,7 @@ export const getAllDrivers = async (req, res) => {
         r.ride_id, 
         r.ride_type, 
         r.fuel_type, 
-        r.auto_number, 
+        r.ride_number, 
         r.total_seats, 
         r.number_of_wheels 
       FROM drivers d
@@ -98,7 +98,7 @@ export const loginDriver = async (req, res) => {
     const sql = `
       SELECT d.id, d.first_name, d.last_name, d.mobile, d.email, d.status, d.dob, d.profile_pic, d.ride_no, r.ride_type, 
         r.fuel_type, 
-        r.auto_number, 
+        r.ride_number, 
         r.total_seats, 
         r.number_of_wheels 
       FROM drivers d
@@ -182,7 +182,7 @@ export const signupDriver = async (req, res) => {
       license,
       ride_type,
       fuel_type,
-      auto_number,
+      ride_number,
       total_seats,
       number_of_wheels,
     } = req.body;
@@ -215,13 +215,13 @@ export const signupDriver = async (req, res) => {
 
     // Insert ride details
     const rideSql = `
-      INSERT INTO ride_details (ride_type, fuel_type, auto_number, total_seats, number_of_wheels)
+      INSERT INTO ride_details (ride_type, fuel_type, ride_number, total_seats, number_of_wheels)
       VALUES (?, ?, ?, ?, ?)
     `;
     const rideValues = [
       ride_type,
       fuel_type,
-      auto_number,
+      ride_number,
       total_seats,
       number_of_wheels,
     ];

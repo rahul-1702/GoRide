@@ -9,8 +9,8 @@ import {
 
 import { verifyToken } from "../middleware/token_auth.js";
 
-import { signupValidation } from "../Validation/vDriverSignup.js";
-import { loginValidation } from "../Validation/vDriverLogin.js";
+import { signupValidation } from "../Validation/driver/vSignup.js";
+import { loginValidation } from "../Validation/driver/vLogin.js";
 
 const router = express.Router();
 
@@ -26,7 +26,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get("/show", verifyToken, getAllDrivers);
-router.post("/signup", signupValidation, upload.single("profilePic"), signupDriver);
+router.post(
+  "/signup",
+  signupValidation,
+  upload.single("profilePic"),
+  signupDriver
+);
 router.post("/login", loginValidation, loginDriver);
 
 export default router;

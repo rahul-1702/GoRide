@@ -59,7 +59,7 @@ const Sidebar = () => {
             name: user.name || user.first_name,
             email: user.email,
             ride_type: user?.ride_type,
-            auto_number: user?.auto_number,
+            ride_number: user?.ride_number,
             status: user?.status,
           }));
 
@@ -183,7 +183,7 @@ const Sidebar = () => {
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   {item?.ride_type && <td>{item.ride_type}</td>}
-                  {item?.auto_number && <td>{item.auto_number}</td>}
+                  {item?.ride_number && <td>{item.ride_number}</td>}
                   <td>
                     <span
                       className={`badge ${

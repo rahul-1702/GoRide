@@ -45,7 +45,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
         "ride_id": 1,
         "ride_type": "Auto",
         "fuel_type": "Electric",
-        "auto_number": "PB08AX1234",
+        "ride_number": "DL08AX1234",
         "total_seats": 4,
         "number_of_wheels": 3
       }
@@ -83,11 +83,11 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
         "dob": "2005-02-11T18:30:00.000Z",
         "profile_pic": "Xxyyzz.jpg",
         "ride_no": 7,
-        "ride_type": "Auto",
+        "ride_type": "Car",
         "fuel_type": "Electric",
-        "auto_number": "PB08AX1234",
+        "ride_number": "PB08AX1234",
         "total_seats": 5,
-        "number_of_wheels": 3
+        "number_of_wheels": 4
       }
     }
   }
@@ -104,7 +104,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "last_name": "Xxyyzz",
     "status": "Active",
     "mobile": "9988776655",
-    "gender": "female",
+    "gender": "male",
     "dob": "2005-02-12",
     "profile_pic": "Xxyyzz.jpg",
     "email": "xyyzz@Xxyyzz.com",
@@ -115,13 +115,13 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
     "state": "Xxyyzz state",
     "zip_code": "777888",
     "ride_no": 1,
-    "license": "UP4420150019783",
+    "license": "PB4420150019783",
     "ride_id": 1,
-    "ride_type": "Auto",
+    "ride_type": "Bike",
     "fuel_type": "Electric",
-    "auto_number": "PB08AX1234",
-    "total_seats": 5,
-    "number_of_wheels": 3
+    "ride_number": "PB08AX1234",
+    "total_seats": 2,
+    "number_of_wheels": 2
   }
   ```
 - **Response:**
