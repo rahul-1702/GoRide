@@ -4,11 +4,11 @@ import { body } from "express-validator";
 export const googleValidation = [
   body("uuid")
     .notEmpty()
-    .withMessage("uuid is required")
-    .isLength({ min: 36, max: 36 })
-    .withMessage("uuid must be exactly 36 characters long")
-    .isUUID(4)
-    .withMessage("Invalid token format"),
+    .withMessage("uuid is required"),
+    // .isLength({ min: 36, max: 36 })
+    // .withMessage("uuid must be exactly 36 characters long")
+    // .isUUID(4)
+    // .withMessage("Invalid token format"),
 
   body("name")
     .notEmpty()
