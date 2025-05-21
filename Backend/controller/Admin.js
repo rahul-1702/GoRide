@@ -459,7 +459,6 @@ export const updateCustomerProfile = async (req, res) => {
 
 export const getDriverProfile = async (req, res) => {
   try {
-    
     const { id } = req.params;
 
     const sql =
