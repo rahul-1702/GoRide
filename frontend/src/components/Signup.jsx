@@ -306,17 +306,17 @@ function Signup() {
                 <div className="mb-0 mb-sm-2 d-flex flex-sm-row flex-column gap-3 gap-sm-5 pt-2 pt-sm-3">
                   <button
                     type="button"
-                    onClick={handleSubmitSignup}
-                    className="btn btn-success w-100"
-                  >
-                    Register
-                  </button>
-                  <button
-                    type="button"
                     onClick={() => navigate("/")}
                     className="btn btn-primary w-100"
                   >
                     Back To Login
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSubmitSignup}
+                    className="btn btn-success w-100"
+                  >
+                    Register
                   </button>
                 </div>
               </form>
