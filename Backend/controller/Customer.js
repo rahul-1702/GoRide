@@ -157,7 +157,15 @@ export const signupCustomer = async (req, res) => {
         code: 1,
         status: 201,
         message: "Customer registered successfully",
-        data: { customer_id: result.insertId },
+        data: {
+          customer: {
+            id: result.insertId,
+            name,
+            email,
+            mobile,
+            status: "Active",
+          },
+        },
       });
     } else {
       return res.status(500).json({
