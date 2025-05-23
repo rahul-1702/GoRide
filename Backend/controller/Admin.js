@@ -455,9 +455,7 @@ export const updateCustomerProfile = async (req, res) => {
   }
 };
 
-
 // getDriverProfile =======================
-
 
 export const getDriverProfile = async (req, res) => {
   try {
