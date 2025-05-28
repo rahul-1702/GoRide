@@ -28,7 +28,7 @@ function Signup() {
     password: "",
     cpassword: "",
   });
-  
+
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -36,7 +36,7 @@ function Signup() {
     password: "",
     cpassword: "",
   });
-  
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -141,190 +141,191 @@ function Signup() {
     }
   };
 
+  if (loading) return <Loader />;
+
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className={`bg-login-ride pt-5 ${bg}`}>
-          <Header />
+      <div className={`bg-login-ride pt-5 ${bg}`}>
+        <Header />
+        <div
+          className={`d-flex justify-content-center align-items-center vh-50 px-4`}
+        >
           <div
-            className={`d-flex justify-content-center align-items-center vh-50 px-4`}
+            className={`${bg} p-3 rounded w-100`}
+            style={{ maxWidth: 1000, zIndex: 9 }}
           >
-            <div
-              className={`${bg} p-3 rounded w-100`}
-              style={{ maxWidth: 1000, zIndex: 9 }}
+            <h4 className={`text-center mb-3 ${text}`}>SignUp Here</h4>
+            <form
+              action=""
+              className="row m-0 gy-0 gy-sm-2 gx-3 gx-sm-4 gx-md-5"
             >
-              <h4 className={`text-center mb-3 ${text}`}>SignUp Here</h4>
-              <form action="" className="row m-0 gy-0 gy-sm-2 gx-3 gx-sm-4 gx-md-5">
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="name" className={text}>
-                    Name
-                  </label>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="name" className={text}>
+                  Name
+                </label>
+                <input
+                  onChange={handleInput}
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter Name"
+                  className={`form-control mt-1 ${text} ${bg} ${
+                    theme === "dark" ? "place-light" : "place-dark"
+                  }`}
+                />
+                {errors.name && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.name}
+                  </span>
+                )}
+              </div>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="email" className={text}>
+                  Email
+                </label>
+                <input
+                  onChange={handleInput}
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter Email"
+                  className={`form-control mt-1 ${text} ${bg} ${
+                    theme === "dark" ? "place-light" : "place-dark"
+                  }`}
+                />
+                {errors.email && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.email}
+                  </span>
+                )}
+              </div>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="mobile" className={text}>
+                  Mobile
+                </label>
+                <input
+                  onChange={handleInput}
+                  type="number"
+                  id="mobile"
+                  name="mobile"
+                  placeholder="Enter Mobile"
+                  className={`form-control mt-1 ${text} ${bg} ${
+                    theme === "dark" ? "place-light" : "place-dark"
+                  }`}
+                />
+                {errors.mobile && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.mobile}
+                  </span>
+                )}
+              </div>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="password" className={text}>
+                  Password
+                </label>
+                <div style={showpasswordInputGroup}>
                   <input
                     onChange={handleInput}
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter Name"
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    placeholder="Enter Password"
                     className={`form-control mt-1 ${text} ${bg} ${
                       theme === "dark" ? "place-light" : "place-dark"
                     }`}
                   />
-                  {errors.name && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.name}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="email" className={text}>
-                    Email
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    className={`form-control mt-1 ${text} ${bg} ${
-                      theme === "dark" ? "place-light" : "place-dark"
-                    }`}
-                  />
-                  {errors.email && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.email}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="mobile" className={text}>
-                    Mobile
-                  </label>
-                  <input
-                    onChange={handleInput}
-                    type="number"
-                    id="mobile"
-                    name="mobile"
-                    placeholder="Enter Mobile"
-                    className={`form-control mt-1 ${text} ${bg} ${
-                      theme === "dark" ? "place-light" : "place-dark"
-                    }`}
-                  />
-                  {errors.mobile && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.mobile}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="password" className={text}>
-                    Password
-                  </label>
-                  <div style={showpasswordInputGroup}>
-                    <input
-                      onChange={handleInput}
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      name="password"
-                      placeholder="Enter Password"
-                      className={`form-control mt-1 ${text} ${bg} ${
-                        theme === "dark" ? "place-light" : "place-dark"
-                      }`}
-                    />
-                    <span
-                      style={{ zIndex: 999, cursor: "pointer" }}
-                      className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <i
-                        className={`bi ${text} ${
-                          showPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
-                      ></i>
-                    </span>
-                  </div>
-                  {errors.password && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.password}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="cpassword" className={text}>
-                    Confirm Password
-                  </label>
-                  <div style={showpasswordInputGroup}>
-                    <input
-                      onChange={handleInput}
-                      type={showCPassword ? "text" : "password"}
-                      id="cpassword"
-                      name="cpassword"
-                      placeholder="Confirm Password"
-                      className={`form-control mt-1 ${text} ${bg} ${
-                        theme === "dark" ? "place-light" : "place-dark"
-                      }`}
-                    />
-                    <span
-                      style={{ zIndex: 999, cursor: "pointer" }}
-                      className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
-                      onClick={() => setShowCPassword(!showCPassword)}
-                    >
-                      <i
-                        className={`bi ${text} ${
-                          showCPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
-                      ></i>
-                    </span>
-                  </div>
-                  {errors.cpassword && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.cpassword}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-3 col-12 col-sm-6">
-                  <label htmlFor="profilePic" className={text}>
-                    Profile Picture
-                  </label>
-                  <input
-                    type="file"
-                    id="profilePic"
-                    name="profilePic"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className={`form-control mt-1 ${text} ${bg} ${
-                      theme === "dark" ? "place-light" : "place-dark"
-                    }`}
-                  />
-                  {errors.profilePic && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.profilePic}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-0 mb-sm-2 d-flex flex-sm-row flex-column gap-3 gap-sm-5 pt-2 pt-sm-3">
-                  <button
-                    type="button"
-                    onClick={() => navigate("/")}
-                    className="btn btn-primary w-100"
+                  <span
+                    style={{ zIndex: 999, cursor: "pointer" }}
+                    className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    Back To Login
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSubmitSignup}
-                    className="btn btn-success w-100"
-                  >
-                    Register
-                  </button>
+                    <i
+                      className={`bi ${text} ${
+                        showPassword ? "bi-eye-slash" : "bi-eye"
+                      }`}
+                    ></i>
+                  </span>
                 </div>
-              </form>
-            </div>
+                {errors.password && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.password}
+                  </span>
+                )}
+              </div>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="cpassword" className={text}>
+                  Confirm Password
+                </label>
+                <div style={showpasswordInputGroup}>
+                  <input
+                    onChange={handleInput}
+                    type={showCPassword ? "text" : "password"}
+                    id="cpassword"
+                    name="cpassword"
+                    placeholder="Confirm Password"
+                    className={`form-control mt-1 ${text} ${bg} ${
+                      theme === "dark" ? "place-light" : "place-dark"
+                    }`}
+                  />
+                  <span
+                    style={{ zIndex: 999, cursor: "pointer" }}
+                    className="position-absolute end-0 mt-2 pt-1 me-2 pe-1"
+                    onClick={() => setShowCPassword(!showCPassword)}
+                  >
+                    <i
+                      className={`bi ${text} ${
+                        showCPassword ? "bi-eye-slash" : "bi-eye"
+                      }`}
+                    ></i>
+                  </span>
+                </div>
+                {errors.cpassword && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.cpassword}
+                  </span>
+                )}
+              </div>
+              <div className="mb-3 col-12 col-sm-6">
+                <label htmlFor="profilePic" className={text}>
+                  Profile Picture
+                </label>
+                <input
+                  type="file"
+                  id="profilePic"
+                  name="profilePic"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={`form-control mt-1 ${text} ${bg} ${
+                    theme === "dark" ? "place-light" : "place-dark"
+                  }`}
+                />
+                {errors.profilePic && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.profilePic}
+                  </span>
+                )}
+              </div>
+              <div className="mb-0 mb-sm-2 d-flex flex-sm-row flex-column gap-3 gap-sm-5 pt-2 pt-sm-3">
+                <button
+                  type="button"
+                  onClick={() => navigate("/")}
+                  className="btn btn-primary w-100"
+                >
+                  Back To Login
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSubmitSignup}
+                  className="btn btn-success w-100"
+                >
+                  Register
+                </button>
+              </div>
+            </form>
           </div>
-          <Footer />
         </div>
-      )}
+        <Footer />
+      </div>
     </>
   );
 }
