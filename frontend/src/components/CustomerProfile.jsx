@@ -19,7 +19,7 @@ function CustomerProfile() {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -115,12 +115,11 @@ function CustomerProfile() {
     setCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
+  if (loading) return <Loader />;
+
   return (
     <div className={`${bg} ${text} min-vh-100 d-flex flex-column pt-5`}>
-      {loading ? <Loader /> : ""}
-
       <Header />
-
       <main className="flex-grow-1">
         <div className="container py-4">
           <div className="row justify-content-center">
@@ -135,7 +134,11 @@ function CustomerProfile() {
               ) : (
                 <div className="d-flex flex-column gap-3 align-items-start">
                   <button
-                    className={`btn btn-sm ${ theme === "dark" ? "btn-outline-light" : "btn-outline-dark" } pt-1`}
+                    className={`btn btn-sm ${
+                      theme === "dark"
+                        ? "btn-outline-light"
+                        : "btn-outline-dark"
+                    } pt-1`}
                     onClick={() => navigate("/")}
                   >
                     <span
@@ -150,7 +153,9 @@ function CustomerProfile() {
                     Back to Dashboard
                   </button>
                   <div className={`card ${bg} border border-info w-100`}>
-                    <div className={`card-header bg-info ${text} d-flex justify-content-between align-items-center`}>
+                    <div
+                      className={`card-header bg-info ${text} d-flex justify-content-between align-items-center`}
+                    >
                       <h4 className="m-0 text-dark">Customer Profile</h4>
                       <div>
                         <button

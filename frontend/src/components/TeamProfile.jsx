@@ -115,12 +115,11 @@ function TeamProfile() {
     setTeam((prev) => ({ ...prev, [name]: value }));
   };
 
+  if (loading) return <Loader />;
+
   return (
     <div className={`${bg} ${text} min-vh-100 d-flex flex-column pt-5`}>
-      {loading ? <Loader /> : ""}
-
       <Header />
-
       <main className="flex-grow-1">
         <div className="container py-4">
           <div className="row justify-content-center">
