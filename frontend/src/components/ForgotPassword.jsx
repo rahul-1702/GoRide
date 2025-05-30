@@ -24,7 +24,7 @@ const ForgotPassword = () => {
   const [errors, setErrors] = useState({
     email: "",
   });
-  
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -116,66 +116,65 @@ const ForgotPassword = () => {
     navigate("/");
   };
 
+  if (loading) return <Loader />;
+
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className={`bg-login-ride pt-5 ${bg}`}>
-          <Header />
-          <div className="d-flex flex-column align-items-center justify-content-center px-4">
-            <div className="d-flex flex-column gap-3 align-items-start w-100" style={{ maxWidth: "500px" }}>
-              <button
-                className={`btn btn-sm btn-outline-light pt-1`}
-                onClick={handleBack}
+      <div className={`bg-login-ride pt-5 ${bg}`}>
+        <Header />
+        <div className="d-flex flex-column align-items-center justify-content-center px-4">
+          <div
+            className="d-flex flex-column gap-3 align-items-start w-100"
+            style={{ maxWidth: "500px" }}
+          >
+            <button
+              className={`btn btn-sm btn-outline-light pt-1`}
+              onClick={handleBack}
+            >
+              <span
+                style={{
+                  fontSize: 25,
+                  lineHeight: "10px",
+                  marginLeft: -3,
+                  zIndex: 999,
+                }}
               >
-                <span
-                  style={{
-                    fontSize: 25,
-                    lineHeight: "10px",
-                    marginLeft: -3,
-                    zIndex: 999,
-                  }}
+                &larr;
+              </span>{" "}
+              Back to Dashboard
+            </button>
+            <div className={`card p-4 shadow ${bg} w-100`}>
+              <h4 className={`text-center mb-4 ${text}`}>Reset Password</h4>
+
+              <form action="">
+                <input
+                  name="email"
+                  type="email"
+                  className={`form-control mt-1 ${text} ${bg} ${
+                    theme === "dark" ? "place-light" : "place-dark"
+                  }`}
+                  placeholder="Enter your email"
+                  onChange={handleEmailInput}
+                />
+                {errors.email && (
+                  <span className="text-danger d-inline-block mt-1">
+                    {errors.email}
+                  </span>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="btn btn-primary mt-4 w-100"
                 >
-                  &larr;
-                </span>{" "}
-                Back to Dashboard
-              </button>
-              <div
-                className={`card p-4 shadow ${bg} w-100`}
-              >
-                <h4 className={`text-center mb-4 ${text}`}>Reset Password</h4>
-
-                <form action="">
-                  <input
-                    name="email"
-                    type="email"
-                    className={`form-control mt-1 ${text} ${bg} ${
-                      theme === "dark" ? "place-light" : "place-dark"
-                    }`}
-                    placeholder="Enter your email"
-                    onChange={handleEmailInput}
-                  />
-                  {errors.email && (
-                    <span className="text-danger d-inline-block mt-1">
-                      {errors.email}
-                    </span>
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="btn btn-primary mt-4 w-100"
-                  >
-                    Send Reset Link
-                  </button>
-                </form>
-              </div>
+                  Send Reset Link
+                </button>
+              </form>
             </div>
           </div>
-          <Footer />
         </div>
-      )}
+        <Footer />
+      </div>
     </>
   );
 };

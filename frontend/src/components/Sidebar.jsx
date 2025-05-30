@@ -72,7 +72,6 @@ const Sidebar = () => {
             allowOutsideClick: false,
           });
         }
-        
       } else {
         Swal.fire({
           title: "Invalid token, Please log out and try again",
@@ -95,9 +94,10 @@ const Sidebar = () => {
     }
   };
 
+  if (loading) return <Loader />;
+
   return (
     <div className="d-flex pt-5">
-      {loading ? <Loader /> : ""}
       <div
         className={`d-flex flex-column p-3 pt-0 ${text} ${bg} leftSideTable`}
         style={{
