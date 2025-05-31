@@ -13,6 +13,8 @@ import Loader from "../components/Loader";
 import Header from "./Header";
 import Footer from "./Footer";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 function Login() {
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState("text-white");
@@ -29,8 +31,6 @@ function Login() {
     email: "",
     password: "",
   });
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setTimeout(() => {
