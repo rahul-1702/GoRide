@@ -72,6 +72,7 @@ function Login() {
   };
 
   const handleSubmitLogin = () => {
+
     setLoading(true);
     const validationErrors = Validation(values);
     setErrors(validationErrors);
@@ -110,9 +111,11 @@ function Login() {
               navigate("/");
               window.location.reload();
             }, 2500);
+
           } else {
             showAlert("Error", res.data.message, "error");
           }
+          
           setTimeout(() => {
             setLoading(false);
           }, 500);
