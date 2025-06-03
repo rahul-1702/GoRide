@@ -72,7 +72,6 @@ function Login() {
   };
 
   const handleSubmitLogin = () => {
-
     setLoading(true);
     const validationErrors = Validation(values);
     setErrors(validationErrors);
