@@ -464,7 +464,7 @@ GoRide is an online auto-rickshaw booking app. This repository contains the back
 ### **1. Clone the Repository**
 
 ```sh
-git clone https://github.com/Rahul-Taak/GoRide.git
+git clone https://github.com/rahul-1702/GoRide.git
 cd GoRide
 ```
 
@@ -560,7 +560,7 @@ Server will run on `http://0.0.0.0:5000`
 
 1. **Add Remote Repository**
    ```sh
-   git remote add origin https://github.com/Rahul-Taak/GoRide.git
+   git remote add origin https://github.com/rahul-1702/GoRide.git
    ```
 2. **Check Remote URL**
    ```sh
@@ -610,6 +610,6 @@ This project is ongoing under the **IT-Expert Team**.
 
 ## **Contact**
 
-For any queries, reach out to **Rahul Taak** via GitHub: [Rahul-Taak](https://github.com/Rahul-Taak)
+For any queries, reach out to **Rahul** via GitHub: [Rahul](https://github.com/rahul-1702)
 
 ---
